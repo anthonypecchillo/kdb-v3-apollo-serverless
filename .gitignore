@@ -5,3 +5,6 @@ node_modules
 # Not using these from tutorial just yet
 .circleci
 src/__tests__
+
+# database config
+database/config.js
