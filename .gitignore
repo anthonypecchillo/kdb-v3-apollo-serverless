@@ -1,0 +1,7 @@
+node_modules
+.DS_Store
+.env
+
+# Not using these from tutorial just yet
+.circleci
+src/__tests__
