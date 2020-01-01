@@ -35,8 +35,6 @@ module.exports.createStore = () => {
   };
 
   const db = new SQL('gcftaskforce', '', '', {
-    // dialect: 'sqlite',
-    // storage: './store.sqlite',
     operatorsAliases,
     // logging: false,
     host: 'localhost',
