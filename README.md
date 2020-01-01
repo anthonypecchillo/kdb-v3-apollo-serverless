@@ -6,6 +6,26 @@ This project was started by following this [Apollo tutorial](http://apollographq
 
 ## Installation
 
+### Dev Database Setup
+
+**Prerequisite Step:** Postgres must be installed on your local machine for the following to work.
+
+I have no clue if this will really work, but, here's what I think you should do:
+
+- Create a database called `gcftaskforce`
+
+- Set the username and password both to empty strings, `''`.
+
+- Run the following command in a terminal window from the root:
+
+```bash
+psql gcftaskforce < database/schema-postgres.sql
+```
+
+- Cross your fingers, because I'm not sure if that will work. If not, contact Anthony and we'll work through it together on a call.
+
+### Run the App
+
 To run the app, run these commands in a terminal window from the root:
 
 - Install dependencies:
@@ -27,10 +47,6 @@ cp .env.example .env
 ```bash
 yarn start
 ```
-
-## Dev Database Setup
-
-This is currently covered in the client codebase's README. (Yes, this is peculiar.)
 
 ## File Structure
 
