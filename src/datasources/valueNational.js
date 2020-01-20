@@ -22,6 +22,97 @@ class ValueNationalAPI extends DataSource {
     const valueNational = await this.store.ValueNational.findByPk(id);
     return valueNational ? valueNational : null;
   }
+
+  async getDeforestationTrend({ nationId: idArg } = {}) {
+    const id = idArg;
+    if (!id) return null;
+
+    const valueNational = await this.store.ValueNational.findOne({
+      where: {
+        nation_id: id,
+        name: 'Deforestation Trend',
+      }
+    });
+    return valueNational ? valueNational : null;
+  }
+
+  async getGDP({ nationId: idArg } = {}) {
+    const id = idArg;
+    if (!id) return null;
+
+    const valueNational = await this.store.ValueNational.findOne({
+      where: {
+        nation_id: id,
+        name: 'GDP',
+      }
+    });
+    return valueNational ? valueNational : null;
+  }
+
+  async getHumanDevelopmentIndex({ nationId: idArg } = {}) {
+    const id = idArg;
+    if (!id) return null;
+
+    const valueNational = await this.store.ValueNational.findOne({
+      where: {
+        nation_id: id,
+        name: 'Human Development Index',
+      }
+    });
+    return valueNational ? valueNational : null;
+  }
+
+  async getLandArea({ nationId: idArg } = {}) {
+    const id = idArg;
+    if (!id) return null;
+
+    const valueNational = await this.store.ValueNational.findOne({
+      where: {
+        nation_id: id,
+        name: 'Land Area',
+      }
+    });
+    return valueNational ? valueNational : null;
+  }
+
+  async getPerCapitaIncome({ nationId: idArg } = {}) {
+    const id = idArg;
+    if (!id) return null;
+
+    const valueNational = await this.store.ValueNational.findOne({
+      where: {
+        nation_id: id,
+        name: 'Per Capita Income',
+      }
+    });
+    return valueNational ? valueNational : null;
+  }
+
+  async getPercentForested({ nationId: idArg } = {}) {
+    const id = idArg;
+    if (!id) return null;
+
+    const valueNational = await this.store.ValueNational.findOne({
+      where: {
+        nation_id: id,
+        name: 'Percent Forested',
+      }
+    });
+    return valueNational ? valueNational : null;
+  }
+
+  async getPopulation({ nationId: idArg } = {}) {
+    const id = idArg;
+    if (!id) return null;
+
+    const valueNational = await this.store.ValueNational.findOne({
+      where: {
+        nation_id: id,
+        name: 'Population',
+      }
+    });
+    return valueNational ? valueNational : null;
+  }
 }
 
 module.exports = ValueNationalAPI;

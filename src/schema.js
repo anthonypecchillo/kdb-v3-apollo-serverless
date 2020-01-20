@@ -47,18 +47,19 @@ const typeDefs = gql`
     # vegetation(id: ID!): Vegetation
     # forestManagements: [ForestManagement!]!
     # forestManagement(id: ID!): ForestManagement
-    # deforestationRates: [DeforestationRate!]!
-    # deforestationRate(id: ID!): DeforestationRate
+    deforestationRates: [DeforestationRate!]!
+    deforestationRate(id: ID!): DeforestationRate
     # socialGroups: [SocialGroup!]!
     # socialGroup(id: ID!): SocialGroup
-    # urbanVsRurals: [UrbanVsRural!]!
+    urbanVsRurals: [UrbanVsRural!]!
+    urbanVsRural(id: ID!): UrbanVsRural!
     # urbanVsRural(id: ID!): UrbanVsRural
     # gdpCategorys: [GdpCategory!]!
     # gdpCategory(id: ID!): GdpCategory
-    # valueNationals: [ValueNational!]!
-    # valueNational(id: ID!): ValueNational
-    # valueJurisdictionals: [ValueJurisdictional!]!
-    # valueJurisdictional(id: ID!): ValueJurisdictional
+    valueNationals: [ValueNational!]!
+    valueNational(id: ID!): ValueNational
+    valueJurisdictionals: [ValueJurisdictional!]!
+    valueJurisdictional(id: ID!): ValueJurisdictional
     # valueGlobals: [ValueGlobal!]!
     # valueGlobal(id: ID!): ValueGlobal
     # majorExports: [MajorExport!]!
@@ -75,10 +76,10 @@ const typeDefs = gql`
     # contentNational(id: ID!): ContentNational
     # contentNationalTranslates: [ContentNationalTranslate!]!
     # contentNationalTranslate(id: ID!): ContentNationalTranslate
-    # contentJurisdictionals: [ContentJurisdictional!]!
-    # contentJurisdictional(id: ID!): ContentJurisdictional
-    # contentJurisdictionalTranslates: [ContentJurisdictionalTranslate!]!
-    # contentJurisdictionalTranslate(id: ID!): ContentJurisdictionalTranslate
+    contentJurisdictionals: [ContentJurisdictional!]!
+    contentJurisdictional(id: ID!): ContentJurisdictional
+    contentJurisdictionalTranslates: [ContentJurisdictionalTranslate!]!
+    contentJurisdictionalTranslate(code: String!): ContentJurisdictionalTranslate
     # vegetationTranslates: [VegetationTranslate!]!
     # vegetationTranslate(id: ID!): VegetationTranslate
     # socialGroupTranslates: [SocialGroupTranslate!]!
@@ -98,6 +99,8 @@ const typeDefs = gql`
   type Region {
     id: ID!
     name: String!
+    deforestationRates: [DeforestationRate!]
+    urbanVsRural: UrbanVsRural!
   }
 
   type Nation {
@@ -105,6 +108,13 @@ const typeDefs = gql`
     name: String!
     jurisdictions: [Jurisdiction!]!
     contacts: [Contact!]!
+    deforestationTrend: ValueNational
+    gdp: ValueNational
+    humanDevelopmentIndex: ValueNational
+    landArea: ValueNational
+    perCapitaIncome: ValueNational
+    percentForested: ValueNational
+    population: ValueNational
   }
 
   type Jurisdiction {
@@ -112,6 +122,29 @@ const typeDefs = gql`
     name: String!
     nation: Nation!
     contacts: [Contact!]!
+    contentJurisdictional: ContentJurisdictional!
+    valueJurisdictional: ValueJurisdictional!
+    valueJurisdictionals: [ValueJurisdictional!]!
+    deforestationReferenceRate: ValueJurisdictional
+    deforestationTrend: ValueJurisdictional
+    deforestationReductionGoal: ValueJurisdictional
+    forestArea: ValueJurisdictional
+    forestCarbon: ValueJurisdictional
+    gdp: ValueJurisdictional
+    humanDevelopmentIndex: ValueJurisdictional
+    landArea: ValueJurisdictional
+    originalForestArea: ValueJurisdictional
+    perCapitaIncome: ValueJurisdictional
+    population: ValueJurisdictional
+    potentialAnnualCO2Avoided: ValueJurisdictional
+    # carbonDeforestationRate: Statistic!
+  }
+
+  type Statistic {
+    amount: Int!
+    units: String!
+    citation: Citation!
+    jurisdiction: Jurisdiction!
   }
 
   type Language {
@@ -237,13 +270,16 @@ const typeDefs = gql`
   # }
   #
   #
-  # type DeforestationRate {
-  #   id: ID!
-  #   amount: Float!
-  #   year: Int!
-  #   citation: Citation!
-  #   region: Region!
-  # }
+  # TODO: Change citation_id back to citation!
+  # TODO: Change citation type back to Citation!
+  type DeforestationRate {
+    id: ID!
+    amount: Float!
+    year: Int!
+    units: String!
+    citation_id: String
+    region: Region!
+  }
   #
   #
   # type SocialGroup {
@@ -252,13 +288,15 @@ const typeDefs = gql`
   # }
   #
   #
-  # type UrbanVsRural {
-  #   id: ID!
-  #   urbanPopulation: Float!
-  #   ruralPopulation: Float!
-  #   citation: Citation!
-  #   region: Region!
-  # }
+  # TODO: Change citation_id back to citation!
+  # TODO: Change citation type back to Citation!
+  type UrbanVsRural {
+    id: ID!
+    urbanPopulation: Float!
+    ruralPopulation: Float!
+    citation_id: String
+    region: Region!
+  }
   #
   #
   # type GdpCategory {
@@ -267,26 +305,31 @@ const typeDefs = gql`
   # }
   #
   #
-  # type ValueNational {
-  #   id: ID!
-  #   name: String!
-  #   amount: Float!
-  #   units: String!
-  #   year: String!
-  #   citation: Citation!
-  #   nation: Nation!
-  # }
-  #
-  #
-  # type ValueJurisdictional {
-  #   id: ID!
-  #   name: String!
-  #   amount: Float!
-  #   units: String!
-  #   year: String!
-  #   citation: Citation!
-  #   jurisdiction: Jurisdiction!
-  # }
+
+  # TODO: Change citation_id back to citation!
+  # TODO: Change citation type back to Citation!
+  type ValueNational {
+    id: ID!
+    name: String!
+    amount: Float!
+    units: String
+    year: String
+    citation_id: String
+    nation: Nation!
+  }
+
+
+  # TODO: Change citation_id back to citation!
+  # TODO: Change citation type back to Citation!
+  type ValueJurisdictional {
+    id: ID!
+    name: String!
+    amount: Float!
+    units: String
+    year: String
+    citation_id: String
+    jurisdiction: Jurisdiction!
+  }
   #
   #
   # type ValueGlobal {
@@ -350,20 +393,26 @@ const typeDefs = gql`
   # }
   #
   #
-  # type ContentJurisdictional {
-  #   id: ID!
-  #   jurisdiction: Jurisdiction!
-  # }
-  #
-  #
-  # type ContentJurisdictionalTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   contentJurisdiction: ContentJurisdiction!
-  #   description: String!
-  #   driversOfDeforestation: String!
-  #   forestMonitoringMeasurementSystems: String!
-  # }
+  # TODO: Should content_jurisdictional_id be Int! or ID! ???
+  type ContentJurisdictionalTranslate {
+    id: ID!
+    languageCode: String!
+    contentJurisdictionalId: ID!
+    description: String
+    driversOfDeforestation: String
+    forestMonitoringMeasurementSystems: String
+    # TODO: DO WE NEED THIS?
+    contentJurisdictional: ContentJurisdictional!
+  }
+
+  type ContentJurisdictional {
+    id: ID!
+    jurisdiction: Jurisdiction!
+    # TODO: DO WE NEED THIS?
+    contentJurisdictionalTranslate(code: String!): ContentJurisdictionalTranslate!
+    contentJurisdictionalTranslates: [ContentJurisdictionalTranslate!]!
+  }
+
   #
   #
   # type VegetationTranslate {

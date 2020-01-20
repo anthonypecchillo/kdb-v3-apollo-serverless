@@ -22,6 +22,21 @@ class DeforestationRateAPI extends DataSource {
     const deforestationRate = await this.store.DeforestationRate.findByPk(id);
     return deforestationRate ? deforestationRate : null;
   }
+
+  async getDeforestationRatesByRegionId({ regionId: idArg } = {}) {
+    const id = idArg;
+    if (!id) return null;
+
+    const deforestationRates = await this.store.DeforestationRate.findAll({
+      where: {
+        region_id: id,
+      },
+      order: [
+        ['year', 'ASC'],
+      ],
+    });
+    return deforestationRates ? deforestationRates : null;
+  }
 }
 
 module.exports = DeforestationRateAPI;

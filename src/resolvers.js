@@ -7,17 +7,65 @@ module.exports = {
   // lawTag(id: ID!): LawTag
   // lawTagTranslates: [LawTagTranslate!]!
   // lawTagTranslate(id: ID!): LawTagTranslate
+  Region: {
+    deforestationRates: ({ id }, args, { dataSources }) => dataSources.deforestationRateAPI.getDeforestationRatesByRegionId({ regionId: id }),
+    urbanVsRural: (parent, args, { dataSources }) => parent.getUrban_vs_rural(),
+  },
   Nation: {
     jurisdictions: (parent, args, context, info) => parent.getJurisdictions(),
     contacts: (parent, args, context, info) => parent.getContacts(),
+    deforestationTrend: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getDeforestationTrend({ nationId: id }),
+    gdp: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getGDP({ nationId: id }),
+    humanDevelopmentIndex: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getHumanDevelopmentIndex({ nationId: id }),
+    landArea: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getLandArea({ nationId: id }),
+    perCapitaIncome: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getPerCapitaIncome({ nationId: id }),
+    percentForested: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getPercentForested({ nationId: id }),
+    population: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getPopulation({ nationId: id }),
   },
   Jurisdiction: {
     nation: (parent, args, context, info) => parent.getNation(),
     contacts: (parent, args, context, info) => parent.getContacts(),
+    contentJurisdictional: (parent, args, context, info) => parent.getContent_jurisdictional(),
+    valueJurisdictionals: (parent, args, context, info) => parent.getValue_jurisdictionals(),
+    // valueJurisdictional: (parent, args, context, info) => parent.getValue_jurisdictional(),
+    deforestationReferenceRate:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getDeforestationReferenceRate({ jurisdictionId: id }),
+    deforestationTrend:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getDeforestationTrend({ jurisdictionId: id }),
+    deforestationReductionGoal:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getDeforestationReductionGoal({ jurisdictionId: id }),
+    forestArea:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getForestArea({ jurisdictionId: id }),
+    forestCarbon:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getForestCarbon({ jurisdictionId: id }),
+    gdp:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getGDP({ jurisdictionId: id }),
+    humanDevelopmentIndex:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getHumanDevelopmentIndex({ jurisdictionId: id }),
+    landArea:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getLandArea({ jurisdictionId: id }),
+    originalForestArea:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getOriginalForestArea({ jurisdictionId: id }),
+    perCapitaIncome:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getPerCapitaIncome({ jurisdictionId: id }),
+    population:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getPopulation({ jurisdictionId: id }),
+    potentialAnnualCO2Avoided:  ({ id }, args, { dataSources }) => dataSources.valueJurisdictionalAPI.getPotentialAnnualCO2Avoided({ jurisdictionId: id }),
   },
   Contact: {
     nation: (parent, args, context, info) => parent.getNation(),
     jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
+  },
+  ContentJurisdictional: {
+    // contentJurisdictionalTranslates: (parent, args, context, info) => { console.log('PARENT IS: ', parent); return parent.getAllContentJurisdictionalTranslates() },
+    contentJurisdictionalTranslate: ({ id }, { code }, { dataSources }) => dataSources.contentJurisdictionalTranslateAPI.getContentJurisdictionalTranslateByCode({ id: id, languageCode: code }),
+    contentJurisdictionalTranslates: (parent, args, context, info) => parent.getContent_jurisdictional_translates(),
+    // Danny's Recommendation
+    // contentJurisdictionalTranslate: (parent, args, context, info) => parent.getContent_jurisdictional_translates({ where: { languageCode: args.code } }).then(results => results[0])}
+  },
+  DeforestationRate: {
+    region: (parent, args, context, info) => parent.getRegion(),
+  },
+  UrbanVsRural: {
+    region: (parent, args, context, info) => parent.getRegion(),
+  },
+  // ContentJurisdictionalTranslate: {
+  //   contentJurisdictional: (parent, args, context, info) => parent.getContentJurisdictional(),
+  // },
+  ValueJurisdictional: {
+    jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
+  },
+  ValueNational: {
+    nation: (parent, args, context, info) => parent.getNation(),
   },
   Query: {
     // launches: (_, __, { dataSources }) =>
@@ -67,10 +115,10 @@ module.exports = {
     // urbanVsRural: (_, { id }, { dataSources }) => dataSources.urbanVsRuralAPI.getUrbanVsRuralById({ urbanVsRuralId: id }),
     // gdpCategorys: (_, __, { dataSources }) => dataSources.gdpCategorysAPI.getAllGdpCategorys(),
     // gdpCategory: (_, { id }, { dataSources }) => dataSources.gdpCategoryAPI.getGdpCategoryById({ gdpCategoryId: id }),
-    // valueNationals: (_, __, { dataSources }) => dataSources.valueNationalsAPI.getAllValueNationals(),
-    // valueNational: (_, { id }, { dataSources }) => dataSources.valueNationalAPI.getValueNationalById({ valueNationalId: id }),
-    // valueJurisdictionals: (_, __, { dataSources }) => dataSources.valueJurisdictionalsAPI.getAllValueJurisdictionals(),
-    // valueJurisdictional: (_, { id }, { dataSources }) => dataSources.valueJurisdictionalAPI.getValueJurisdictionalById({ valueJurisdictionalId: id }),
+    valueNationals: (_, __, { dataSources }) => dataSources.valueNationalsAPI.getAllValueNationals(),
+    valueNational: (_, { id }, { dataSources }) => dataSources.valueNationalAPI.getValueNationalById({ valueNationalId: id }),
+    valueJurisdictionals: (_, __, { dataSources }) => dataSources.valueJurisdictionalsAPI.getAllValueJurisdictionals(),
+    valueJurisdictional: (_, { id }, { dataSources }) => dataSources.valueJurisdictionalAPI.getValueJurisdictionalById({ valueJurisdictionalId: id }),
     // valueGlobals: (_, __, { dataSources }) => dataSources.valueGlobalsAPI.getAllValueGlobals(),
     // valueGlobal: (_, { id }, { dataSources }) => dataSources.valueGlobalAPI.getValueGlobalById({ valueGlobalId: id }),
     // majorExports: (_, __, { dataSources }) => dataSources.majorExportsAPI.getAllMajorExports(),
@@ -87,10 +135,10 @@ module.exports = {
     // contentNational: (_, { id }, { dataSources }) => dataSources.contentNationalAPI.getContentNationalById({ contentNationalId: id }),
     // contentNationalTranslates: (_, __, { dataSources }) => dataSources.contentNationalTranslatesAPI.getAllContentNationalTranslates(),
     // contentNationalTranslate: (_, { id }, { dataSources }) => dataSources.contentNationalTranslateAPI.getContentNationalTranslateById({ contentNationalTranslateId: id }),
-    // contentJurisdictionals: (_, __, { dataSources }) => dataSources.contentJurisdictionalsAPI.getAllContentJurisdictionals(),
-    // contentJurisdictional: (_, { id }, { dataSources }) => dataSources.contentJurisdictionalAPI.getContentJurisdictionalById({ contentJurisdictionalId: id }),
-    // contentJurisdictionalTranslates: (_, __, { dataSources }) => dataSources.contentJurisdictionalTranslatesAPI.getAllContentJurisdictionalTranslates(),
-    // contentJurisdictionalTranslate: (_, { id }, { dataSources }) => dataSources.contentJurisdictionalTranslateAPI.getContentJurisdictionalTranslateById({ contentJurisdictionalTranslateId: id }),
+    contentJurisdictionals: (_, __, { dataSources }) => dataSources.contentJurisdictionalAPI.getAllContentJurisdictionals(),
+    contentJurisdictional: (_, { id }, { dataSources }) => dataSources.contentJurisdictionalAPI.getContentJurisdictionalById({ contentJurisdictionalId: id }),
+    contentJurisdictionalTranslates: (_, __, { dataSources }) => dataSources.contentJurisdictionalTranslateAPI.getAllContentJurisdictionalTranslates(),
+    contentJurisdictionalTranslate: (_, { code }, { dataSources }) => dataSources.contentJurisdictionalTranslateAPI.getContentJurisdictionalTranslateByCode({ languageCode: code }),
     // vegetationTranslates: (_, __, { dataSources }) => dataSources.vegetationTranslatesAPI.getAllVegetationTranslates(),
     // vegetationTranslate: (_, { id }, { dataSources }) => dataSources.vegetationTranslateAPI.getVegetationTranslateById({ vegetationTranslateId: id }),
     // socialGroupTranslates: (_, __, { dataSources }) => dataSources.socialGroupTranslatesAPI.getAllSocialGroupTranslates(),

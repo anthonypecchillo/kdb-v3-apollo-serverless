@@ -435,6 +435,10 @@ module.exports.createStore = () => {
       type: SQL.DECIMAL,
       // allowNull: false,
     },
+    units: {
+      type: SQL.CHAR(8),
+      // allowNull: false,
+    },
     year: {
       type: SQL.INTEGER,
       // allowNull: false,
@@ -448,6 +452,9 @@ module.exports.createStore = () => {
       // allowNull: false,
     },
   });
+
+  Region.hasMany(DeforestationRate);
+  DeforestationRate.belongsTo(Region);
 
 
   const SocialGroup = db.define('social_group', {
@@ -469,16 +476,18 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    urban_population: {
+    urbanPopulation: {
       type: SQL.DECIMAL,
+      field: 'urban_population',
       // allowNull: false,
     },
-    rural_population: {
+    ruralPopulation: {
       type: SQL.DECIMAL,
+      field: 'rural_population',
       // allowNull: false,
     },
     citation_id: {
-      type: SQL.INTEGER,
+      type: SQL.STRING(2083),  // TODO: Revert this back to Integer later
       // allowNull: false,
     },
     region_id: {
@@ -486,6 +495,9 @@ module.exports.createStore = () => {
       // allowNull: false,
     },
   });
+
+  Region.hasOne(UrbanVsRural);
+  UrbanVsRural.belongsTo(Region);
 
 
   const GdpCategory = db.define('gdp_category', {
@@ -524,7 +536,8 @@ module.exports.createStore = () => {
       // allowNull: false,
     },
     citation_id: {
-      type: SQL.INTEGER,
+      // type: SQL.INTEGER,
+      type: SQL.STRING(2083),   // TODO: Revert this back to Integer later
       // allowNull: false,
     },
     nation_id: {
@@ -532,6 +545,9 @@ module.exports.createStore = () => {
       // allowNull: false,
     },
   });
+
+  Nation.hasMany(ValueNational);
+  ValueNational.belongsTo(Nation);
 
 
   const ValueJurisdictional = db.define('value_jurisdictional', {
@@ -557,7 +573,8 @@ module.exports.createStore = () => {
       // allowNull: false,
     },
     citation_id: {
-      type: SQL.INTEGER,
+      // type: SQL.INTEGER,
+      type: SQL.STRING(2083),   // TODO: Revert this back to Integer later
       // allowNull: false,
     },
     jurisdiction_id: {
@@ -565,6 +582,9 @@ module.exports.createStore = () => {
       // allowNull: false,
     },
   });
+
+  Jurisdiction.hasMany(ValueJurisdictional);
+  ValueJurisdictional.belongsTo(Jurisdiction);
 
 
   const ValueGlobal = db.define('value_global', {
@@ -735,6 +755,9 @@ module.exports.createStore = () => {
     },
   });
 
+  Jurisdiction.hasOne(ContentJurisdictional);
+  ContentJurisdictional.belongsTo(Jurisdiction);
+
 
   const ContentJurisdictionalTranslate = db.define('content_jurisdictional_translate', {
     id: {
@@ -742,27 +765,38 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
-    content_jurisdiction_id: {
+    contentJurisdictionalId: {
       type: SQL.INTEGER,
+      field: 'content_jurisdictional_id',
       // allowNull: false,
     },
     description: {
       type: SQL.TEXT,
       // allowNull: false,
     },
-    drivers_of_deforestation: {
+    driversOfDeforestation: {
       type: SQL.TEXT,
+      field: 'drivers_of_deforestation',
       // allowNull: false,
     },
-    forest_monitoring_measurement_systems: {
+    forestMonitoringMeasurementSystems: {
       type: SQL.TEXT,
+      field: 'forest_monitoring_measurement_systems',
       // allowNull: false,
     },
   });
+
+  ContentJurisdictional.hasMany(ContentJurisdictionalTranslate);
+  ContentJurisdictionalTranslate.belongsTo(ContentJurisdictional);
+
+  // TODO: Do we need these relationships?
+  // Language.hasMany(ContentJurisdictionalTranslate);
+  // ContentJurisdictionalTranslate.belongsTo(Language);
 
 
   const VegetationTranslate = db.define('vegetation_translate', {

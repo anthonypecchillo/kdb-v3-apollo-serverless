@@ -26,7 +26,6 @@ class JurisdictionAPI extends DataSource {
 
   // TODO: Will need nation argument as well to deal with name collisions
   async getJurisdictionByName({ name: nameArg } = {}) {
-    console.log("Hi there!");
     const name = nameArg;
     if (!name) return null;
 

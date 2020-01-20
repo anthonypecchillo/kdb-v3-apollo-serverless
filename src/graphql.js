@@ -39,7 +39,7 @@ const OrganizationAPI = require('./datasources/organization');
 const ContentNationalAPI = require('./datasources/contentNational');
 // const ContentNationalTranslateAPI = require('./datasources/contentNationalTranslate');
 const ContentJurisdictionalAPI = require('./datasources/contentJurisdictional');
-// const ContentJurisdictionalTranslateAPI = require('./datasources/contentJurisdictionalTranslate');
+const ContentJurisdictionalTranslateAPI = require('./datasources/contentJurisdictionalTranslate');
 // const VegetationTranslateAPI = require('./datasources/vegetationTranslate');
 // const SocialGroupTranslateAPI = require('./datasources/socialGroupTranslate');
 // const GdpCategoryTranslateAPI = require('./datasources/gdpCategoryTranslate');
@@ -90,7 +90,7 @@ const server = new ApolloServer({
     contentNationalAPI: new ContentNationalAPI({ store }),
     // contentNationalTranslateAPI: new ContentNationalTranslateAPI({ store }),
     contentJurisdictionalAPI: new ContentJurisdictionalAPI({ store }),
-    // contentJurisdictionalTranslateAPI: new ContentJurisdictionalTranslateAPI({ store }),
+    contentJurisdictionalTranslateAPI: new ContentJurisdictionalTranslateAPI({ store }),
     // vegetationTranslateAPI: new VegetationTranslateAPI({ store }),
     // socialGroupTranslateAPI: new SocialGroupTranslateAPI({ store }),
     // gdpCategoryTranslateAPI: new GdpCategoryTranslateAPI({ store }),
