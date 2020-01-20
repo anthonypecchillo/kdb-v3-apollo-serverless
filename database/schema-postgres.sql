@@ -205,7 +205,7 @@ CREATE TABLE value_global (
  amount DECIMAL,
  units VARCHAR(32),
  year VARCHAR(12),
- citation_id INTEGER
+ citation_id VARCHAR(2083)        -- TODO: Change this back to an INTEGER
 );
 
 DROP TABLE IF EXISTS major_export CASCADE;
@@ -1123,6 +1123,10 @@ INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, ju
 INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('380','Potential Annual CO₂ Avoided',14589.6,'tCO₂eq','2020',null,'28');
 INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('381','Potential Annual CO₂ Avoided',11042396,'tCO₂eq','2020',null,'29');
 INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('382','Potential Annual CO₂ Avoided',16600000,'tCO₂eq','2020',null,'30');
+
+
+INSERT INTO value_global (id, name, amount, units, year, citation_id) VALUES ('1', 'Tropical Forest Area', 14287108, 'km²', null, 'ESA GlobCover 2009 Project');
+INSERT INTO value_global (id, name, amount, units, year, citation_id) VALUES ('2', 'Tropical Forest Carbon Stocks', 158973, 'MtC', null, 'Baccini, A. et al. 2012. Estimated carbon dioxide emissions from tropical deforestation improved by carbon-density maps. Nature Climate Change 2:182-185; doi:10.1038/nclimate1354');
 
 
 INSERT INTO content_jurisdictional (id, jurisdiction_id) VALUES ('1', '1');

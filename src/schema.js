@@ -60,8 +60,8 @@ const typeDefs = gql`
     valueNational(id: ID!): ValueNational
     valueJurisdictionals: [ValueJurisdictional!]!
     valueJurisdictional(id: ID!): ValueJurisdictional
-    # valueGlobals: [ValueGlobal!]!
-    # valueGlobal(id: ID!): ValueGlobal
+    valueGlobals: [ValueGlobal!]!
+    valueGlobal(id: ID!): ValueGlobal
     # majorExports: [MajorExport!]!
     # majorExport(id: ID!): MajorExport
     # commoditys: [Commodity!]!
@@ -332,14 +332,16 @@ const typeDefs = gql`
   }
   #
   #
-  # type ValueGlobal {
-  #   id: ID!
-  #   name: String!
-  #   amount: Float!
-  #   units: String!
-  #   year: String!
-  #   citation: Citation!
-  # }
+  # TODO: Change citation_id back to citation!
+  # TODO: Change citation type back to Citation!
+  type ValueGlobal {
+    id: ID!
+    name: String!
+    amount: Float!
+    units: String
+    year: String
+    citation_id: String
+  }
   #
   #
   # type MajorExport {

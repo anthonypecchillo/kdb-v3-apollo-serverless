@@ -610,10 +610,13 @@ module.exports.createStore = () => {
       // allowNull: false,
     },
     citation_id: {
-      type: SQL.INTEGER,
+      type: SQL.STRING(2083),   // TODO: Revert this back to Integer later
       // allowNull: false,
     },
   });
+
+  // ValueGlobal.hasOne(Citation);
+  // Citatiton.BelongsTo(ValueGlobal);
 
 
   const MajorExport = db.define('major_export', {
