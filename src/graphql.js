@@ -37,7 +37,7 @@ const SlrtScoreAPI = require('./datasources/slrtScore');
 const OrganizationAPI = require('./datasources/organization');
 // const OrganizationTranslateAPI = require('./datasources/organizationTranslate');
 const ContentNationalAPI = require('./datasources/contentNational');
-// const ContentNationalTranslateAPI = require('./datasources/contentNationalTranslate');
+const ContentNationalTranslateAPI = require('./datasources/contentNationalTranslate');
 const ContentJurisdictionalAPI = require('./datasources/contentJurisdictional');
 const ContentJurisdictionalTranslateAPI = require('./datasources/contentJurisdictionalTranslate');
 // const VegetationTranslateAPI = require('./datasources/vegetationTranslate');
@@ -88,7 +88,7 @@ const server = new ApolloServer({
     organizationAPI: new OrganizationAPI({ store }),
     // organizationTranslateAPI: new OrganizationTranslateAPI({ store }),
     contentNationalAPI: new ContentNationalAPI({ store }),
-    // contentNationalTranslateAPI: new ContentNationalTranslateAPI({ store }),
+    contentNationalTranslateAPI: new ContentNationalTranslateAPI({ store }),
     contentJurisdictionalAPI: new ContentJurisdictionalAPI({ store }),
     contentJurisdictionalTranslateAPI: new ContentJurisdictionalTranslateAPI({ store }),
     // vegetationTranslateAPI: new VegetationTranslateAPI({ store }),

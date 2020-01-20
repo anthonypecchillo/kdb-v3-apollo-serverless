@@ -72,10 +72,10 @@ const typeDefs = gql`
     # organization(id: ID!): Organization
     # organizationTranslates: [OrganizationTranslate!]!
     # organizationTranslate(id: ID!): OrganizationTranslate
-    # contentNationals: [ContentNational!]!
-    # contentNational(id: ID!): ContentNational
-    # contentNationalTranslates: [ContentNationalTranslate!]!
-    # contentNationalTranslate(id: ID!): ContentNationalTranslate
+    contentNationals: [ContentNational!]!
+    contentNational(id: ID!): ContentNational
+    contentNationalTranslates: [ContentNationalTranslate!]!
+    contentNationalTranslate(code: String!): ContentNationalTranslate
     contentJurisdictionals: [ContentJurisdictional!]!
     contentJurisdictional(id: ID!): ContentJurisdictional
     contentJurisdictionalTranslates: [ContentJurisdictionalTranslate!]!
@@ -108,6 +108,7 @@ const typeDefs = gql`
     name: String!
     jurisdictions: [Jurisdiction!]!
     contacts: [Contact!]!
+    contentNational: ContentNational!
     deforestationTrend: ValueNational
     gdp: ValueNational
     humanDevelopmentIndex: ValueNational
@@ -379,20 +380,21 @@ const typeDefs = gql`
   # }
   #
   #
-  # type ContentNational {
-  #   id: ID!
-  #   nation: Nation!
-  # }
-  #
-  #
-  # type ContentNationalTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   contentNational: ContentNational!
-  #   lawsText: String!
-  #   institutionsText: String!
-  #   policiesPlansText: String!
-  # }
+  type ContentNationalTranslate {
+    id: ID!
+    languageCode: String!
+    contentNationalId: ID!
+    lawsText: String
+    institutionsText: String
+    policiesPlansText: String
+  }
+
+  type ContentNational {
+    id: ID!
+    nation: Nation!
+    contentNationalTranslate(code: String!): ContentNationalTranslate!
+    contentNationalTranslates: [ContentNationalTranslate!]!
+  }
   #
   #
   # TODO: Should content_jurisdictional_id be Int! or ID! ???
@@ -410,7 +412,6 @@ const typeDefs = gql`
   type ContentJurisdictional {
     id: ID!
     jurisdiction: Jurisdiction!
-    # TODO: DO WE NEED THIS?
     contentJurisdictionalTranslate(code: String!): ContentJurisdictionalTranslate!
     contentJurisdictionalTranslates: [ContentJurisdictionalTranslate!]!
   }

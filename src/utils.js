@@ -716,6 +716,9 @@ module.exports.createStore = () => {
     },
   });
 
+  Nation.hasOne(ContentNational);
+  ContentNational.belongsTo(Nation);
+
 
   const ContentNationalTranslate = db.define('content_national_translate', {
     id: {
@@ -723,27 +726,35 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
-    content_national_id: {
+    contentNationalId: {
       type: SQL.INTEGER,
+      field: 'content_national_id',
       // allowNull: false,
     },
-    laws_text: {
+    lawsText: {
       type: SQL.TEXT,
+      field: 'laws_text'
       // allowNull: false,
     },
-    institutions_text: {
+    institutionsText: {
       type: SQL.TEXT,
+      field: 'institutions_text'
       // allowNull: false,
     },
-    policies_plans_text: {
+    policiesPlansText: {
       type: SQL.TEXT,
+      field: 'policies_plans_text'
       // allowNull: false,
     },
   });
+
+  Nation.hasOne(ContentNational);
+  ContentNational.belongsTo(Nation);
 
 
   const ContentJurisdictional = db.define('content_jurisdictional', {
@@ -758,8 +769,8 @@ module.exports.createStore = () => {
     },
   });
 
-  Jurisdiction.hasOne(ContentJurisdictional);
-  ContentJurisdictional.belongsTo(Jurisdiction);
+  ContentNational.hasOne(ContentNationalTranslate);
+  ContentNationalTranslate.belongsTo(ContentNational);
 
 
   const ContentJurisdictionalTranslate = db.define('content_jurisdictional_translate', {
