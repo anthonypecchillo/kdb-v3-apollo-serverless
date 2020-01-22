@@ -24,6 +24,7 @@ module.exports = {
     population: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getPopulation({ nationId: id }),
   },
   Jurisdiction: {
+    region: (parent, args, context, info) => parent.getRegion(),
     nation: (parent, args, context, info) => parent.getNation(),
     contacts: (parent, args, context, info) => parent.getContacts(),
     contentJurisdictional: (parent, args, context, info) => parent.getContent_jurisdictional(),

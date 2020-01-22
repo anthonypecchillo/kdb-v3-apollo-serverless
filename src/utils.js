@@ -83,6 +83,9 @@ module.exports.createStore = () => {
     },
   });
 
+  Region.hasOne(Jurisdiction);
+  Jurisdiction.belongsTo(Region);
+
   Nation.hasMany(Jurisdiction);
   Jurisdiction.belongsTo(Nation);
 
@@ -753,8 +756,8 @@ module.exports.createStore = () => {
     },
   });
 
-  Nation.hasOne(ContentNational);
-  ContentNational.belongsTo(Nation);
+  ContentNational.hasOne(ContentNationalTranslate);
+  ContentNationalTranslate.belongsTo(ContentNational);
 
 
   const ContentJurisdictional = db.define('content_jurisdictional', {
@@ -769,8 +772,8 @@ module.exports.createStore = () => {
     },
   });
 
-  ContentNational.hasOne(ContentNationalTranslate);
-  ContentNationalTranslate.belongsTo(ContentNational);
+  Jurisdiction.hasOne(ContentJurisdictional);
+  ContentJurisdictional.belongsTo(Jurisdiction);
 
 
   const ContentJurisdictionalTranslate = db.define('content_jurisdictional_translate', {

@@ -52,8 +52,7 @@ const typeDefs = gql`
     # socialGroups: [SocialGroup!]!
     # socialGroup(id: ID!): SocialGroup
     urbanVsRurals: [UrbanVsRural!]!
-    urbanVsRural(id: ID!): UrbanVsRural!
-    # urbanVsRural(id: ID!): UrbanVsRural
+    urbanVsRural(id: ID!): UrbanVsRural
     # gdpCategorys: [GdpCategory!]!
     # gdpCategory(id: ID!): GdpCategory
     valueNationals: [ValueNational!]!
@@ -121,6 +120,7 @@ const typeDefs = gql`
   type Jurisdiction {
     id: ID!
     name: String!
+    region: Region!
     nation: Nation!
     contacts: [Contact!]!
     contentJurisdictional: ContentJurisdictional!

@@ -14,7 +14,8 @@ DROP TABLE IF EXISTS jurisdiction CASCADE;
 CREATE TABLE jurisdiction (
  id SERIAL PRIMARY KEY,
  name VARCHAR(32),
- nation_id INTEGER
+ nation_id INTEGER,
+ region_id INTEGER
 );
 
 DROP TABLE IF EXISTS language CASCADE;
@@ -408,8 +409,8 @@ CREATE TABLE law_tag_law (
 
 
 
--- ALTER TABLE jurisdiction ADD CONSTRAINT jurisdiction_nation_id_fkey FOREIGN KEY (nation_id) REFERENCES nation(id);
-
+ALTER TABLE jurisdiction ADD CONSTRAINT jurisdiction_nation_id_fkey FOREIGN KEY (nation_id) REFERENCES nation(id);
+ALTER TABLE jurisdiction ADD CONSTRAINT jurisdiction_region_id_fkey FOREIGN KEY (region_id) REFERENCES region(id);
 ALTER TABLE contact ADD CONSTRAINT contact_nation_id_fkey FOREIGN KEY (nation_id) REFERENCES nation(id);
 ALTER TABLE contact ADD CONSTRAINT contact_jurisdiction_id_fkey FOREIGN KEY (jurisdiction_id) REFERENCES jurisdiction(id);
 ALTER TABLE partnership ADD CONSTRAINT partnership_nation_id_fkey FOREIGN KEY (nation_id) REFERENCES nation(id);
@@ -530,6 +531,8 @@ INSERT INTO region (id, name) VALUES ('42', 'Cavally');
 INSERT INTO region (id, name) VALUES ('43', 'Caquetá');
 INSERT INTO region (id, name) VALUES ('44', 'Pastaza');
 INSERT INTO region (id, name) VALUES ('45', 'Cross River');
+INSERT INTO region (id, name) VALUES ('46', 'Catalonia');
+INSERT INTO region (id, name) VALUES ('47', 'California');
 
 
 INSERT INTO nation (id, name) VALUES ('1', 'Brazil');
@@ -544,43 +547,43 @@ INSERT INTO nation (id, name) VALUES ('9', 'Spain');
 INSERT INTO nation (id, name) VALUES ('10', 'United States');
 
 
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('1', 'Acre', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('2', 'Amapá', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('3', 'Amazonas', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('4', 'Maranhão', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('5', 'Mato Grosso', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('6', 'Pará', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('7', 'Rondônia', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('8', 'Roraima', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('9', 'Tocantins', '1');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('10', 'Aceh', '2');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('11', 'Central Kalimantan', '2');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('12', 'East Kalimantan', '2');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('13', 'North Kalimantan', '2');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('14', 'Papua', '2');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('15', 'West Kalimantan', '2');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('16', 'West Papua', '2');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('17', 'Campeche', '3');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('18', 'Chiapas', '3');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('19', 'Jalisco', '3');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('20', 'Oaxaca', '3');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('21', 'Quintana Roo', '3');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('22', 'Tabasco', '3');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('23', 'Yucatán', '3');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('24', 'Amazonas', '4');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('25', 'Huánuco', '4');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('26', 'Loreto', '4');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('27', 'Madre de Dios', '4');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('28', 'Piura', '4');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('29', 'San Martín', '4');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('30', 'Ucayali', '4');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('31', 'Bélier', '5');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('32', 'Cavally', '5');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('33', 'Caquetá', '6');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('34', 'Pastaza', '7');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('35', 'Cross River', '8');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('36', 'Catalonia', '9');
-INSERT INTO jurisdiction (id, name, nation_id) VALUES ('37', 'California', '10');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('1', 'Acre', '1', '11');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('2', 'Amapá', '1', '12');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('3', 'Amazonas', '1', '13');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('4', 'Maranhão', '1', '14');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('5', 'Mato Grosso', '1', '15');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('6', 'Pará', '1', '16');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('7', 'Rondônia', '1', '17');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('8', 'Roraima', '1', '18');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('9', 'Tocantins', '1', '19');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('10', 'Aceh', '2', '20');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('11', 'Central Kalimantan', '2', '21');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('12', 'East Kalimantan', '2', '22');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('13', 'North Kalimantan', '2', '23');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('14', 'Papua', '2', '24');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('15', 'West Kalimantan', '2', '25');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('16', 'West Papua', '2', '26');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('17', 'Campeche', '3', '27');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('18', 'Chiapas', '3', '28');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('19', 'Jalisco', '3', '29');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('20', 'Oaxaca', '3', '30');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('21', 'Quintana Roo', '3', '31');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('22', 'Tabasco', '3', '32');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('23', 'Yucatán', '3', '33');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('24', 'Amazonas', '4', '34');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('25', 'Huánuco', '4', '35');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('26', 'Loreto', '4', '36');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('27', 'Madre de Dios', '4', '37');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('28', 'Piura', '4', '38');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('29', 'San Martín', '4', '39');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('30', 'Ucayali', '4', '40');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('31', 'Bélier', '5', '41');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('32', 'Cavally', '5', '42');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('33', 'Caquetá', '6', '43');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('34', 'Pastaza', '7', '44');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('35', 'Cross River', '8', '45');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('36', 'Catalonia', '9', '46');
+INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('37', 'California', '10', '47');
 
 
 INSERT INTO language (code, name) VALUES ('en', 'English');
@@ -1123,6 +1126,40 @@ INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, ju
 INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('380','Potential Annual CO₂ Avoided',14589.6,'tCO₂eq','2020',null,'28');
 INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('381','Potential Annual CO₂ Avoided',11042396,'tCO₂eq','2020',null,'29');
 INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('382','Potential Annual CO₂ Avoided',16600000,'tCO₂eq','2020',null,'30');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('383','Deforested Area',16096,'km²',null,null,'1');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('384','Deforested Area',9812,'km²',null,null,'2');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('385','Deforested Area',112788,'km²',null,null,'3');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('386','Deforested Area',103031,'km²',null,null,'4');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('387','Deforested Area',594533,'km²',null,null,'5');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('388','Deforested Area',391349,'km²',null,null,'6');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('389','Deforested Area',90672,'km²',null,null,'7');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('390','Deforested Area',9003,'km²',null,null,'8');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('391','Deforested Area',87348,'km²',null,null,'9');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('392','Deforested Area',5311,'km²',null,null,'33');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('393','Deforested Area',1885,'km²',null,null,'10');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('394','Deforested Area',30128,'km²',null,null,'11');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('395','Deforested Area',51991,'km²',null,null,'12');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('396','Deforested Area',7035,'km²',null,null,'13');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('397','Deforested Area',21041,'km²',null,null,'14');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('398','Deforested Area',9483,'km²',null,null,'15');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('399','Deforested Area',1061,'km²',null,null,'16');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('400','Deforested Area',1025,'km²',null,null,'31');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('401','Deforested Area',7434,'km²',null,null,'32');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('402','Deforested Area',8088,'km²',null,null,'17');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('403','Deforested Area',12719,'km²',null,null,'18');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('404','Deforested Area',5221,'km²',null,null,'19');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('405','Deforested Area',9575,'km²',null,null,'20');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('406','Deforested Area',3856,'km²',null,null,'21');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('407','Deforested Area',1331,'km²',null,null,'22');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('408','Deforested Area',7966,'km²',null,null,'23');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('409','Deforested Area',10090,'km²',null,null,'35');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('410','Deforested Area',694,'km²',null,null,'24');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('411','Deforested Area',2722,'km²',null,null,'25');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('412','Deforested Area',3430,'km²',null,null,'26');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('413','Deforested Area',1570,'km²',null,null,'27');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('414','Deforested Area',25,'km²',null,null,'28');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('415','Deforested Area',3853,'km²',null,null,'29');
+-- INSERT INTO value_jurisdictional (id, name, amount, units, year, citation_id, jurisdiction_id) VALUES ('416','Deforested Area',3170,'km²',null,null,'30');
 
 
 INSERT INTO value_global (id, name, amount, units, year, citation_id) VALUES ('1', 'Tropical Forest Area', 14287108, 'km²', null, 'ESA GlobCover 2009 Project');
