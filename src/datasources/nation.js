@@ -23,6 +23,14 @@ class NationAPI extends DataSource {
     const nation = await this.store.Nation.findByPk(id);
     return nation ? nation : null;
   }
+
+  async getNationByName({ name: nameArg } = {}) {
+    const name = nameArg;
+    if (!name) return null;
+
+    const nation = await this.store.Nation.findOne({ where: { name } });
+    return nation ? nation : null;
+  }
 }
 
 module.exports = NationAPI;

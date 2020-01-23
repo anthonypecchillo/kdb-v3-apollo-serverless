@@ -7,7 +7,8 @@ CREATE TABLE region (
 DROP TABLE IF EXISTS nation CASCADE;
 CREATE TABLE nation (
  id SERIAL PRIMARY KEY,
- name VARCHAR(32)
+ name VARCHAR(32),
+ region_id INTEGER
 );
 
 DROP TABLE IF EXISTS jurisdiction CASCADE;
@@ -408,7 +409,7 @@ CREATE TABLE law_tag_law (
 
 
 
-
+ALTER TABLE nation ADD CONSTRAINT nation_region_id_fkey FOREIGN KEY (region_id) REFERENCES region(id);
 ALTER TABLE jurisdiction ADD CONSTRAINT jurisdiction_nation_id_fkey FOREIGN KEY (nation_id) REFERENCES nation(id);
 ALTER TABLE jurisdiction ADD CONSTRAINT jurisdiction_region_id_fkey FOREIGN KEY (region_id) REFERENCES region(id);
 ALTER TABLE contact ADD CONSTRAINT contact_nation_id_fkey FOREIGN KEY (nation_id) REFERENCES nation(id);
@@ -535,16 +536,16 @@ INSERT INTO region (id, name) VALUES ('46', 'Catalonia');
 INSERT INTO region (id, name) VALUES ('47', 'California');
 
 
-INSERT INTO nation (id, name) VALUES ('1', 'Brazil');
-INSERT INTO nation (id, name) VALUES ('2', 'Indonesia');
-INSERT INTO nation (id, name) VALUES ('3', 'Mexico');
-INSERT INTO nation (id, name) VALUES ('4', 'Peru');
-INSERT INTO nation (id, name) VALUES ('5', 'Ivory Coast');
-INSERT INTO nation (id, name) VALUES ('6', 'Colombia');
-INSERT INTO nation (id, name) VALUES ('7', 'Ecuador');
-INSERT INTO nation (id, name) VALUES ('8', 'Nigeria');
-INSERT INTO nation (id, name) VALUES ('9', 'Spain');
-INSERT INTO nation (id, name) VALUES ('10', 'United States');
+INSERT INTO nation (id, name, region_id) VALUES ('1', 'Brazil', '1');
+INSERT INTO nation (id, name, region_id) VALUES ('2', 'Indonesia', '2');
+INSERT INTO nation (id, name, region_id) VALUES ('3', 'Mexico', '3');
+INSERT INTO nation (id, name, region_id) VALUES ('4', 'Peru', '4');
+INSERT INTO nation (id, name, region_id) VALUES ('5', 'Ivory Coast', '5');
+INSERT INTO nation (id, name, region_id) VALUES ('6', 'Colombia', '6');
+INSERT INTO nation (id, name, region_id) VALUES ('7', 'Ecuador', '7');
+INSERT INTO nation (id, name, region_id) VALUES ('8', 'Nigeria', '8');
+INSERT INTO nation (id, name, region_id) VALUES ('9', 'Spain', '9');
+INSERT INTO nation (id, name, region_id) VALUES ('10', 'United States', '10');
 
 
 INSERT INTO jurisdiction (id, name, nation_id, region_id) VALUES ('1', 'Acre', '1', '11');

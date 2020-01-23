@@ -12,6 +12,7 @@ module.exports = {
     urbanVsRural: (parent, args, { dataSources }) => parent.getUrban_vs_rural(),
   },
   Nation: {
+    region: (parent, args, context, info) => parent.getRegion(),
     jurisdictions: (parent, args, context, info) => parent.getJurisdictions(),
     contacts: (parent, args, context, info) => parent.getContacts(),
     contentNational: (parent, args, context, info) => parent.getContent_national(),
@@ -81,6 +82,7 @@ module.exports = {
     // me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
     region: (_, { id }, { dataSources }) => dataSources.regionAPI.getRegionById({ regionId: id }),
     nation: (_, { id }, { dataSources }) => dataSources.nationAPI.getNationById({ nationId: id }),
+    nationByName: (_, { name }, { dataSources }) => dataSources.nationAPI.getNationByName({ name: name }),
     jurisdiction: (_, { id }, { dataSources }) => dataSources.jurisdictionAPI.getJurisdictionById({ jurisdictionId: id }),
     jurisdictionByName: (_, { name }, { dataSources }) => dataSources.jurisdictionAPI.getJurisdictionByName({ name: name }),
     languages: (_, __, { dataSources }) => dataSources.languageAPI.getAllLanguages(),

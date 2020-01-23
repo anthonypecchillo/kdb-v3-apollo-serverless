@@ -71,6 +71,9 @@ module.exports.createStore = () => {
     },
   });
 
+  Region.hasOne(Nation);
+  Nation.belongsTo(Region);
+
   const Jurisdiction = db.define('jurisdiction', {
     id: {
       type: SQL.INTEGER,

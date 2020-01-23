@@ -14,6 +14,7 @@ const typeDefs = gql`
     region(id: ID!): Region
     # nations: [Nation!]!
     nation(id: ID!): Nation
+    nationByName(name: String!): Nation
     # jurisdictions: [Jurisdiction!]!
     jurisdiction(id: ID!): Jurisdiction
     jurisdictionByName(name: String!): Jurisdiction
@@ -105,6 +106,7 @@ const typeDefs = gql`
   type Nation {
     id: ID!
     name: String!
+    region: Region!
     jurisdictions: [Jurisdiction!]!
     contacts: [Contact!]!
     contentNational: ContentNational!
