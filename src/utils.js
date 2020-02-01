@@ -57,6 +57,16 @@ module.exports.createStore = () => {
       type: SQL.STRING(32),
       // allowNull: false,
     },
+    coatOfArmsUrl: {
+      type: SQL.STRING(2083),
+      field: 'coat_of_arms_url',
+      // allowNull: false,
+    },
+    flagUrl: {
+      type: SQL.STRING(2083),
+      field: 'flag_url',
+      // allowNull: false,
+    },
   });
 
   const Nation = db.define('nation', {
@@ -67,6 +77,16 @@ module.exports.createStore = () => {
     },
     name: {
       type: SQL.STRING(32),
+      // allowNull: false,
+    },
+    coatOfArmsUrl: {
+      type: SQL.STRING(2083),
+      field: 'coat_of_arms_url',
+      // allowNull: false,
+    },
+    flagUrl: {
+      type: SQL.STRING(2083),
+      field: 'flag_url',
       // allowNull: false,
     },
   });
@@ -82,6 +102,16 @@ module.exports.createStore = () => {
     },
     name: {
       type: SQL.STRING(32),
+      // allowNull: false,
+    },
+    coatOfArmsUrl: {
+      type: SQL.STRING(2083),
+      field: 'coat_of_arms_url',
+      // allowNull: false,
+    },
+    flagUrl: {
+      type: SQL.STRING(2083),
+      field: 'flag_url',
       // allowNull: false,
     },
   });
@@ -111,7 +141,7 @@ module.exports.createStore = () => {
       autoIncrement: true,
       unique: true,
     },
-    title: {
+    filename: {
       type: SQL.STRING(2083),
       // allowNull: false,
     },
@@ -281,16 +311,14 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    law_number: {
+    lawNumber: {
       type: SQL.INTEGER,
+      field: 'law_number',
       // allowNull: false,
     },
-    pub_date: {
+    pubDate: {
       type: SQL.DATE,
-      // allowNull: false,
-    },
-    summary: {
-      type: SQL.TEXT,
+      field: 'pub_date',
       // allowNull: false,
     },
     citation_id: {
@@ -303,6 +331,12 @@ module.exports.createStore = () => {
     },
   });
 
+  Region.hasMany(Law);
+  Law.belongsTo(Region);
+
+  Citation.hasOne(Law);
+  Law.belongsTo(Citation);
+
 
   const LawTranslate = db.define('law_translate', {
     id: {
@@ -310,24 +344,32 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
     law_id: {
       type: SQL.INTEGER,
       // allowNull: false,
     },
-    law_type: {
+    lawType: {
       type: SQL.STRING(64),
+      field: 'law_type',
       // allowNull: false,
     },
     name: {
-      type: SQL.STRING(255),
+      type: SQL.STRING(2083),
+      // allowNull: false,
+    },
+    summary: {
+      type: SQL.TEXT,
       // allowNull: false,
     },
   });
 
+  Law.hasMany(LawTranslate);
+  LawTranslate.belongsTo(Law);
 
   const Safeguard = db.define('safeguard', {
     id: {
@@ -512,12 +554,41 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
+  });
+
+  const GdpComponent = db.define('gdp_component', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     amount: {
       type: SQL.DECIMAL,
       // allowNull: false,
     },
+    percent: {
+      type: SQL.DECIMAL,
+      // allowNull: false,
+    },
+    region_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
+    gdp_category_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
+    citation_id: {
+      type: SQL.STRING(2083),  // TODO: Revert this back to Integer later
+      // allowNull: false,
+    },
   });
 
+  Region.hasMany(GdpComponent);
+  GdpComponent.belongsTo(Region);
+
+  GdpCategory.hasMany(GdpComponent);
+  GdpComponent.belongsTo(GdpCategory);
 
   const ValueNational = db.define('value_national', {
     id: {
@@ -633,6 +704,19 @@ module.exports.createStore = () => {
     },
   });
 
+  Region.belongsToMany(MajorExport, {
+    through: 'region_major_export',
+    as: 'majorExports',
+    foreignKey: 'region_id',
+    otherKey: 'major_export_id'
+  });
+
+  MajorExport.belongsToMany(Region, {
+    through: 'region_major_export',
+    as: 'regions',
+    foreignKey: 'major_export_id',
+    otherKey: 'region_id'
+  });
 
   const Commodity = db.define('commodity', {
     id: {
@@ -759,7 +843,7 @@ module.exports.createStore = () => {
     },
   });
 
-  ContentNational.hasOne(ContentNationalTranslate);
+  ContentNational.hasMany(ContentNationalTranslate);
   ContentNationalTranslate.belongsTo(ContentNational);
 
 
@@ -867,19 +951,23 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
-    gdp_id: {
-      type: SQL.INTEGER,
-      // allowNull: false,
-    },
-    gdp_category: {
+    name: {
       type: SQL.STRING(64),
       // allowNull: false,
     },
+    gdp_category_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
   });
+
+  GdpCategory.hasMany(GdpCategoryTranslate);
+  GdpCategoryTranslate.belongsTo(GdpCategory);
 
 
   const CommodityTranslate = db.define('commodity_translate', {
@@ -909,19 +997,19 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
-    major_export_id: {
-      type: SQL.INTEGER,
-      // allowNull: false,
-    },
-    major_export_type: {
+    name: {
       type: SQL.STRING(64),
       // allowNull: false,
     },
   });
+
+  MajorExport.hasMany(MajorExportTranslate);
+  MajorExportTranslate.belongsTo(MajorExport);
 
 
   const LawTag = db.define('law_tag', {
@@ -932,6 +1020,20 @@ module.exports.createStore = () => {
     },
   });
 
+  LawTag.belongsToMany(Law, {
+    through: 'law_tag_law',
+    as: 'laws',
+    foreignKey: 'law_tag_id',
+    otherKey: 'law_id'
+  });
+
+  Law.belongsToMany(LawTag, {
+    through: 'law_tag_law',
+    as: 'lawTags',
+    foreignKey: 'law_id',
+    otherKey: 'law_tag_id'
+  });
+
 
   const LawTagTranslate = db.define('law_tag_translate', {
     id: {
@@ -939,19 +1041,25 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
-    law_tag_id: {
+    lawTagId: {
       type: SQL.INTEGER,
+      field: 'law_tag_id',
       // allowNull: false,
     },
-    tag_name: {
+    tagName: {
       type: SQL.STRING(64),
+      field: 'tag_name',
       // allowNull: false,
     },
   });
+
+  LawTag.hasMany(LawTagTranslate);
+  LawTagTranslate.belongsTo(LawTag);
 
   return {
     Region,
@@ -976,6 +1084,7 @@ module.exports.createStore = () => {
     SocialGroup,
     UrbanVsRural,
     GdpCategory,
+    GdpComponent,
     ValueNational,
     ValueJurisdictional,
     ValueGlobal,

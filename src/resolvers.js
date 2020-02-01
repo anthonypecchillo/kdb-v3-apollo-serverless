@@ -10,6 +10,9 @@ module.exports = {
   Region: {
     deforestationRates: ({ id }, args, { dataSources }) => dataSources.deforestationRateAPI.getDeforestationRatesByRegionId({ regionId: id }),
     urbanVsRural: (parent, args, { dataSources }) => parent.getUrban_vs_rural(),
+    majorExports: (parent, args, { dataSources }) => parent.getMajorExports(),
+    gdpComponents: (parent, args, { dataSources }) => parent.getGdp_components(),
+    laws: (parent, args, context, info) => parent.getLaws(),
   },
   Nation: {
     region: (parent, args, context, info) => parent.getRegion(),
@@ -74,6 +77,27 @@ module.exports = {
   ValueNational: {
     nation: (parent, args, context, info) => parent.getNation(),
   },
+  Law: {
+    region: (parent, args, context, info) => parent.getRegion(),
+    citation: (parent, args, context, info) => parent.getCitation(),
+    lawTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawTranslateAPI.getLawTranslateByCode({ id: id, languageCode: code }),
+    lawTags: (parent, { code }, { dataSources }) => parent.getLawTags(),
+  },
+  LawTag: {
+    lawTagTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawTagTranslateAPI.getLawTagTranslateByCode({ id: id, languageCode: code }),
+  },
+  MajorExport: {
+    region: (parent, args, context, info) => parent.getRegion(),
+    majorExportTranslate: ({ id }, { code }, { dataSources }) => dataSources.majorExportTranslateAPI.getMajorExportTranslateByCode({ id: id, languageCode: code }),
+  },
+  GdpComponent: {
+    region: (parent, args, context, info) => parent.getRegion(),
+    gdpCategory: (parent, args, context, info) => parent.getGdp_category(),
+    // citation: (parent, args, context, info) => parent.getCitation(),
+  },
+  GdpCategory: {
+    gdpCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.gdpCategoryTranslateAPI.getGdpCategoryTranslateByCode({ id: id, languageCode: code }),
+  },
   Query: {
     // launches: (_, __, { dataSources }) =>
     //   dataSources.launchAPI.getAllLaunches(),
@@ -81,6 +105,7 @@ module.exports = {
     //   dataSources.launchAPI.getLaunchById({ launchId: id }),
     // me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
     region: (_, { id }, { dataSources }) => dataSources.regionAPI.getRegionById({ regionId: id }),
+    regionByName: (_, { name }, { dataSources }) => dataSources.regionAPI.getRegionByName({ name: name }),
     nation: (_, { id }, { dataSources }) => dataSources.nationAPI.getNationById({ nationId: id }),
     nationByName: (_, { name }, { dataSources }) => dataSources.nationAPI.getNationByName({ name: name }),
     jurisdiction: (_, { id }, { dataSources }) => dataSources.jurisdictionAPI.getJurisdictionById({ jurisdictionId: id }),
@@ -99,9 +124,9 @@ module.exports = {
     // institutionalFramework: (_, { id }, { dataSources }) => dataSources.institutionalFrameworkAPI.getInstitutionalFrameworkById({ institutionalFrameworkId: id }),
     // institutionalFrameworkTranslates: (_, __, { dataSources }) => dataSources.institutionalFrameworkTranslatesAPI.getAllInstitutionalFrameworkTranslates(),
     // institutionalFrameworkTranslate: (_, { id }, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getInstitutionalFrameworkTranslateById({ institutionalFrameworkTranslateId: id }),
-    laws: (_, __, { dataSources }) => dataSources.lawsAPI.getAllLaws(),
+    laws: (_, __, { dataSources }) => dataSources.lawAPI.getAllLaws(),
     law: (_, { id }, { dataSources }) => dataSources.lawAPI.getLawById({ lawId: id }),
-    lawTranslates: (_, __, { dataSources }) => dataSources.lawTranslatesAPI.getAllLawTranslates(),
+    lawTranslates: (_, __, { dataSources }) => dataSources.lawTranslateAPI.getAllLawTranslates(),
     lawTranslate: (_, { id }, { dataSources }) => dataSources.lawTranslateAPI.getLawTranslateById({ lawTranslateId: id }),
     // safeguards: (_, __, { dataSources }) => dataSources.safeguardsAPI.getAllSafeguards(),
     // safeguard: (_, { id }, { dataSources }) => dataSources.safeguardAPI.getSafeguardById({ safeguardId: id }),
@@ -129,8 +154,8 @@ module.exports = {
     valueJurisdictional: (_, { id }, { dataSources }) => dataSources.valueJurisdictionalAPI.getValueJurisdictionalById({ valueJurisdictionalId: id }),
     valueGlobals: (_, __, { dataSources }) => dataSources.valueGlobalAPI.getAllValueGlobals(),
     valueGlobal: (_, { id }, { dataSources }) => dataSources.valueGlobalAPI.getValueGlobalById({ valueGlobalId: id }),
-    // majorExports: (_, __, { dataSources }) => dataSources.majorExportsAPI.getAllMajorExports(),
-    // majorExport: (_, { id }, { dataSources }) => dataSources.majorExportAPI.getMajorExportById({ majorExportId: id }),
+    majorExports: (_, __, { dataSources }) => dataSources.majorExportsAPI.getAllMajorExports(),
+    majorExport: (_, { id }, { dataSources }) => dataSources.majorExportAPI.getMajorExportById({ majorExportId: id }),
     // commoditys: (_, __, { dataSources }) => dataSources.commoditysAPI.getAllCommoditys(),
     // commodity: (_, { id }, { dataSources }) => dataSources.commodityAPI.getCommodityById({ commodityId: id }),
     // slrtScores: (_, __, { dataSources }) => dataSources.slrtScoresAPI.getAllSlrtScores(),
@@ -155,8 +180,8 @@ module.exports = {
     // gdpCategoryTranslate: (_, { id }, { dataSources }) => dataSources.gdpCategoryTranslateAPI.getGdpCategoryTranslateById({ gdpCategoryTranslateId: id }),
     // commodityTranslates: (_, __, { dataSources }) => dataSources.commodityTranslatesAPI.getAllCommodityTranslates(),
     // commodityTranslate: (_, { id }, { dataSources }) => dataSources.commodityTranslateAPI.getCommodityTranslateById({ commodityTranslateId: id }),
-    // exportTranslates: (_, __, { dataSources }) => dataSources.exportTranslatesAPI.getAllExportTranslates(),
-    // exportTranslate: (_, { id }, { dataSources }) => dataSources.exportTranslateAPI.getExportTranslateById({ exportTranslateId: id }),
+    majorExportTranslates: (_, __, { dataSources }) => dataSources.majorExportTranslatesAPI.getAllMajorExportTranslates(),
+    majorExportTranslate: (_, { id }, { dataSources }) => dataSources.majorExportTranslateAPI.getMajorExportTranslateById({ majorExportTranslateId: id }),
     lawTags: (_, __, { dataSources }) => dataSources.lawTagsAPI.getAllLawTags(),
     lawTag: (_, { id }, { dataSources }) => dataSources.lawTagAPI.getLawTagById({ lawTagId: id }),
     lawTagTranslates: (_, __, { dataSources }) => dataSources.lawTagTranslatesAPI.getAllLawTagTranslates(),

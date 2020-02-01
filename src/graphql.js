@@ -17,7 +17,7 @@ const PartnershipAPI = require('./datasources/partnership');
 const InstitutionalFrameworkAPI = require('./datasources/institutionalFramework');
 // const InstitutionalFrameworkTranslateAPI = require('./datasources/institutionalFrameworkTranslate');
 const LawAPI = require('./datasources/law');
-// const LawTranslateAPI = require('./datasources/lawTranslate');
+const LawTranslateAPI = require('./datasources/lawTranslate');
 const SafeguardAPI = require('./datasources/safeguard');
 // const SafeguardTranslateAPI = require('./datasources/safeguardTranslate');
 const ZoningSpatialPlanAPI = require('./datasources/zoningSpatialPlan');
@@ -28,6 +28,7 @@ const DeforestationRateAPI = require('./datasources/deforestationRate');
 const SocialGroupAPI = require('./datasources/socialGroup');
 const UrbanVsRuralAPI = require('./datasources/urbanVsRural');
 const GdpCategoryAPI = require('./datasources/gdpCategory');
+const GdpComponentAPI = require('./datasources/gdpComponent');
 const ValueNationalAPI = require('./datasources/valueNational');
 const ValueJurisdictionalAPI = require('./datasources/valueJurisdictional');
 const ValueGlobalAPI = require('./datasources/valueGlobal');
@@ -42,9 +43,9 @@ const ContentJurisdictionalAPI = require('./datasources/contentJurisdictional');
 const ContentJurisdictionalTranslateAPI = require('./datasources/contentJurisdictionalTranslate');
 // const VegetationTranslateAPI = require('./datasources/vegetationTranslate');
 // const SocialGroupTranslateAPI = require('./datasources/socialGroupTranslate');
-// const GdpCategoryTranslateAPI = require('./datasources/gdpCategoryTranslate');
+const GdpCategoryTranslateAPI = require('./datasources/gdpCategoryTranslate');
 // const CommodityTranslateAPI = require('./datasources/commodityTranslate');
-// const ExportTranslateAPI = require('./datasources/exportTranslate');
+const MajorExportTranslateAPI = require('./datasources/majorExportTranslate');
 const LawTagAPI = require('./datasources/lawTag');
 const LawTagTranslateAPI = require('./datasources/lawTagTranslate');
 
@@ -68,7 +69,7 @@ const server = new ApolloServer({
     institutionalFrameworkAPI: new InstitutionalFrameworkAPI({ store }),
     // institutionalFrameworkTranslateAPI: new InstitutionalFrameworkTranslateAPI({ store }),
     lawAPI: new LawAPI({ store }),
-    // lawTranslateAPI: new LawTranslateAPI({ store }),
+    lawTranslateAPI: new LawTranslateAPI({ store }),
     safeguardAPI: new SafeguardAPI({ store }),
     // safeguardTranslateAPI: new SafeguardTranslateAPI({ store }),
     zoningSpatialPlanAPI: new ZoningSpatialPlanAPI({ store }),
@@ -79,6 +80,7 @@ const server = new ApolloServer({
     socialGroupAPI: new SocialGroupAPI({ store }),
     urbanVsRuralAPI: new UrbanVsRuralAPI({ store }),
     gdpCategoryAPI: new GdpCategoryAPI({ store }),
+    gdpComponentAPI: new GdpComponentAPI({ store }),
     valueNationalAPI: new ValueNationalAPI({ store }),
     valueJurisdictionalAPI: new ValueJurisdictionalAPI({ store }),
     valueGlobalAPI: new ValueGlobalAPI({ store }),
@@ -93,9 +95,9 @@ const server = new ApolloServer({
     contentJurisdictionalTranslateAPI: new ContentJurisdictionalTranslateAPI({ store }),
     // vegetationTranslateAPI: new VegetationTranslateAPI({ store }),
     // socialGroupTranslateAPI: new SocialGroupTranslateAPI({ store }),
-    // gdpCategoryTranslateAPI: new GdpCategoryTranslateAPI({ store }),
+    gdpCategoryTranslateAPI: new GdpCategoryTranslateAPI({ store }),
     // commodityTranslateAPI: new CommodityTranslateAPI({ store }),
-    // exportTranslateAPI: new ExportTranslateAPI({ store }),
+    majorExportTranslateAPI: new MajorExportTranslateAPI({ store }),
     lawTagAPI: new LawTagAPI({ store }),
     lawTagTranslateAPI: new LawTagTranslateAPI({ store }),
   })

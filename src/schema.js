@@ -12,6 +12,7 @@ const typeDefs = gql`
   type Query {
     # regions: [Region!]!
     region(id: ID!): Region
+    regionByName(name: String!): Region
     # nations: [Nation!]!
     nation(id: ID!): Nation
     nationByName(name: String!): Nation
@@ -35,7 +36,7 @@ const typeDefs = gql`
     laws: [Law!]!
     law(id: ID!): Law
     lawTranslates: [LawTranslate!]!
-    lawTranslate(id: ID!): LawTranslate
+    lawTranslate(code: String!): LawTranslate
     # safeguards: [Safeguard!]!
     # safeguard(id: ID!): Safeguard
     # safeguardTranslates: [SafeguardTranslate!]!
@@ -54,16 +55,18 @@ const typeDefs = gql`
     # socialGroup(id: ID!): SocialGroup
     urbanVsRurals: [UrbanVsRural!]!
     urbanVsRural(id: ID!): UrbanVsRural
-    # gdpCategorys: [GdpCategory!]!
-    # gdpCategory(id: ID!): GdpCategory
+    gdpCategorys: [GdpCategory!]!
+    gdpCategory(id: ID!): GdpCategory
+    gdpComponents: [GdpComponent!]!
+    gdpComponent(id: ID!): GdpComponent
     valueNationals: [ValueNational!]!
     valueNational(id: ID!): ValueNational
     valueJurisdictionals: [ValueJurisdictional!]!
     valueJurisdictional(id: ID!): ValueJurisdictional
     valueGlobals: [ValueGlobal!]!
     valueGlobal(id: ID!): ValueGlobal
-    # majorExports: [MajorExport!]!
-    # majorExport(id: ID!): MajorExport
+    majorExports: [MajorExport!]!
+    majorExport(id: ID!): MajorExport
     # commoditys: [Commodity!]!
     # commodity(id: ID!): Commodity
     # slrtScores: [SlrtScore!]!
@@ -84,28 +87,35 @@ const typeDefs = gql`
     # vegetationTranslate(id: ID!): VegetationTranslate
     # socialGroupTranslates: [SocialGroupTranslate!]!
     # socialGroupTranslate(id: ID!): SocialGroupTranslate
-    # gdpCategoryTranslates: [GdpCategoryTranslate!]!
-    # gdpCategoryTranslate(id: ID!): GdpCategoryTranslate
+    gdpCategoryTranslates: [GdpCategoryTranslate!]!
+    gdpCategoryTranslate(code: String!): GdpCategoryTranslate
     # commodityTranslates: [CommodityTranslate!]!
     # commodityTranslate(id: ID!): CommodityTranslate
-    # exportTranslates: [ExportTranslate!]!
-    # exportTranslate(id: ID!): ExportTranslate
+    majorExportTranslates: [MajorExportTranslate!]!
+    majorExportTranslate(id: ID!): MajorExportTranslate
     lawTags: [LawTag!]!
     lawTag(id: ID!): LawTag
     lawTagTranslates: [LawTagTranslate!]!
-    lawTagTranslate(id: ID!): LawTagTranslate
+    lawTagTranslate(code: String!): LawTagTranslate
   }
 
   type Region {
     id: ID!
     name: String!
+    coatOfArmsUrl: String!
+    flagUrl: String!
     deforestationRates: [DeforestationRate!]
     urbanVsRural: UrbanVsRural!
+    majorExports: [MajorExport!]!
+    gdpComponents: [GdpComponent]!
+    laws: [Law!]!
   }
 
   type Nation {
     id: ID!
     name: String!
+    coatOfArmsUrl: String!
+    flagUrl: String!
     region: Region!
     jurisdictions: [Jurisdiction!]!
     contacts: [Contact!]!
@@ -122,6 +132,8 @@ const typeDefs = gql`
   type Jurisdiction {
     id: ID!
     name: String!
+    coatOfArmsUrl: String!
+    flagUrl: String!
     region: Region!
     nation: Nation!
     contacts: [Contact!]!
@@ -157,7 +169,7 @@ const typeDefs = gql`
 
   type Citation {
     id: ID!
-    title: String!
+    filename: String!
     url: String!
   }
 
@@ -214,20 +226,22 @@ const typeDefs = gql`
   #
   type Law {
     id: ID!
-    lawNumber: Int!
-    pubDate: String!
-    summary: String!
+    lawNumber: Int
+    pubDate: String
     citation: Citation!
     region: Region!
+    lawTranslate(code: String!): LawTranslate!
+    lawTags: [LawTag!]!
   }
 
 
   type LawTranslate {
     id: ID!
     languageCode: String!
-    law: Law!
+    # law: Law!
     lawType: String!
     name: String!
+    summary: String
   }
   #
   #
@@ -300,14 +314,25 @@ const typeDefs = gql`
     citation_id: String
     region: Region!
   }
-  #
-  #
-  # type GdpCategory {
-  #   id: ID!
-  #   amount: Float!
-  # }
-  #
-  #
+
+
+  type GdpCategory {
+    id: ID!
+    gdpCategoryTranslate(code: String!): GdpCategoryTranslate!
+  }
+
+  # TODO: Change citation_id back to citation!
+  # TODO: Change citation type back to Citation!
+  type GdpComponent {
+    id: ID!
+    amount: Float
+    percent: Float!
+    region: Region!
+    gdpCategory: GdpCategory!
+    citation_id: String
+  }
+
+
 
   # TODO: Change citation_id back to citation!
   # TODO: Change citation type back to Citation!
@@ -347,9 +372,11 @@ const typeDefs = gql`
   }
   #
   #
-  # type MajorExport {
-  #   id: ID!
-  # }
+  type MajorExport {
+    id: ID!
+    majorExportTranslate(code: String!): MajorExportTranslate!
+    region: Region!
+  }
   #
   #
   # type Commodity {
@@ -434,16 +461,16 @@ const typeDefs = gql`
   #   socialGroup: SocialGroup!
   #   socialGroupType: String!
   # }
-  #
-  #
-  # type GdpCategoryTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   gdp: Gdp!
-  #   gdpCategory: String!
-  # }
-  #
-  #
+
+
+  type GdpCategoryTranslate {
+    id: ID!
+    languageCode: String!
+    name: String!
+    # gdpCategory: GdpCategory!
+  }
+
+
   # type CommodityTranslate {
   #   id: ID!
   #   languageCode: String!
@@ -452,23 +479,24 @@ const typeDefs = gql`
   # }
   #
   #
-  # type MajorExportTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   majorExport: MajorExport!
-  #   majorExportType: String!
-  # }
-  #
-  #
+  type MajorExportTranslate {
+    id: ID!
+    languageCode: String!
+    name: String!
+    majorExport: MajorExport!
+  }
+
+
   type LawTag {
     id: ID!
+    lawTagTranslate(code: String!): LawTagTranslate
   }
 
 
   type LawTagTranslate {
     id: ID!
     languageCode: String!
-    lawTag: LawTag!
+    # lawTag: LawTag!
     tagName: String!
   }
 

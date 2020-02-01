@@ -24,6 +24,14 @@ class RegionAPI extends DataSource {
     const region = await this.store.Region.findByPk(id);
     return region ? region : null;
   }
+
+  async getRegionByName({ name: nameArg } = {}) {
+    const name = nameArg;
+    if (!name) return null;
+
+    const region = await this.store.Region.findOne({ where: { name } });
+    return region ? region : null;
+  }
 }
 
 module.exports = RegionAPI;

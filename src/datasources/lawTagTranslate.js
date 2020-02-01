@@ -22,6 +22,20 @@ class LawTagTranslateAPI extends DataSource {
     const lawTagTranslate = await this.store.LawTagTranslate.findByPk(id);
     return lawTagTranslate ? lawTagTranslate : null;
   }
+
+  async getLawTagTranslateByCode({ id: idArg, languageCode: codeArg } = {}) {
+    const code = codeArg;
+    const id = idArg;
+    if (!code || !id) return null;
+
+    const lawTagTranslate = await this.store.LawTagTranslate.findOne({
+      where: {
+        lawTagId: id,
+        languageCode: code,
+      }
+    });
+    return lawTagTranslate ? lawTagTranslate : null;
+  }
 }
 
 module.exports = LawTagTranslateAPI;
