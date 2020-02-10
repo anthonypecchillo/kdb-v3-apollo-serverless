@@ -383,6 +383,8 @@ module.exports.createStore = () => {
     },
   });
 
+  Jurisdiction.hasOne(Safeguard);
+  Safeguard.belongsTo(Jurisdiction);
 
   const SafeguardTranslate = db.define('safeguard_translate', {
     id: {
@@ -390,20 +392,23 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
-      // allowNull: false,
-    },
-    safeguard_id: {
-      type: SQL.INTEGER,
+      field: 'language_code',
       // allowNull: false,
     },
     description: {
       type: SQL.TEXT,
       // allowNull: false,
     },
+    safeguard_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
   });
 
+  Safeguard.hasMany(SafeguardTranslate);
+  SafeguardTranslate.belongsTo(Safeguard);
 
   const ZoningSpatialPlan = db.define('zoning_spatial_plan', {
     id: {
@@ -417,6 +422,8 @@ module.exports.createStore = () => {
     },
   });
 
+  Jurisdiction.hasOne(ZoningSpatialPlan);
+  ZoningSpatialPlan.belongsTo(Jurisdiction);
 
   const ZoningSpatialPlanTranslate = db.define('zoning_spatial_plan_translate', {
     id: {
@@ -424,20 +431,62 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
-      // allowNull: false,
-    },
-    zoning_spatial_plan_id: {
-      type: SQL.INTEGER,
+      field: 'language_code',
       // allowNull: false,
     },
     description: {
       type: SQL.TEXT,
       // allowNull: false,
     },
+    zoning_spatial_plan_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
   });
 
+  ZoningSpatialPlan.hasMany(ZoningSpatialPlanTranslate);
+  ZoningSpatialPlanTranslate.belongsTo(ZoningSpatialPlan);
+
+  const LawPolicyStrategy = db.define('law_policy_strategy', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    jurisdiction_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
+  });
+
+  Jurisdiction.hasOne(LawPolicyStrategy);
+  LawPolicyStrategy.belongsTo(Jurisdiction);
+
+  const LawPolicyStrategyTranslate = db.define('law_policy_strategy_translate', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    languageCode: {
+      type: SQL.CHAR(2),
+      field: 'language_code',
+      // allowNull: false,
+    },
+    description: {
+      type: SQL.TEXT,
+      // allowNull: false,
+    },
+    law_policy_strategy_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
+  });
+
+  LawPolicyStrategy.hasMany(LawPolicyStrategyTranslate);
+  LawPolicyStrategyTranslate.belongsTo(LawPolicyStrategy);
 
   const Vegetation = db.define('vegetation', {
     id: {
@@ -471,6 +520,9 @@ module.exports.createStore = () => {
       // allowNull: false,
     },
   });
+
+  Jurisdiction.hasOne(ForestManagement);
+  ForestManagement.belongsTo(Jurisdiction);
 
 
   const DeforestationRate = db.define('deforestation_rate', {
@@ -1078,6 +1130,8 @@ module.exports.createStore = () => {
     SafeguardTranslate,
     ZoningSpatialPlan,
     ZoningSpatialPlanTranslate,
+    LawPolicyStrategy,
+    LawPolicyStrategyTranslate,
     Vegetation,
     ForestManagement,
     DeforestationRate,

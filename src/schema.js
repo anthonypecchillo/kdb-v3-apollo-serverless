@@ -37,18 +37,22 @@ const typeDefs = gql`
     law(id: ID!): Law
     lawTranslates: [LawTranslate!]!
     lawTranslate(code: String!): LawTranslate
-    # safeguards: [Safeguard!]!
-    # safeguard(id: ID!): Safeguard
-    # safeguardTranslates: [SafeguardTranslate!]!
-    # safeguardTranslate(id: ID!): SafeguardTranslate
-    # zoningSpatialPlans: [ZoningSpatialPlan!]!
-    # zoningSpatialPlan(id: ID!): ZoningSpatialPlan
-    # zoningSpatialPlanTranslates: [ZoningSpatialPlanTranslate!]!
-    # zoningSpatialPlanTranslate(id: ID!): ZoningSpatialPlanTranslate
+    safeguards: [Safeguard!]!
+    safeguard(id: ID!): Safeguard
+    safeguardTranslates: [SafeguardTranslate!]!
+    safeguardTranslate(code: String!): SafeguardTranslate
+    zoningSpatialPlans: [ZoningSpatialPlan!]!
+    zoningSpatialPlan(id: ID!): ZoningSpatialPlan
+    zoningSpatialPlanTranslates: [ZoningSpatialPlanTranslate!]!
+    zoningSpatialPlanTranslate(code: String!): ZoningSpatialPlanTranslate
+    lawPolicyStrategys: [LawPolicyStrategy!]!
+    lawPolicyStrategy(id: ID!): LawPolicyStrategy
+    lawPolicyStrategyTranslates: [LawPolicyStrategyTranslate!]!
+    lawPolicyStrategyTranslate(code: String!): LawPolicyStrategyTranslate
     # vegetations: [Vegetation!]!
     # vegetation(id: ID!): Vegetation
-    # forestManagements: [ForestManagement!]!
-    # forestManagement(id: ID!): ForestManagement
+    forestManagements: [ForestManagement!]!
+    forestManagement(id: ID!): ForestManagement
     deforestationRates: [DeforestationRate!]!
     deforestationRate(id: ID!): DeforestationRate
     # socialGroups: [SocialGroup!]!
@@ -145,6 +149,7 @@ const typeDefs = gql`
     deforestationReductionGoal: ValueJurisdictional
     forestArea: ValueJurisdictional
     forestCarbon: ValueJurisdictional
+    forestManagement: ForestManagement
     gdp: ValueJurisdictional
     humanDevelopmentIndex: ValueJurisdictional
     landArea: ValueJurisdictional
@@ -152,6 +157,9 @@ const typeDefs = gql`
     perCapitaIncome: ValueJurisdictional
     population: ValueJurisdictional
     potentialAnnualCO2Avoided: ValueJurisdictional
+    safeguard: Safeguard
+    zoningSpatialPlan: ZoningSpatialPlan
+    lawPolicyStrategy: LawPolicyStrategy
     # carbonDeforestationRate: Statistic!
   }
 
@@ -243,48 +251,67 @@ const typeDefs = gql`
     name: String!
     summary: String
   }
-  #
-  #
-  # type Safeguard {
-  #   id: ID!
-  #   jurisdiction: Jurisdiction!
-  # }
-  #
-  #
-  # type SafeguardTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   safeguard: Safeguard!
-  #   description: String!
-  # }
-  #
-  #
-  # type ZoningSpatialPlan {
-  #   id: ID!
-  #   jurisdiction: Jurisdiction!
-  # }
-  #
-  #
-  # type ZoningSpatialPlanTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   zoningSpatialPlan: ZoningSpatialPlan!
-  #   description: String!
-  # }
-  #
-  #
+
+
+  type Safeguard {
+    id: ID!
+    jurisdiction: Jurisdiction!
+    safeguardTranslate(code: String!): SafeguardTranslate
+    safeguardTranslates: [SafeguardTranslate!]!
+  }
+
+
+  type SafeguardTranslate {
+    id: ID!
+    languageCode: String!
+    description: String
+    # safeguard: Safeguard!
+  }
+
+
+  type ZoningSpatialPlan {
+    id: ID!
+    jurisdiction: Jurisdiction!
+    zoningSpatialPlanTranslate(code: String!): ZoningSpatialPlanTranslate
+    zoningSpatialPlanTranslates: [ZoningSpatialPlanTranslate!]!
+  }
+
+
+  type ZoningSpatialPlanTranslate {
+    id: ID!
+    languageCode: String!
+    description: String
+    # zoningSpatialPlan: ZoningSpatialPlan!
+  }
+
+  type LawPolicyStrategy {
+    id: ID!
+    jurisdiction: Jurisdiction!
+    lawPolicyStrategyTranslate(code: String!): LawPolicyStrategyTranslate
+    lawPolicyStrategyTranslates: [LawPolicyStrategyTranslate!]!
+  }
+
+
+  type LawPolicyStrategyTranslate {
+    id: ID!
+    languageCode: String!
+    description: String
+    # lawPolicyStrategy: LawPolicyStrategy!
+  }
+
+
   # type Vegetation {
   #   id: ID!
   #   amount: Float!
   # }
   #
   #
-  # type ForestManagement {
-  #   id: ID!
-  #   protected: Float!
-  #   unprotected: Float!
-  #   jurisdiction: Jurisdiction!
-  # }
+  type ForestManagement {
+    id: ID!
+    protected: Float!
+    unprotected: Float!
+    jurisdiction: Jurisdiction!
+  }
   #
   #
   # TODO: Change citation_id back to citation!
@@ -424,17 +451,13 @@ const typeDefs = gql`
     contentNationalTranslate(code: String!): ContentNationalTranslate!
     contentNationalTranslates: [ContentNationalTranslate!]!
   }
-  #
-  #
-  # TODO: Should content_jurisdictional_id be Int! or ID! ???
+
   type ContentJurisdictionalTranslate {
     id: ID!
     languageCode: String!
-    contentJurisdictionalId: ID!
     description: String
     driversOfDeforestation: String
     forestMonitoringMeasurementSystems: String
-    # TODO: DO WE NEED THIS?
     contentJurisdictional: ContentJurisdictional!
   }
 

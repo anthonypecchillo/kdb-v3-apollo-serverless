@@ -19,9 +19,11 @@ const InstitutionalFrameworkAPI = require('./datasources/institutionalFramework'
 const LawAPI = require('./datasources/law');
 const LawTranslateAPI = require('./datasources/lawTranslate');
 const SafeguardAPI = require('./datasources/safeguard');
-// const SafeguardTranslateAPI = require('./datasources/safeguardTranslate');
+const SafeguardTranslateAPI = require('./datasources/safeguardTranslate');
 const ZoningSpatialPlanAPI = require('./datasources/zoningSpatialPlan');
-// const ZoningSpatialPlanTranslateAPI = require('./datasources/zoningSpatialPlanTranslate');
+const ZoningSpatialPlanTranslateAPI = require('./datasources/zoningSpatialPlanTranslate');
+const LawPolicyStrategyAPI = require('./datasources/lawPolicyStrategy');
+const LawPolicyStrategyTranslateAPI = require('./datasources/lawPolicyStrategyTranslate');
 const VegetationAPI = require('./datasources/vegetation');
 const ForestManagementAPI = require('./datasources/forestManagement');
 const DeforestationRateAPI = require('./datasources/deforestationRate');
@@ -71,9 +73,11 @@ const server = new ApolloServer({
     lawAPI: new LawAPI({ store }),
     lawTranslateAPI: new LawTranslateAPI({ store }),
     safeguardAPI: new SafeguardAPI({ store }),
-    // safeguardTranslateAPI: new SafeguardTranslateAPI({ store }),
+    safeguardTranslateAPI: new SafeguardTranslateAPI({ store }),
     zoningSpatialPlanAPI: new ZoningSpatialPlanAPI({ store }),
-    // zoningSpatialPlanTranslateAPI: new ZoningSpatialPlanTranslateAPI({ store }),
+    zoningSpatialPlanTranslateAPI: new ZoningSpatialPlanTranslateAPI({ store }),
+    lawPolicyStrategyAPI: new LawPolicyStrategyAPI({ store }),
+    lawPolicyStrategyTranslateAPI: new LawPolicyStrategyTranslateAPI({ store }),
     vegetationAPI: new VegetationAPI({ store }),
     forestManagementAPI: new ForestManagementAPI({ store }),
     deforestationRateAPI: new DeforestationRateAPI({ store }),
