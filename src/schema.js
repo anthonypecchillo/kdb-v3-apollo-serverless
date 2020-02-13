@@ -351,7 +351,7 @@ const typeDefs = gql`
 
   type SocialGroupCategory {
     id: ID!
-    socialGroupCategoryTranslate(code: String!): SocialGroupCategoryTranslate!
+    socialGroupCategoryTranslate(code: String!): SocialGroupCategoryTranslate
   }
 
   # TODO: Change citation_id back to citation!
