@@ -4,6 +4,7 @@ module.exports = {
     urbanVsRural: (parent, args, { dataSources }) => parent.getUrban_vs_rural(),
     majorExports: (parent, args, { dataSources }) => parent.getMajorExports(),
     gdpComponents: (parent, args, { dataSources }) => parent.getGdp_components(),
+    socialGroupComponents: (parent, args, { dataSources }) => parent.getSocial_group_components(),
     laws: (parent, args, context, info) => parent.getLaws(),
   },
   Nation: {
@@ -42,6 +43,7 @@ module.exports = {
     safeguard: (parent, args, context, info) => parent.getSafeguard(),
     zoningSpatialPlan: (parent, args, context, info) => parent.getZoning_spatial_plan(),
     lawPolicyStrategy: (parent, args, context, info) => parent.getLaw_policy_strategy(),
+    vegetationComponents: (parent, args, { dataSources }) => parent.getVegetation_components(),
   },
   Contact: {
     nation: (parent, args, context, info) => parent.getNation(),
@@ -85,6 +87,22 @@ module.exports = {
   MajorExport: {
     region: (parent, args, context, info) => parent.getRegion(),
     majorExportTranslate: ({ id }, { code }, { dataSources }) => dataSources.majorExportTranslateAPI.getMajorExportTranslateByCode({ id: id, languageCode: code }),
+  },
+  VegetationComponent: {
+    jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
+    vegetationCategory: (parent, args, context, info) => parent.getVegetation_category(),
+    // citation: (parent, args, context, info) => parent.getCitation(),
+  },
+  VegetationCategory: {
+    vegetationCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.vegetationCategoryTranslateAPI.getVegetationCategoryTranslateByCode({ id: id, languageCode: code }),
+  },
+  SocialGroupComponent: {
+    region: (parent, args, context, info) => parent.getRegion(),
+    socialGroupCategory: (parent, args, context, info) => parent.getSocial_group_category(),
+    // citation: (parent, args, context, info) => parent.getCitation(),
+  },
+  SocialGroupCategory: {
+    socialGroupCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.socialGroupCategoryTranslateAPI.getSocialGroupCategoryTranslateByCode({ id: id, languageCode: code }),
   },
   GdpComponent: {
     region: (parent, args, context, info) => parent.getRegion(),
@@ -151,14 +169,10 @@ module.exports = {
     lawPolicyStrategy: (_, { id }, { dataSources }) => dataSources.lawPolicyStrategyAPI.getLawPolicyStrategyById({ lawPolicyStrategyId: id }),
     lawPolicyStrategyTranslates: (_, __, { dataSources }) => dataSources.lawPolicyStrategyTranslateAPI.getAllLawPolicyStrategys(),
     zoningSpatialPlanTranslate: (_, { id }, { dataSources }) => dataSources.lawPolicyStrategyTranslateAPI.getLawPolicyStrategyById({ lawPolicyStrategyTranslateId: id }),
-    // vegetations: (_, __, { dataSources }) => dataSources.vegetationAPI.getAllVegetations(),
-    // vegetation: (_, { id }, { dataSources }) => dataSources.vegetationAPI.getVegetationById({ vegetationId: id }),
     forestManagements: (_, __, { dataSources }) => dataSources.forestManagementAPI.getAllForestManagements(),
     forestManagement: (_, { id }, { dataSources }) => dataSources.forestManagementAPI.getForestManagementById({ forestManagementId: id }),
     deforestationRates: (_, __, { dataSources }) => dataSources.deforestationRateAPI.getAllDeforestationRates(),
     deforestationRate: (_, { id }, { dataSources }) => dataSources.deforestationRateAPI.getDeforestationRateById({ deforestationRateId: id }),
-    // socialGroups: (_, __, { dataSources }) => dataSources.socialGroupAPI.getAllSocialGroups(),
-    // socialGroup: (_, { id }, { dataSources }) => dataSources.socialGroupAPI.getSocialGroupById({ socialGroupId: id }),
     urbanVsRurals: (_, __, { dataSources }) => dataSources.urbanVsRuralAPI.getAllUrbanVsRurals(),
     urbanVsRural: (_, { id }, { dataSources }) => dataSources.urbanVsRuralAPI.getUrbanVsRuralById({ urbanVsRuralId: id }),
     gdpCategorys: (_, __, { dataSources }) => dataSources.gdpCategoryAPI.getAllGdpCategorys(),
@@ -187,10 +201,10 @@ module.exports = {
     contentJurisdictional: (_, { id }, { dataSources }) => dataSources.contentJurisdictionalAPI.getContentJurisdictionalById({ contentJurisdictionalId: id }),
     contentJurisdictionalTranslates: (_, __, { dataSources }) => dataSources.contentJurisdictionalTranslateAPI.getAllContentJurisdictionalTranslates(),
     contentJurisdictionalTranslate: (_, { code }, { dataSources }) => dataSources.contentJurisdictionalTranslateAPI.getContentJurisdictionalTranslateByCode({ languageCode: code }),
-    // vegetationTranslates: (_, __, { dataSources }) => dataSources.vegetationTranslateAPI.getAllVegetationTranslates(),
-    // vegetationTranslate: (_, { id }, { dataSources }) => dataSources.vegetationTranslateAPI.getVegetationTranslateById({ vegetationTranslateId: id }),
-    // socialGroupTranslates: (_, __, { dataSources }) => dataSources.socialGroupTranslateAPI.getAllSocialGroupTranslates(),
-    // socialGroupTranslate: (_, { id }, { dataSources }) => dataSources.socialGroupTranslateAPI.getSocialGroupTranslateById({ socialGroupTranslateId: id }),
+    vegetationCategoryTranslates: (_, __, { dataSources }) => dataSources.vegetationCategoryTranslateAPI.getAllVegetationCategoryTranslates(),
+    vegetationCategoryTranslate: (_, { id }, { dataSources }) => dataSources.vegetationCategoryTranslateAPI.getVegetationCategoryTranslateById({ vegetationCategoryTranslateId: id }),
+    socialGroupCategoryTranslates: (_, __, { dataSources }) => dataSources.socialGroupCategoryTranslateAPI.getAllSocialGroupCategoryTranslates(),
+    socialGroupCategoryTranslate: (_, { id }, { dataSources }) => dataSources.socialGroupCategoryTranslateAPI.getSocialGroupCategoryTranslateById({ socialGroupCategoryTranslateId: id }),
     gdpCategoryTranslates: (_, __, { dataSources }) => dataSources.gdpCategoryTranslateAPI.getAllGdpCategoryTranslates(),
     gdpCategoryTranslate: (_, { id }, { dataSources }) => dataSources.gdpCategoryTranslateAPI.getGdpCategoryTranslateById({ gdpCategoryTranslateId: id }),
     // commodityTranslates: (_, __, { dataSources }) => dataSources.commodityTranslateAPI.getAllCommodityTranslates(),

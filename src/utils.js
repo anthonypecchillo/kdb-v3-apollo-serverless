@@ -488,19 +488,6 @@ module.exports.createStore = () => {
   LawPolicyStrategy.hasMany(LawPolicyStrategyTranslate);
   LawPolicyStrategyTranslate.belongsTo(LawPolicyStrategy);
 
-  const Vegetation = db.define('vegetation', {
-    id: {
-      type: SQL.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    amount: {
-      type: SQL.DECIMAL,
-      // allowNull: false,
-    },
-  });
-
-
   const ForestManagement = db.define('forest_management', {
     id: {
       type: SQL.INTEGER,
@@ -557,19 +544,6 @@ module.exports.createStore = () => {
   DeforestationRate.belongsTo(Region);
 
 
-  const SocialGroup = db.define('social_group', {
-    id: {
-      type: SQL.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    amount: {
-      type: SQL.DECIMAL,
-      // allowNull: false,
-    },
-  });
-
-
   const UrbanVsRural = db.define('urban_vs_rural', {
     id: {
       type: SQL.INTEGER,
@@ -599,6 +573,89 @@ module.exports.createStore = () => {
   Region.hasOne(UrbanVsRural);
   UrbanVsRural.belongsTo(Region);
 
+  const VegetationCategory = db.define('vegetation_category', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+  });
+
+  const VegetationComponent = db.define('vegetation_component', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    amount: {
+      type: SQL.DECIMAL,
+      // allowNull: false,
+    },
+    percent: {
+      type: SQL.DECIMAL,
+      // allowNull: false,
+    },
+    jurisdiction_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
+    vegetation_category_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
+    citation_id: {
+      type: SQL.STRING(2083),  // TODO: Revert this back to Integer later
+      // allowNull: false,
+    },
+  });
+
+  Jurisdiction.hasMany(VegetationComponent);
+  VegetationComponent.belongsTo(Jurisdiction);
+
+  VegetationCategory.hasMany(VegetationComponent);
+  VegetationComponent.belongsTo(VegetationCategory);
+
+  const SocialGroupCategory = db.define('social_group_category', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+  });
+
+  const SocialGroupComponent = db.define('social_group_component', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    amount: {
+      type: SQL.DECIMAL,
+      // allowNull: false,
+    },
+    percent: {
+      type: SQL.DECIMAL,
+      // allowNull: false,
+    },
+    region_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
+    social_group_category_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
+    citation_id: {
+      type: SQL.STRING(2083),  // TODO: Revert this back to Integer later
+      // allowNull: false,
+    },
+  });
+
+  Region.hasMany(SocialGroupComponent);
+  SocialGroupComponent.belongsTo(Region);
+
+  SocialGroupCategory.hasMany(SocialGroupComponent);
+  SocialGroupComponent.belongsTo(SocialGroupCategory);
 
   const GdpCategory = db.define('gdp_category', {
     id: {
@@ -955,47 +1012,53 @@ module.exports.createStore = () => {
   // ContentJurisdictionalTranslate.belongsTo(Language);
 
 
-  const VegetationTranslate = db.define('vegetation_translate', {
+  const VegetationCategoryTranslate = db.define('vegetation_category_translate', {
     id: {
       type: SQL.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
-    vegetation_id: {
+    vegetation_category_id: {
       type: SQL.INTEGER,
       // allowNull: false,
     },
-    vegetation_type: {
+    name: {
       type: SQL.STRING(64),
       // allowNull: false,
     },
   });
 
+  VegetationCategory.hasMany(VegetationCategoryTranslate);
+  VegetationCategoryTranslate.belongsTo(VegetationCategory);
 
-  const SocialGroupTranslate = db.define('social_group_translate', {
+  const SocialGroupCategoryTranslate = db.define('social_group_category_translate', {
     id: {
       type: SQL.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
-    social_group_id: {
+    social_group_category_id: {
       type: SQL.INTEGER,
       // allowNull: false,
     },
-    social_group_type: {
+    name: {
       type: SQL.STRING(64),
       // allowNull: false,
     },
   });
 
+  SocialGroupCategory.hasMany(SocialGroupCategoryTranslate);
+  SocialGroupCategoryTranslate.belongsTo(SocialGroupCategory);
 
   const GdpCategoryTranslate = db.define('gdp_category_translate', {
     id: {
@@ -1132,10 +1195,12 @@ module.exports.createStore = () => {
     ZoningSpatialPlanTranslate,
     LawPolicyStrategy,
     LawPolicyStrategyTranslate,
-    Vegetation,
+    VegetationCategory,
+    VegetationComponent,
     ForestManagement,
     DeforestationRate,
-    SocialGroup,
+    SocialGroupCategory,
+    SocialGroupComponent,
     UrbanVsRural,
     GdpCategory,
     GdpComponent,
@@ -1151,8 +1216,8 @@ module.exports.createStore = () => {
     ContentNationalTranslate,
     ContentJurisdictional,
     ContentJurisdictionalTranslate,
-    VegetationTranslate,
-    SocialGroupTranslate,
+    VegetationCategoryTranslate,
+    SocialGroupCategoryTranslate,
     GdpCategoryTranslate,
     CommodityTranslate,
     MajorExportTranslate,

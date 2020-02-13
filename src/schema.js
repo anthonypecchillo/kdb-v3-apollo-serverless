@@ -49,14 +49,18 @@ const typeDefs = gql`
     lawPolicyStrategy(id: ID!): LawPolicyStrategy
     lawPolicyStrategyTranslates: [LawPolicyStrategyTranslate!]!
     lawPolicyStrategyTranslate(code: String!): LawPolicyStrategyTranslate
-    # vegetations: [Vegetation!]!
-    # vegetation(id: ID!): Vegetation
+    vegetationCategorys: [VegetationCategory!]!
+    vegetationCategory(id: ID!): VegetationCategory
+    vegetationComponents: [VegetationComponent!]!
+    vegetationComponent(id: ID!): VegetationComponent
     forestManagements: [ForestManagement!]!
     forestManagement(id: ID!): ForestManagement
     deforestationRates: [DeforestationRate!]!
     deforestationRate(id: ID!): DeforestationRate
-    # socialGroups: [SocialGroup!]!
-    # socialGroup(id: ID!): SocialGroup
+    socialGroupCategorys: [SocialGroupCategory!]!
+    socialGroupCategory(id: ID!): SocialGroupCategory
+    socialGroupComponents: [SocialGroupComponent!]!
+    socialGroupComponent(id: ID!): SocialGroupComponent
     urbanVsRurals: [UrbanVsRural!]!
     urbanVsRural(id: ID!): UrbanVsRural
     gdpCategorys: [GdpCategory!]!
@@ -87,10 +91,10 @@ const typeDefs = gql`
     contentJurisdictional(id: ID!): ContentJurisdictional
     contentJurisdictionalTranslates: [ContentJurisdictionalTranslate!]!
     contentJurisdictionalTranslate(code: String!): ContentJurisdictionalTranslate
-    # vegetationTranslates: [VegetationTranslate!]!
-    # vegetationTranslate(id: ID!): VegetationTranslate
-    # socialGroupTranslates: [SocialGroupTranslate!]!
-    # socialGroupTranslate(id: ID!): SocialGroupTranslate
+    vegetationCategoryTranslates: [VegetationCategoryTranslate!]!
+    vegetationCategoryTranslate(id: ID!): VegetationCategoryTranslate
+    socialGroupCategoryTranslates: [SocialGroupCategoryTranslate!]!
+    socialGroupCategoryTranslate(id: ID!): SocialGroupCategoryTranslate
     gdpCategoryTranslates: [GdpCategoryTranslate!]!
     gdpCategoryTranslate(code: String!): GdpCategoryTranslate
     # commodityTranslates: [CommodityTranslate!]!
@@ -112,6 +116,7 @@ const typeDefs = gql`
     urbanVsRural: UrbanVsRural!
     majorExports: [MajorExport!]!
     gdpComponents: [GdpComponent]!
+    socialGroupComponents: [SocialGroupComponent]!
     laws: [Law!]!
   }
 
@@ -160,6 +165,7 @@ const typeDefs = gql`
     safeguard: Safeguard
     zoningSpatialPlan: ZoningSpatialPlan
     lawPolicyStrategy: LawPolicyStrategy
+    vegetationComponents: [VegetationComponent]!
     # carbonDeforestationRate: Statistic!
   }
 
@@ -291,7 +297,6 @@ const typeDefs = gql`
     lawPolicyStrategyTranslates: [LawPolicyStrategyTranslate!]!
   }
 
-
   type LawPolicyStrategyTranslate {
     id: ID!
     languageCode: String!
@@ -299,13 +304,6 @@ const typeDefs = gql`
     # lawPolicyStrategy: LawPolicyStrategy!
   }
 
-
-  # type Vegetation {
-  #   id: ID!
-  #   amount: Float!
-  # }
-  #
-  #
   type ForestManagement {
     id: ID!
     protected: Float!
@@ -324,14 +322,7 @@ const typeDefs = gql`
     citation_id: String
     region: Region!
   }
-  #
-  #
-  # type SocialGroup {
-  #   id: ID!
-  #   amount: Float!
-  # }
-  #
-  #
+
   # TODO: Change citation_id back to citation!
   # TODO: Change citation type back to Citation!
   type UrbanVsRural {
@@ -342,6 +333,37 @@ const typeDefs = gql`
     region: Region!
   }
 
+  type VegetationCategory {
+    id: ID!
+    vegetationCategoryTranslate(code: String!): VegetationCategoryTranslate!
+  }
+
+  # TODO: Change citation_id back to citation!
+  # TODO: Change citation type back to Citation!
+  type VegetationComponent {
+    id: ID!
+    amount: Float
+    percent: Float
+    jurisdiction: Jurisdiction!
+    vegetationCategory: VegetationCategory!
+    citation_id: String
+  }
+
+  type SocialGroupCategory {
+    id: ID!
+    socialGroupCategoryTranslate(code: String!): SocialGroupCategoryTranslate!
+  }
+
+  # TODO: Change citation_id back to citation!
+  # TODO: Change citation type back to Citation!
+  type SocialGroupComponent {
+    id: ID!
+    amount: Float
+    percent: Float
+    region: Region!
+    socialGroupCategory: SocialGroupCategory!
+    citation_id: String
+  }
 
   type GdpCategory {
     id: ID!
@@ -358,8 +380,6 @@ const typeDefs = gql`
     gdpCategory: GdpCategory!
     citation_id: String
   }
-
-
 
   # TODO: Change citation_id back to citation!
   # TODO: Change citation type back to Citation!
@@ -468,23 +488,19 @@ const typeDefs = gql`
     contentJurisdictionalTranslates: [ContentJurisdictionalTranslate!]!
   }
 
-  #
-  #
-  # type VegetationTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   vegetation: Vegetation!
-  #   vegetationType: String!
-  # }
-  #
-  #
-  # type SocialGroupTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   socialGroup: SocialGroup!
-  #   socialGroupType: String!
-  # }
+  type VegetationCategoryTranslate {
+    id: ID!
+    languageCode: String!
+    name: String!
+    # vegetationCategory: VegetationCategory!
+  }
 
+  type SocialGroupCategoryTranslate {
+    id: ID!
+    languageCode: String!
+    name: String
+    # socialGroupCategory: SocialGroupCategory!
+  }
 
   type GdpCategoryTranslate {
     id: ID!

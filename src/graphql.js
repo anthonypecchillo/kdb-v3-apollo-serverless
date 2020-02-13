@@ -24,10 +24,12 @@ const ZoningSpatialPlanAPI = require('./datasources/zoningSpatialPlan');
 const ZoningSpatialPlanTranslateAPI = require('./datasources/zoningSpatialPlanTranslate');
 const LawPolicyStrategyAPI = require('./datasources/lawPolicyStrategy');
 const LawPolicyStrategyTranslateAPI = require('./datasources/lawPolicyStrategyTranslate');
-const VegetationAPI = require('./datasources/vegetation');
+const VegetationCategoryAPI = require('./datasources/vegetationCategory');
+const VegetationComponentAPI = require('./datasources/vegetationComponent');
 const ForestManagementAPI = require('./datasources/forestManagement');
 const DeforestationRateAPI = require('./datasources/deforestationRate');
-const SocialGroupAPI = require('./datasources/socialGroup');
+const SocialGroupCategoryAPI = require('./datasources/socialGroupCategory');
+const SocialGroupComponentAPI = require('./datasources/socialGroupComponent');
 const UrbanVsRuralAPI = require('./datasources/urbanVsRural');
 const GdpCategoryAPI = require('./datasources/gdpCategory');
 const GdpComponentAPI = require('./datasources/gdpComponent');
@@ -43,8 +45,8 @@ const ContentNationalAPI = require('./datasources/contentNational');
 const ContentNationalTranslateAPI = require('./datasources/contentNationalTranslate');
 const ContentJurisdictionalAPI = require('./datasources/contentJurisdictional');
 const ContentJurisdictionalTranslateAPI = require('./datasources/contentJurisdictionalTranslate');
-// const VegetationTranslateAPI = require('./datasources/vegetationTranslate');
-// const SocialGroupTranslateAPI = require('./datasources/socialGroupTranslate');
+const VegetationCategoryTranslateAPI = require('./datasources/vegetationCategoryTranslate');
+const SocialGroupCategoryTranslateAPI = require('./datasources/socialGroupCategoryTranslate');
 const GdpCategoryTranslateAPI = require('./datasources/gdpCategoryTranslate');
 // const CommodityTranslateAPI = require('./datasources/commodityTranslate');
 const MajorExportTranslateAPI = require('./datasources/majorExportTranslate');
@@ -78,10 +80,12 @@ const server = new ApolloServer({
     zoningSpatialPlanTranslateAPI: new ZoningSpatialPlanTranslateAPI({ store }),
     lawPolicyStrategyAPI: new LawPolicyStrategyAPI({ store }),
     lawPolicyStrategyTranslateAPI: new LawPolicyStrategyTranslateAPI({ store }),
-    vegetationAPI: new VegetationAPI({ store }),
+    vegetationCategoryAPI: new VegetationCategoryAPI({ store }),
+    vegetationComponentAPI: new VegetationComponentAPI({ store }),
     forestManagementAPI: new ForestManagementAPI({ store }),
     deforestationRateAPI: new DeforestationRateAPI({ store }),
-    socialGroupAPI: new SocialGroupAPI({ store }),
+    socialGroupCategoryAPI: new SocialGroupCategoryAPI({ store }),
+    socialGroupComponentAPI: new SocialGroupComponentAPI({ store }),
     urbanVsRuralAPI: new UrbanVsRuralAPI({ store }),
     gdpCategoryAPI: new GdpCategoryAPI({ store }),
     gdpComponentAPI: new GdpComponentAPI({ store }),
@@ -97,8 +101,8 @@ const server = new ApolloServer({
     contentNationalTranslateAPI: new ContentNationalTranslateAPI({ store }),
     contentJurisdictionalAPI: new ContentJurisdictionalAPI({ store }),
     contentJurisdictionalTranslateAPI: new ContentJurisdictionalTranslateAPI({ store }),
-    // vegetationTranslateAPI: new VegetationTranslateAPI({ store }),
-    // socialGroupTranslateAPI: new SocialGroupTranslateAPI({ store }),
+    vegetationCategoryTranslateAPI: new VegetationCategoryTranslateAPI({ store }),
+    socialGroupCategoryTranslateAPI: new SocialGroupCategoryTranslateAPI({ store }),
     gdpCategoryTranslateAPI: new GdpCategoryTranslateAPI({ store }),
     // commodityTranslateAPI: new CommodityTranslateAPI({ store }),
     majorExportTranslateAPI: new MajorExportTranslateAPI({ store }),
