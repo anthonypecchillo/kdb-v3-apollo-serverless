@@ -177,10 +177,19 @@ CREATE TABLE deforestation_rate (
  region_id INTEGER
 );
 
-DROP TABLE IF EXISTS social_group CASCADE;
-CREATE TABLE social_group (
- id SERIAL PRIMARY KEY,
- amount DECIMAL
+DROP TABLE IF EXISTS social_group_category CASCADE;
+CREATE TABLE social_group_category (
+ id SERIAL PRIMARY KEY
+);
+
+DROP TABLE IF EXISTS social_group_component CASCADE;
+CREATE TABLE social_group_component (
+  id SERIAL PRIMARY KEY,
+  amount DECIMAL,
+  percent DECIMAL,
+  region_id INTEGER,
+  social_group_category_id INTEGER,
+  citation_id VARCHAR(2083)         -- TODO: Change this back to an INTEGER
 );
 
 DROP TABLE IF EXISTS urban_vs_rural CASCADE;
@@ -370,21 +379,6 @@ CREATE TABLE jurisdiction_vegetation (
  jurisdiction_id INTEGER
 );
 
-DROP TABLE IF EXISTS social_group_translate CASCADE;
-CREATE TABLE social_group_translate (
- id SERIAL PRIMARY KEY,
- language_code CHAR(2),
- social_group_id INTEGER,
- social_group_type VARCHAR(64)
-);
-
-DROP TABLE IF EXISTS region_social_group CASCADE;
-CREATE TABLE region_social_group (
- id SERIAL PRIMARY KEY,
- social_group_id INTEGER,
- region_id INTEGER
-);
-
 DROP TABLE IF EXISTS commodity_translate CASCADE;
 CREATE TABLE commodity_translate (
  id SERIAL PRIMARY KEY,
@@ -426,6 +420,14 @@ CREATE TABLE gdp_category_translate (
   id SERIAL PRIMARY KEY,
   language_code CHAR(2),
   gdp_category_id INTEGER,
+  name VARCHAR(64)
+);
+
+DROP TABLE IF EXISTS social_group_category_translate CASCADE;
+CREATE TABLE social_group_category_translate (
+  id SERIAL PRIMARY KEY,
+  language_code CHAR(2),
+  social_group_category_id INTEGER,
   name VARCHAR(64)
 );
 
@@ -493,10 +495,10 @@ ALTER TABLE vegetation_translate ADD CONSTRAINT vegetation_translate_language_co
 ALTER TABLE vegetation_translate ADD CONSTRAINT vegetation_translate_vegetation_id_fkey FOREIGN KEY (vegetation_id) REFERENCES vegetation(id);
 ALTER TABLE jurisdiction_vegetation ADD CONSTRAINT jurisdiction_vegetation_vegetation_id_fkey FOREIGN KEY (vegetation_id) REFERENCES vegetation(id);
 ALTER TABLE jurisdiction_vegetation ADD CONSTRAINT jurisdiction_vegetation_jurisdiction_id_fkey FOREIGN KEY (jurisdiction_id) REFERENCES jurisdiction(id);
-ALTER TABLE social_group_translate ADD CONSTRAINT social_group_translate_language_code_fkey FOREIGN KEY (language_code) REFERENCES language(code);
-ALTER TABLE social_group_translate ADD CONSTRAINT social_group_translate_social_group_id_fkey FOREIGN KEY (social_group_id) REFERENCES social_group(id);
-ALTER TABLE region_social_group ADD CONSTRAINT region_social_group_social_group_id_fkey FOREIGN KEY (social_group_id) REFERENCES social_group(id);
-ALTER TABLE region_social_group ADD CONSTRAINT region_social_group_region_id_fkey FOREIGN KEY (region_id) REFERENCES region(id);
+ALTER TABLE social_group_component ADD CONSTRAINT social_group_component_region_id_fkey FOREIGN KEY (region_id) REFERENCES region(id);
+ALTER TABLE social_group_component ADD CONSTRAINT social_group_component_social_group_category_id_fkey FOREIGN KEY (social_group_category_id) REFERENCES social_group_category(id);
+ALTER TABLE social_group_category_translate ADD CONSTRAINT social_group_category_translate_language_code_fkey FOREIGN KEY (language_code) REFERENCES language(code);
+ALTER TABLE social_group_category_translate ADD CONSTRAINT social_group_category_translate_social_group_category_id_fkey FOREIGN KEY (social_group_category_id) REFERENCES social_group_category(id);
 ALTER TABLE gdp_component ADD CONSTRAINT gdp_component_region_id_fkey FOREIGN KEY (region_id) REFERENCES region(id);
 ALTER TABLE gdp_component ADD CONSTRAINT gdp_component_gdp_category_id_fkey FOREIGN KEY (gdp_category_id) REFERENCES gdp_category(id);
 ALTER TABLE gdp_category_translate ADD CONSTRAINT gdp_category_translate_language_code_fkey FOREIGN KEY (language_code) REFERENCES language(code);
@@ -9240,7 +9242,456 @@ INSERT INTO urban_vs_rural (id, urban_population, rural_population, citation_id,
 INSERT INTO urban_vs_rural (id, urban_population, rural_population, citation_id, region_id) VALUES ('38',35,65,'Cross River State Government, About Cross River State <a href="http://www.crossriverstate.gov.ng/index.php?option=com_content&amp;view=article&amp;id=721&amp;Itemid=97.">About Cross River State</a>','45');
 
 
+INSERT INTO social_group_category (id) VALUES ('1');
+INSERT INTO social_group_category (id) VALUES ('2');
+INSERT INTO social_group_category (id) VALUES ('3');
+INSERT INTO social_group_category (id) VALUES ('4');
+INSERT INTO social_group_category (id) VALUES ('5');
+INSERT INTO social_group_category (id) VALUES ('6');
+INSERT INTO social_group_category (id) VALUES ('7');
+INSERT INTO social_group_category (id) VALUES ('8');
+INSERT INTO social_group_category (id) VALUES ('9');
+INSERT INTO social_group_category (id) VALUES ('10');
+INSERT INTO social_group_category (id) VALUES ('11');
+INSERT INTO social_group_category (id) VALUES ('12');
+INSERT INTO social_group_category (id) VALUES ('13');
+INSERT INTO social_group_category (id) VALUES ('14');
+INSERT INTO social_group_category (id) VALUES ('15');
+INSERT INTO social_group_category (id) VALUES ('16');
+INSERT INTO social_group_category (id) VALUES ('17');
+INSERT INTO social_group_category (id) VALUES ('18');
+INSERT INTO social_group_category (id) VALUES ('19');
+INSERT INTO social_group_category (id) VALUES ('20');
+INSERT INTO social_group_category (id) VALUES ('21');
+INSERT INTO social_group_category (id) VALUES ('22');
+INSERT INTO social_group_category (id) VALUES ('23');
+INSERT INTO social_group_category (id) VALUES ('24');
+INSERT INTO social_group_category (id) VALUES ('25');
+INSERT INTO social_group_category (id) VALUES ('26');
+INSERT INTO social_group_category (id) VALUES ('27');
+INSERT INTO social_group_category (id) VALUES ('28');
+INSERT INTO social_group_category (id) VALUES ('29');
+INSERT INTO social_group_category (id) VALUES ('30');
+INSERT INTO social_group_category (id) VALUES ('31');
+INSERT INTO social_group_category (id) VALUES ('32');
+INSERT INTO social_group_category (id) VALUES ('33');
+INSERT INTO social_group_category (id) VALUES ('34');
+INSERT INTO social_group_category (id) VALUES ('35');
+INSERT INTO social_group_category (id) VALUES ('36');
+INSERT INTO social_group_category (id) VALUES ('37');
+INSERT INTO social_group_category (id) VALUES ('38');
+INSERT INTO social_group_category (id) VALUES ('39');
+INSERT INTO social_group_category (id) VALUES ('40');
+INSERT INTO social_group_category (id) VALUES ('41');
+INSERT INTO social_group_category (id) VALUES ('42');
+INSERT INTO social_group_category (id) VALUES ('43');
+INSERT INTO social_group_category (id) VALUES ('44');
+INSERT INTO social_group_category (id) VALUES ('45');
+INSERT INTO social_group_category (id) VALUES ('46');
+INSERT INTO social_group_category (id) VALUES ('47');
+INSERT INTO social_group_category (id) VALUES ('48');
+INSERT INTO social_group_category (id) VALUES ('49');
+INSERT INTO social_group_category (id) VALUES ('50');
+INSERT INTO social_group_category (id) VALUES ('51');
+INSERT INTO social_group_category (id) VALUES ('52');
+INSERT INTO social_group_category (id) VALUES ('53');
+INSERT INTO social_group_category (id) VALUES ('54');
+INSERT INTO social_group_category (id) VALUES ('55');
+INSERT INTO social_group_category (id) VALUES ('56');
+INSERT INTO social_group_category (id) VALUES ('57');
+INSERT INTO social_group_category (id) VALUES ('58');
+INSERT INTO social_group_category (id) VALUES ('59');
+INSERT INTO social_group_category (id) VALUES ('60');
+INSERT INTO social_group_category (id) VALUES ('61');
+INSERT INTO social_group_category (id) VALUES ('62');
+INSERT INTO social_group_category (id) VALUES ('63');
+INSERT INTO social_group_category (id) VALUES ('64');
+INSERT INTO social_group_category (id) VALUES ('65');
+INSERT INTO social_group_category (id) VALUES ('66');
+INSERT INTO social_group_category (id) VALUES ('67');
+INSERT INTO social_group_category (id) VALUES ('68');
+INSERT INTO social_group_category (id) VALUES ('69');
+INSERT INTO social_group_category (id) VALUES ('70');
+INSERT INTO social_group_category (id) VALUES ('71');
+INSERT INTO social_group_category (id) VALUES ('72');
+INSERT INTO social_group_category (id) VALUES ('73');
+INSERT INTO social_group_category (id) VALUES ('74');
+INSERT INTO social_group_category (id) VALUES ('75');
+INSERT INTO social_group_category (id) VALUES ('76');
+INSERT INTO social_group_category (id) VALUES ('77');
+INSERT INTO social_group_category (id) VALUES ('78');
+INSERT INTO social_group_category (id) VALUES ('79');
+INSERT INTO social_group_category (id) VALUES ('80');
+INSERT INTO social_group_category (id) VALUES ('81');
+INSERT INTO social_group_category (id) VALUES ('82');
+INSERT INTO social_group_category (id) VALUES ('83');
+INSERT INTO social_group_category (id) VALUES ('84');
+INSERT INTO social_group_category (id) VALUES ('85');
+INSERT INTO social_group_category (id) VALUES ('86');
+INSERT INTO social_group_category (id) VALUES ('87');
+INSERT INTO social_group_category (id) VALUES ('88');
+INSERT INTO social_group_category (id) VALUES ('89');
+INSERT INTO social_group_category (id) VALUES ('90');
+INSERT INTO social_group_category (id) VALUES ('91');
+INSERT INTO social_group_category (id) VALUES ('92');
+INSERT INTO social_group_category (id) VALUES ('93');
+INSERT INTO social_group_category (id) VALUES ('94');
+INSERT INTO social_group_category (id) VALUES ('95');
+INSERT INTO social_group_category (id) VALUES ('96');
+INSERT INTO social_group_category (id) VALUES ('97');
+INSERT INTO social_group_category (id) VALUES ('98');
+INSERT INTO social_group_category (id) VALUES ('99');
+INSERT INTO social_group_category (id) VALUES ('100');
+INSERT INTO social_group_category (id) VALUES ('101');
+INSERT INTO social_group_category (id) VALUES ('102');
+INSERT INTO social_group_category (id) VALUES ('103');
+INSERT INTO social_group_category (id) VALUES ('104');
+INSERT INTO social_group_category (id) VALUES ('105');
+INSERT INTO social_group_category (id) VALUES ('106');
+INSERT INTO social_group_category (id) VALUES ('107');
+INSERT INTO social_group_category (id) VALUES ('108');
 
+
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('1', 54, null, '1', '6', 'IBGE 2013. Censo Demográfico 2010. <a href="http://ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm">ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('2', 39.9, null, '1', '4', 'IBGE 2013. Censo Demográfico 2010. <a href="http://ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm">ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('3', 5.4, null, '1', '1', 'IBGE 2013. Censo Demográfico 2010. <a href="http://ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm">ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('4', 1.1, null, '1', '5', 'IBGE 2013. Censo Demográfico 2010. <a href="http://ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm">ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('5', 0.2, null, '1', '3', 'IBGE 2013. Censo Demográfico 2010. <a href="http://ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm">ibge.gov.br/home/estatistica/populacao/condicaodevida/indicadoresminimos/tabela1.shtm</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('6', 94, null, '3', '4', 'INEGI, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('7', 6.8, null, '3', '3', 'INEGI, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('8', 0.4, null, '3', '5', 'INEGI, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('9', 71, null, '7', '4', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('10', 6.1, null, '7', '6', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('11', 7, null, '7', '1', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('12', 30.2, null, '8', '102', 'NBS, Nigeria Data Portal');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('13', 30.2, null, '8', '103', 'NBS, Nigeria Data Portal');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('14', 25.8, null, '8', '104', 'NBS, Nigeria Data Portal');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('15', 5.6, null, '8', '105', 'NBS, Nigeria Data Portal');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('16', 4.1, null, '8', '5', 'NBS, Nigeria Data Portal');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('17', 4, null, '8', '106', 'NBS, Nigeria Data Portal');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('18', 2.5, null, '8', '107', 'NBS, Nigeria Data Portal');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('19', 2.2, null, '8', '108', 'NBS, Nigeria Data Portal');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('20', 66.3, null, '11', '4', 'IBGE.2012. Censo Demográfico 2010. <a href="http://www.ibge.gov.br">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('21', 23.9, null, '11', '6', 'IBGE.2012. Censo Demográfico 2010. <a href="http://www.ibge.gov.br">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('22', 5.8, null, '11', '1', 'IBGE.2012. Censo Demográfico 2010. <a href="http://www.ibge.gov.br">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('23', 2.2, null, '11', '3', 'IBGE.2012. Censo Demográfico 2010. <a href="http://www.ibge.gov.br">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('24', 1.8, null, '11', '5', 'IBGE.2012. Censo Demográfico 2010. <a href="http://www.ibge.gov.br">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('25', 65.23, null, '12', '4', '<a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=ap&amp;tema=resultuniverso_censo2010">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('26', 23.97, null, '12', '6', '<a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=ap&amp;tema=resultuniverso_censo2010">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('27', 8.7, null, '12', '1', '<a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=ap&amp;tema=resultuniverso_censo2010">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('28', 1.11, null, '12', '3', '<a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=ap&amp;tema=resultuniverso_censo2010">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('29', 0.99, null, '12', '5', '<a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=ap&amp;tema=resultuniverso_censo2010">IBGE</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('30', 69, null, '13', '4', 'IBGE <a href="http://www.ibge.gov.br/estadosat/perfil.php?sigla=am">www.ibge.gov.br/estadosat/perfil.php?sigla=am</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('31', 21, null, '13', '6', 'IBGE <a href="http://www.ibge.gov.br/estadosat/perfil.php?sigla=am">www.ibge.gov.br/estadosat/perfil.php?sigla=am</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('32', 5, null, '13', '3', 'IBGE <a href="http://www.ibge.gov.br/estadosat/perfil.php?sigla=am">www.ibge.gov.br/estadosat/perfil.php?sigla=am</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('33', 4, null, '13', '1', 'IBGE <a href="http://www.ibge.gov.br/estadosat/perfil.php?sigla=am">www.ibge.gov.br/estadosat/perfil.php?sigla=am</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('34', 1, null, '13', '5', 'IBGE <a href="http://www.ibge.gov.br/estadosat/perfil.php?sigla=am">www.ibge.gov.br/estadosat/perfil.php?sigla=am</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('35', 66.52, null, '14', '4', 'Plano Estadual do Maranhão <a href="http://www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf">www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('36', 22.13, null, '14', '6', 'Plano Estadual do Maranhão <a href="http://www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf">www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('37', 9.69, null, '14', '1', 'Plano Estadual do Maranhão <a href="http://www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf">www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('38', 1.12, null, '14', '5', 'Plano Estadual do Maranhão <a href="http://www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf">www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('39', 0.54, null, '14', '3', 'Plano Estadual do Maranhão <a href="http://www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf">www.fundoamazonia.gov.br/FundoAmazonia/export/sites/default/site_pt/Galerias/Arquivos/Publicacoes/Plano_Estadual_do_Maranhxo.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('40', 52, null, '15', '4', 'Censo Demográfico IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('41', 37, null, '15', '6', 'Censo Demográfico IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('42', 8, null, '15', '1', 'Censo Demográfico IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('43', 2, null, '15', '3', 'Censo Demográfico IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('44', 1, null, '15', '5', 'Censo Demográfico IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('45', 72.6, null, '16', '4', 'IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('46', 21.9, null, '16', '6', 'IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('47', 5, null, '16', '1', 'IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('48', 0.4, null, '16', '3', 'IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('49', 0.1, null, '16', '5', 'IBGE, 2010');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('50', 58, null, '17', '4', '<a href="https://pt.wikipedia.org/wiki/Rond%C3%B4nia#Etnias ">Wikipedia</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('51', 34, null, '17', '6', '<a href="https://pt.wikipedia.org/wiki/Rond%C3%B4nia#Etnias ">Wikipedia</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('52', 7, null, '17', '1', '<a href="https://pt.wikipedia.org/wiki/Rond%C3%B4nia#Etnias ">Wikipedia</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('53', 1, null, '17', '3', '<a href="https://pt.wikipedia.org/wiki/Rond%C3%B4nia#Etnias ">Wikipedia</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('54', 68.8, null, '18', '4', 'IBGE');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('55', 20, null, '18', '6', 'IBGE');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('56', 7.4, null, '18', '1', 'IBGE');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('57', 3.8, null, '18', '3', 'IBGE');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('58', 68, null, '19', '4', 'Censo Demográfico IBGE, 2010 <a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=to&amp;tema=resultuniverso_censo2010">www.ibge.gov.br/estadosat/temas.php?sigla=to&amp;tema=resultuniverso_censo2010</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('59', 24, null, '19', '6', 'Censo Demográfico IBGE, 2010 <a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=to&amp;tema=resultuniverso_censo2010">www.ibge.gov.br/estadosat/temas.php?sigla=to&amp;tema=resultuniverso_censo2010</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('60', 7, null, '19', '1', 'Censo Demográfico IBGE, 2010 <a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=to&amp;tema=resultuniverso_censo2010">www.ibge.gov.br/estadosat/temas.php?sigla=to&amp;tema=resultuniverso_censo2010</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('61', 1, null, '19', '3', 'Censo Demográfico IBGE, 2010 <a href="http://www.ibge.gov.br/estadosat/temas.php?sigla=to&amp;tema=resultuniverso_censo2010">www.ibge.gov.br/estadosat/temas.php?sigla=to&amp;tema=resultuniverso_censo2010</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('62', 79, null, '20', '7', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('63', 4, null, '20', '10', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('64', 7, null, '20', '49', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('65', 5, null, '20', '50', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('66', 2, null, '20', '87', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('67', 3, null, '20', '88', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('68', 22, null, '21', '5', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('69', 24, null, '21', '24', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('70', 18, null, '21', '55', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('71', 10, null, '21', '44', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('72', 8, null, '21', '23', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('73', 18, null, '21', '78', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('74', 13.94, null, '22', '24', 'BPS,Kaltim dalam angka 2012');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('75', 18.26, null, '22', '29', 'BPS,Kaltim dalam angka 2012');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('76', 2.04, null, '22', '44', 'BPS,Kaltim dalam angka 2012');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('77', 29.54, null, '22', '55', 'BPS,Kaltim dalam angka 2012');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('78', 9.21, null, '22', '62', 'BPS,Kaltim dalam angka 2012');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('79', 27.01, null, '22', '5', 'BPS,Kaltim dalam angka 2012');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('80', 14, null, '23', '24', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('81', 23, null, '23', '29', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('82', 17, null, '23', '44', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('83', 35, null, '23', '55', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('84', 9, null, '23', '62', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('85', 2, null, '23', '5', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('86', 8.58, null, '24', '5', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('87', 33.75, null, '24', '44', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('88', 9.41, null, '24', '55', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('89', 3.29, null, '24', '29', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('90', 1.21, null, '24', '89', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('91', 10.01, null, '24', '2', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('92', 33.75, null, '24', '65', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('93', 1.24, null, '25', '13', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('94', 4.42, null, '25', '19', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('95', 11.32, null, '25', '20', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('96', 5.25, null, '25', '26', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('97', 3.2, null, '25', '28', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('98', 1.1, null, '25', '30', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('99', 23.3, null, '25', '42', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('100', 3.49, null, '25', '43', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('101', 8.38, null, '25', '55', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('102', 1.5, null, '25', '57', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('103', 1.48, null, '25', '64', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('104', 1.33, null, '25', '68', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('105', 1.49, null, '25', '76', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('106', 4.8, null, '25', '79', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('107', 23.33, null, '25', '5', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('108', 1.73, null, '25', '91', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('109', 2.64, null, '25', '98', 'Sensus Penduduk BPS Papua 2010 <a href="http://papua.bps.go.id/sp2010/graph/index.php?area=Provinsi">papua.bps.go.id/sp2010/graph/index.php?area=Provinsi</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('110', 8.58, null, '26', '5', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('111', 33.75, null, '26', '44', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('112', 9.41, null, '26', '55', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('113', 3.29, null, '26', '29', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('114', 1.21, null, '26', '89', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('115', 10.01, null, '26', '2', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('116', 33.75, null, '26', '65', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('117', 10, null, '27', '37', 'EPRI, 2012. Overview of Subnational Programs to Reduce Emissions from Deforestation and Forest Degradation (REDD) as Part of the Governors’ Climate and Forests Task Force, Palo Alto.');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('118', 1.8, null, '27', '56', 'EPRI, 2012. Overview of Subnational Programs to Reduce Emissions from Deforestation and Forest Degradation (REDD) as Part of the Governors’ Climate and Forests Task Force, Palo Alto.');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('119', 1.1, null, '27', '66', 'EPRI, 2012. Overview of Subnational Programs to Reduce Emissions from Deforestation and Forest Degradation (REDD) as Part of the Governors’ Climate and Forests Task Force, Palo Alto.');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('120', 77, null, '27', '70', 'EPRI, 2012. Overview of Subnational Programs to Reduce Emissions from Deforestation and Forest Degradation (REDD) as Part of the Governors’ Climate and Forests Task Force, Palo Alto.');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('121', 8.1, null, '27', '5', 'EPRI, 2012. Overview of Subnational Programs to Reduce Emissions from Deforestation and Forest Degradation (REDD) as Part of the Governors’ Climate and Forests Task Force, Palo Alto.');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('122', 2, null, '27', '95', 'EPRI, 2012. Overview of Subnational Programs to Reduce Emissions from Deforestation and Forest Degradation (REDD) as Part of the Governors’ Climate and Forests Task Force, Palo Alto.');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('123', 3.8, null, '28', '37', 'INEGI, 2011, Perspectiva estadistica Chiapas <a href="http://www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf">www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('124', 77.42, null, '28', '73', 'INEGI, 2011, Perspectiva estadistica Chiapas <a href="http://www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf">www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('125', 0.5, null, '28', '5', 'INEGI, 2011, Perspectiva estadistica Chiapas <a href="http://www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf">www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('126', 1.06, null, '28', '90', 'INEGI, 2011, Perspectiva estadistica Chiapas <a href="http://www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf">www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('127', 9, null, '28', '95', 'INEGI, 2011, Perspectiva estadistica Chiapas <a href="http://www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf">www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('128', 8.2, null, '28', '96', 'INEGI, 2011, Perspectiva estadistica Chiapas <a href="http://www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf">www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('129', 1.1, null, '28', '101', 'INEGI, 2011, Perspectiva estadistica Chiapas <a href="http://www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf">www.inegi.org.mx/est/contenidos/espanol/sistemas/perspectivas/perspectiva-chs.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('130', 0.41, null, '30', '15', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('131', 2.83, null, '30', '33', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('132', 8.87, null, '30', '35', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('133', 0.12, null, '30', '36', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('134', 0.46, null, '30', '38', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('135', 1.16, null, '30', '40', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('136', 1.15, null, '30', '54', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('137', 14.43, null, '30', '71', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('138', 8.73, null, '30', '74', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('139', 23.52, null, '30', '75', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('140', 0.89, null, '30', '77', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('141', 2.13, null, '30', '5', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('142', 1.27, null, '30', '94', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('143', 33.55, null, '30', '100', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('144', 0.48, null, '30', '101', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('145', 0.01, null, '31', '37', '<a href="http://www.qroo.gob.mx/atencion-grupos-en-situacion-de-vulnerabilidad/grupos-indigenas">Gobierno Quintana Roo</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('146', 0.01, null, '31', '56', '<a href="http://www.qroo.gob.mx/atencion-grupos-en-situacion-de-vulnerabilidad/grupos-indigenas">Gobierno Quintana Roo</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('147', 0.1, null, '31', '70', '<a href="http://www.qroo.gob.mx/atencion-grupos-en-situacion-de-vulnerabilidad/grupos-indigenas">Gobierno Quintana Roo</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('148', 90, null, '31', '5', '<a href="http://www.qroo.gob.mx/atencion-grupos-en-situacion-de-vulnerabilidad/grupos-indigenas">Gobierno Quintana Roo</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('149', 0.01, null, '31', '96', '<a href="http://www.qroo.gob.mx/atencion-grupos-en-situacion-de-vulnerabilidad/grupos-indigenas">Gobierno Quintana Roo</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('150', null, 43896, '34', '9', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('151', null, 8257, '34', '52', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('152', null, 712, '35', '18', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('153', null, 980, '35', '14', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('154', null, 499, '35', '31', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('155', null, 403, '35', '84', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('156', null, 54426, '36', '5', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('157', null, 50000, '36', '61', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('158', null, 38500, '36', '82', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('159', null, 20000, '36', '34', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('160', null, 10500, '36', '8', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('161', null, 8000, '36', '21', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('162', null, 1043, '37', '12', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('163', null, 705, '37', '69', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('164', null, 588, '37', '48', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('165', null, 507, '37', '80', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('166', null, 301, '37', '84', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('167', null, 258, '37', '51', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('168', null, 168, '37', '81', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('169', null, 116, '37', '58', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('170', null, 87, '37', '17', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('171', null, 77, '37', '92', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('172', null, 40, '37', '11', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('173', null, 48, '37', '93', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('174', null, 47, '37', '60', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('175', null, 20, '37', '67', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('176', null, 3956, '39', '9', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('177', null, 531, '39', '34', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('178', null, 16929, '39', '63', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('179', null, 17793, '40', '18', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('180', null, 14633, '40', '84', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('181', null, 2419, '40', '32', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('182', null, 1863, '40', '80', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('183', null, 1380, '40', '31', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('184', null, 600, '40', '97', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('185', null, 486, '40', '83', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('186', null, 417, '40', '41', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('187', null, 378, '40', '39', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('188', null, 261, '40', '11', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('189', null, 79, '40', '67', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('190', null, 60, '40', '69', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('191', null, 38, '40', '9', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('192', 3.06, null, '44', '8', '<a href="http://www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf">www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('193', 2.93, null, '44', '16', '<a href="http://www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf">www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('194', 1.41, null, '44', '53', '<a href="http://www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf">www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('195', 21.23, null, '44', '59', '<a href="http://www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf">www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('196', 0.97, null, '44', '85', '<a href="http://www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf">www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('197', 6.37, null, '44', '86', '<a href="http://www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf">www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('198', 0.54, null, '44', '99', '<a href="http://www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf">www.pastaza.gob.ec/pdf/consejo_planificacion/COMPONENTE%20SOCIO%20CULTURAL.pdf</a>');
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('199', 28, null, '45', '45', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('200', 16, null, '45', '47', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('201', 15.5, null, '45', '46', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('202', 13.7, null, '45', '22', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('203', 12, null, '45', '25', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('204', 7, null, '45', '27', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('205', 6.9, null, '45', '72', null);
+INSERT INTO social_group_component (id, amount, percent, region_id, social_group_category_id, citation_id) VALUES ('206', 0.9, null, '45', '5', null);
+
+
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('1', 'en', '1', 'Black');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('2', 'en', '2', 'Chinese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('3', 'en', '3', 'Indigenous');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('4', 'en', '4', 'Multi-Ethnic');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('5', 'en', '5', 'Other');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('6', 'en', '6', 'White');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('7', 'es', '1', 'Negro');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('8', 'es', '2', 'Chino');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('9', 'es', '3', 'Indígena');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('10', 'es', '4', 'Multiétnico');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('11', 'es', '5', 'Otro');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('12', 'es', '6', 'Blanco');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('13', 'fr', '1', 'Noir');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('14', 'fr', '2', 'Chinois');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('15', 'fr', '3', 'Indigène');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('16', 'fr', '4', 'Multi-éthnique');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('17', 'fr', '5', 'Autre');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('18', 'fr', '6', 'Blanc');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('19', 'id', '1', 'Hitam');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('20', 'id', '2', 'Cina');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('21', 'id', '3', 'Asli');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('22', 'id', '4', 'Multi etnis');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('23', 'id', '5', 'Lain');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('24', 'id', '6', 'Putih');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('25', 'pt', '1', 'Preto');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('26', 'pt', '2', 'Chinês');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('27', 'pt', '3', 'Indígena');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('28', 'pt', '4', 'Multi-étnico');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('29', 'pt', '5', 'De outros');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('30', 'pt', '6', 'Branco');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('31', 'en', '7', 'Acehnese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('32', 'en', '8', 'Achuar');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('33', 'en', '9', 'Aguaruna (Aguajun)');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('34', 'en', '10', 'Alas');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('35', 'en', '11', 'Amahuaca');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('36', 'en', '12', 'Amarakaeri');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('37', 'en', '13', 'Ambonese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('38', 'en', '14', 'Amuesha (Yanesha)');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('39', 'en', '15', 'Amuzgos');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('40', 'en', '16', 'Andoas');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('41', 'en', '17', 'Arazaeri');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('42', 'en', '18', 'Asheninka');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('43', 'en', '19', 'Asmat');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('44', 'en', '20', 'Auwye/Mee');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('45', 'en', '21', 'Awajun');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('46', 'en', '22', 'Bako');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('47', 'en', '23', 'Bakumpai');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('48', 'en', '24', 'Banjarese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('49', 'en', '25', 'Bete');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('50', 'en', '26', 'Biak-Numfor');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('51', 'en', '27', 'Boki');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('52', 'en', '28', 'Buginese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('53', 'en', '29', 'Bugis');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('54', 'en', '30', 'Butonese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('55', 'en', '31', 'Cashibo-Cacataibo');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('56', 'en', '32', 'Cashinahua');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('57', 'en', '33', 'Chatinos');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('58', 'en', '34', 'Chayahuita');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('59', 'en', '35', 'Chinantecos');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('60', 'en', '36', 'Chochos');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('61', 'en', '37', 'Chol');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('62', 'en', '38', 'Chontales');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('63', 'en', '39', 'Cocama-Cocamilla');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('64', 'en', '40', 'Cuicatecos');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('65', 'en', '41', 'Culina');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('66', 'en', '42', 'Dani');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('67', 'en', '43', 'Dauwa');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('68', 'en', '44', 'Dayak');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('69', 'en', '45', 'Efik');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('70', 'en', '46', 'Ejagham');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('71', 'en', '47', 'Ekoi');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('72', 'en', '48', 'Ese’ejja');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('73', 'en', '49', 'Gayo Lut');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('74', 'en', '50', 'Gayo Luwes');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('75', 'en', '51', 'Huachipaeri');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('76', 'en', '52', 'Huambisa');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('77', 'en', '53', 'Huaoranis');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('78', 'en', '54', 'Huaves');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('79', 'en', '55', 'Javanese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('80', 'en', '56', 'Kanjobal');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('81', 'en', '57', 'Ketengban');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('82', 'en', '58', 'Kichwaruna');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('83', 'en', '59', 'Kichwas');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('84', 'en', '60', 'Kisamberi-Sapitieri-Amarakaeri');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('85', 'en', '61', 'Kukama-kukamiria');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('86', 'en', '62', 'Kutai');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('87', 'en', '63', 'Lamas (Llacuash)');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('88', 'en', '64', 'Makassarese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('89', 'en', '65', 'Malay');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('90', 'en', '66', 'Mame');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('91', 'en', '67', 'Marinahua');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('92', 'en', '68', 'Marind Anim');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('93', 'en', '69', 'Matsiguenga');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('94', 'en', '70', 'Maya');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('95', 'en', '71', 'Mazatecos');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('96', 'en', '72', 'Mbembe');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('97', 'en', '73', 'Mestizo');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('98', 'en', '74', 'Mixes');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('99', 'en', '75', 'Mixtecos');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('100', 'en', '76', 'Moni');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('101', 'en', '77', 'Nahuas');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('102', 'en', '78', 'Ngaju');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('103', 'en', '79', 'Ngalik');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('104', 'en', '80', 'Piro');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('105', 'en', '81', 'Pukirieri');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('106', 'en', '82', 'Quechua');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('107', 'en', '83', 'Sharanahua-Marinahua');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('108', 'en', '84', 'Shipibo-Conibo');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('109', 'en', '85', 'Shiwiar');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('110', 'en', '86', 'Shuar');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('111', 'en', '87', 'Simeulue');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('112', 'en', '88', 'Singkil');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('113', 'en', '89', 'Sundanese');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('114', 'en', '90', 'Tojolabales');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('115', 'en', '91', 'Toraja');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('116', 'en', '92', 'Toyoeri-Amahuaca-Matsiguenga');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('117', 'en', '93', 'Toyoeri-Shipibo-Conibo-Ese’ejja-Arazaeri-Matsiguenga');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('118', 'en', '94', 'Triquis');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('119', 'en', '95', 'Tzeltal');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('120', 'en', '96', 'Tzotzil');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('121', 'en', '97', 'Yaminahua');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('122', 'en', '98', 'Yapen');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('123', 'en', '99', 'Zapara');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('124', 'en', '100', 'Zapotecos');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('125', 'en', '101', 'Zoques');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('126', 'en', '102', 'Hausa and Fulani');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('127', 'en', '103', 'Yoruba');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('128', 'en', '104', 'Igbo (Ibo)');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('129', 'en', '105', 'Ibibio');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('130', 'en', '106', 'Kanuri');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('131', 'en', '107', 'Tiv');
+INSERT INTO social_group_category_translate (id, language_code, social_group_category_id, name) VALUES ('132', 'en', '108', 'Ijaw');
 
 
 INSERT INTO gdp_category_translate (id, language_code, gdp_category_id, name) VALUES ('1', 'en', '1', 'Services');
