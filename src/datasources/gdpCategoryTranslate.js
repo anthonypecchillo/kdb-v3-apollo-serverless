@@ -11,17 +11,16 @@ class GdpCategoryTranslateAPI extends DataSource {
   }
 
   async getAllGdpCategoryTranslates() {
-    const GdpCategoryTranslates = await this.store.GdpCategoryTranslate.findAll();
-    console.log(GdpCategoryTranslates);
-    return GdpCategoryTranslates ? GdpCategoryTranslates : null;
+    const gdpCategoryTranslates = await this.store.GdpCategoryTranslate.findAll();
+    return gdpCategoryTranslates ? gdpCategoryTranslates : null;
   }
 
   async getGdpCategoryTranslateById({ GdpCategoryTranslateId: idArg } = {}) {
     const id = idArg;
     if (!id) return null;
 
-    const GdpCategoryTranslate = await this.store.GdpCategoryTranslate.findByPk(id);
-    return GdpCategoryTranslate ? GdpCategoryTranslate : null;
+    const gdpCategoryTranslate = await this.store.GdpCategoryTranslate.findByPk(id);
+    return gdpCategoryTranslate ? gdpCategoryTranslate : null;
   }
 
   async getGdpCategoryTranslateByCode({ id: idArg, languageCode: codeArg } = {}) {
@@ -29,13 +28,13 @@ class GdpCategoryTranslateAPI extends DataSource {
     const id = idArg;
     if (!code || !id) return null;
 
-    const GdpCategoryTranslate = await this.store.GdpCategoryTranslate.findOne({
+    const gdpCategoryTranslate = await this.store.GdpCategoryTranslate.findOne({
       where: {
         gdp_category_id: id,
         languageCode: code,
       }
     });
-    return GdpCategoryTranslate ? GdpCategoryTranslate : null;
+    return gdpCategoryTranslate ? gdpCategoryTranslate : null;
   }
 }
 
