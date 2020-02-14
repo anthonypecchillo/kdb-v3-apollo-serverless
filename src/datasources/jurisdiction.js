@@ -24,12 +24,15 @@ class JurisdictionAPI extends DataSource {
     return jurisdiction ? jurisdiction : null;
   }
 
-  // TODO: Will need nation argument as well to deal with name collisions
-  async getJurisdictionByName({ name: nameArg } = {}) {
-    const name = nameArg;
-    if (!name) return null;
+  async getJurisdictionByName({ nationName: nationNameArg, jurisdictionName: jurisdictionNameArg } = {}) {
+    const nationName = nationNameArg;
+    const jurisdictionName = jurisdictionNameArg;
+    console.log(nationName)
+    console.log(jurisdictionName)
+    if (!nationName || !jurisdictionName) return null;
 
-    const jurisdiction = await this.store.Jurisdiction.findOne({ where: { name } });
+    const nation = await this.store.Nation.findOne({ where: { name: nationName }});
+    const jurisdiction = await this.store.Jurisdiction.findOne({ where: { name: jurisdictionName, nation_id: nation.id } });
     return jurisdiction ? jurisdiction : null;
   }
 }

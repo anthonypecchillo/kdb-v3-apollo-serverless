@@ -18,7 +18,7 @@ const typeDefs = gql`
     nationByName(name: String!): Nation
     # jurisdictions: [Jurisdiction!]!
     jurisdiction(id: ID!): Jurisdiction
-    jurisdictionByName(name: String!): Jurisdiction
+    jurisdictionByName(nationName: String!, jurisdictionName: String!): Jurisdiction
     languages: [Language!]!
     language(code: String!): Language
     citations: [Citation!]!
@@ -113,7 +113,7 @@ const typeDefs = gql`
     coatOfArmsUrl: String!
     flagUrl: String!
     deforestationRates: [DeforestationRate!]
-    urbanVsRural: UrbanVsRural!
+    urbanVsRural: UrbanVsRural
     majorExports: [MajorExport!]!
     gdpComponents: [GdpComponent]!
     socialGroupComponents: [SocialGroupComponent]!
