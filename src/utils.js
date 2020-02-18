@@ -258,27 +258,34 @@ module.exports.createStore = () => {
     },
   });
 
-
   const InstitutionalFramework = db.define('institutional_framework', {
     id: {
       type: SQL.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    name_short: {
-      type: SQL.STRING(16),
+    nameShort: {
+      type: SQL.STRING(32),
+      field: 'name_short',
       // allowNull: false,
     },
-    citation_id: {
+    politicalScope: {
+      type: SQL.STRING(12),
+      field: 'political_scope',
+      // allowNull: false,
+    },
+    url: {
       type: SQL.INTEGER,
       // allowNull: false,
     },
-    region_id: {
+    jurisdiction_id: {
       type: SQL.INTEGER,
       // allowNull: false,
     },
   });
 
+  Jurisdiction.hasMany(InstitutionalFramework);
+  InstitutionalFramework.belongsTo(Jurisdiction);
 
   const InstitutionalFrameworkTranslate = db.define('institutional_framework_translate', {
     id: {
@@ -286,24 +293,28 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
+      field: 'language_code',
       // allowNull: false,
     },
-    institutional_framework_id: {
-      type: SQL.INTEGER,
-      // allowNull: false,
-    },
-    name_long: {
-      type: SQL.STRING(255),
+    nameLong: {
+      type: SQL.STRING(1023),
+      field: 'name_long'
       // allowNull: false,
     },
     description: {
       type: SQL.TEXT,
       // allowNull: false,
     },
+    institutional_framework_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
   });
 
+  InstitutionalFramework.hasMany(InstitutionalFrameworkTranslate);
+  InstitutionalFrameworkTranslate.belongsTo(InstitutionalFramework);
 
   const Law = db.define('law', {
     id: {
@@ -1176,6 +1187,48 @@ module.exports.createStore = () => {
   LawTag.hasMany(LawTagTranslate);
   LawTagTranslate.belongsTo(LawTag);
 
+  const DeforestationDriver = db.define('deforestation_driver', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+  });
+
+  Jurisdiction.belongsToMany(DeforestationDriver, {
+    through: 'jurisdiction_deforestation_driver',
+    as: 'deforestationDrivers',
+    foreignKey: 'jurisdiction_id',
+    otherKey: 'deforestation_driver_id'
+  });
+
+  DeforestationDriver.belongsToMany(Jurisdiction, {
+    through: 'jurisdiction_deforestation_driver',
+    as: 'jurisdictions',
+    foreignKey: 'deforestation_driver_id',
+    otherKey: 'jurisdiction_id'
+  });
+
+  const DeforestationDriverTranslate = db.define('deforestation_driver_translate', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    languageCode: {
+      type: SQL.CHAR(2),
+      field: 'language_code',
+      // allowNull: false,
+    },
+    name: {
+      type: SQL.STRING(64),
+      // allowNull: false,
+    },
+  });
+
+  DeforestationDriver.hasMany(DeforestationDriverTranslate);
+  DeforestationDriverTranslate.belongsTo(DeforestationDriver);
+
   return {
     Region,
     Nation,
@@ -1223,6 +1276,8 @@ module.exports.createStore = () => {
     MajorExportTranslate,
     LawTag,
     LawTagTranslate,
+    DeforestationDriver,
+    DeforestationDriverTranslate,
   };
 };
 

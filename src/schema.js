@@ -29,10 +29,10 @@ const typeDefs = gql`
     # partnership(id: ID!): Partnership
     # partnershipTranslates: [PartnershipTranslate!]!
     # partnershipTranslate(id: ID!): PartnershipTranslate
-    # institutionalFrameworks: [InstitutionalFramework!]!
-    # institutionalFramework(id: ID!): InstitutionalFramework
-    # institutionalFrameworkTranslates: [InstitutionalFrameworkTranslate!]!
-    # institutionalFrameworkTranslate(id: ID!): InstitutionalFrameworkTranslate
+    institutionalFrameworks: [InstitutionalFramework!]!
+    institutionalFramework(id: ID!): InstitutionalFramework
+    institutionalFrameworkTranslates: [InstitutionalFrameworkTranslate!]!
+    institutionalFrameworkTranslate(code: String!): InstitutionalFrameworkTranslate
     laws: [Law!]!
     law(id: ID!): Law
     lawTranslates: [LawTranslate!]!
@@ -105,6 +105,10 @@ const typeDefs = gql`
     lawTag(id: ID!): LawTag
     lawTagTranslates: [LawTagTranslate!]!
     lawTagTranslate(code: String!): LawTagTranslate
+    deforestationDrivers: [DeforestationDriver!]!
+    deforestationDriver(id: ID!): DeforestationDriver
+    deforestationDriverTranslates: [DeforestationDriverTranslate!]!
+    deforestationDriverTranslate(id: ID!): DeforestationDriverTranslate
   }
 
   type Region {
@@ -166,6 +170,8 @@ const typeDefs = gql`
     zoningSpatialPlan: ZoningSpatialPlan
     lawPolicyStrategy: LawPolicyStrategy
     vegetationComponents: [VegetationComponent]!
+    deforestationDrivers: [DeforestationDriver!]
+    institutionalFrameworks: [InstitutionalFramework!]!
     # carbonDeforestationRate: Statistic!
   }
 
@@ -221,23 +227,25 @@ const typeDefs = gql`
   # }
   #
   #
-  # type InstitutionalFramework {
-  #   id: ID!
-  #   nameShort: String!
-  #   citation: Citation!
-  #   region: Region!
-  # }
-  #
-  #
-  # type InstitutionalFrameworkTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   institutionalFramework: InstitutionalFramework!
-  #   nameLong: String!
-  #   description: String!
-  # }
-  #
-  #
+  type InstitutionalFramework {
+    id: ID!
+    nameShort: String
+    politicalScope: String!
+    url: String
+    institutionalFrameworkTranslate(code: String!): InstitutionalFrameworkTranslate!
+    institutionalFrameworkTranslates: [InstitutionalFrameworkTranslate!]!
+    jurisdiction: Jurisdiction!
+  }
+
+
+  type InstitutionalFrameworkTranslate {
+    id: ID!
+    languageCode: String!
+    nameLong: String!
+    description: String
+  }
+
+
   type Law {
     id: ID!
     lawNumber: Int
@@ -539,7 +547,18 @@ const typeDefs = gql`
     tagName: String!
   }
 
+  type DeforestationDriver {
+    id: ID!
+    deforestationDriverTranslate(code: String!): DeforestationDriverTranslate!
+    deforestationDriverTranslates: [DeforestationDriverTranslate!]!
+    jurisdiction: Jurisdiction!
+  }
 
+  type DeforestationDriverTranslate {
+    id: ID!
+    languageCode: String!
+    name: String!
+  }
 
   # type Launch {
   #   id: ID!

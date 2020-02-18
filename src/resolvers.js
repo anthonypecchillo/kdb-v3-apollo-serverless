@@ -44,6 +44,8 @@ module.exports = {
     zoningSpatialPlan: (parent, args, context, info) => parent.getZoning_spatial_plan(),
     lawPolicyStrategy: (parent, args, context, info) => parent.getLaw_policy_strategy(),
     vegetationComponents: (parent, args, { dataSources }) => parent.getVegetation_components(),
+    institutionalFrameworks: (parent, args, { dataSources }) => parent.getInstitutional_frameworks(),
+    deforestationDrivers: (parent, args, { dataSources }) => parent.getDeforestationDrivers(),
   },
   Contact: {
     nation: (parent, args, context, info) => parent.getNation(),
@@ -127,6 +129,17 @@ module.exports = {
     lawPolicyStrategyTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawPolicyStrategyTranslateAPI.getLawPolicyStrategyTranslateByCode({ id: id, languageCode: code }),
     lawPolicyStrategyTranslates: (parent, args, context, info) => parent.getLaw_policy_strategy_translates(),
   },
+  InstitutionalFramework: {
+    jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
+    institutionalFrameworkTranslate: ({ id }, { code }, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getInstitutionalFrameworkTranslateByCode({ id: id, languageCode: code }),
+    institutionalFrameworkTranslates: (parent, args, context, info) => parent.getInstitutional_framework_translates(),
+  },
+  DeforestationDriver: {
+    jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
+    deforestationDriverTranslate: ({ id }, { code }, { dataSources }) => dataSources.deforestationDriverTranslateAPI.getDeforestationDriverTranslateByCode({ id: id, languageCode: code }),
+    deforestationDriverTranslates: (parent, args, context, info) => parent.getDeforestation_driver_translates(),
+  },
+
   Query: {
     // launches: (_, __, { dataSources }) =>
     //   dataSources.launchAPI.getAllLaunches(),
@@ -149,10 +162,10 @@ module.exports = {
     // partnership: (_, { id }, { dataSources }) => dataSources.partnershipAPI.getPartnershipById({ partnershipId: id }),
     // partnershipTranslates: (_, __, { dataSources }) => dataSources.partnershipTranslateAPI.getAllPartnershipTranslates(),
     // partnershipTranslate: (_, { id }, { dataSources }) => dataSources.partnershipTranslateAPI.getPartnershipTranslateById({ partnershipTranslateId: id }),
-    // institutionalFrameworks: (_, __, { dataSources }) => dataSources.institutionalFrameworkAPI.getAllInstitutionalFrameworks(),
-    // institutionalFramework: (_, { id }, { dataSources }) => dataSources.institutionalFrameworkAPI.getInstitutionalFrameworkById({ institutionalFrameworkId: id }),
-    // institutionalFrameworkTranslates: (_, __, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getAllInstitutionalFrameworkTranslates(),
-    // institutionalFrameworkTranslate: (_, { id }, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getInstitutionalFrameworkTranslateById({ institutionalFrameworkTranslateId: id }),
+    institutionalFrameworks: (_, __, { dataSources }) => dataSources.institutionalFrameworkAPI.getAllInstitutionalFrameworks(),
+    institutionalFramework: (_, { id }, { dataSources }) => dataSources.institutionalFrameworkAPI.getInstitutionalFrameworkById({ institutionalFrameworkId: id }),
+    institutionalFrameworkTranslates: (_, __, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getAllInstitutionalFrameworkTranslates(),
+    institutionalFrameworkTranslate: (_, { id }, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getInstitutionalFrameworkTranslateById({ institutionalFrameworkTranslateId: id }),
     laws: (_, __, { dataSources }) => dataSources.lawAPI.getAllLaws(),
     law: (_, { id }, { dataSources }) => dataSources.lawAPI.getLawById({ lawId: id }),
     lawTranslates: (_, __, { dataSources }) => dataSources.lawTranslateAPI.getAllLawTranslates(),
@@ -215,5 +228,10 @@ module.exports = {
     lawTag: (_, { id }, { dataSources }) => dataSources.lawTagAPI.getLawTagById({ lawTagId: id }),
     lawTagTranslates: (_, __, { dataSources }) => dataSources.lawTagTranslateAPI.getAllLawTagTranslates(),
     lawTagTranslate: (_, { id }, { dataSources }) => dataSources.lawTagTranslateAPI.getLawTagTranslateById({ lawTagTranslateId: id }),
+
+    deforestationDrivers: (_, __, { dataSources }) => dataSources.deforestationDriverAPI.getAllDeforestationDrivers(),
+    deforestationDriver: (_, { id }, { dataSources }) => dataSources.deforestationDriverAPI.getDeforestationDriverById({ deforestationDriverId: id }),
+    deforestationDriverTranslates: (_, __, { dataSources }) => dataSources.deforestationDriverTranslateAPI.getAllDeforestationDriverTranslates(),
+    deforestationDriverTranslate: (_, { id }, { dataSources }) => dataSources.deforestationDriverTranslateAPI.getDeforestationDriverTranslateById({ deforestationDriverTranslateId: id }),
   }
 };

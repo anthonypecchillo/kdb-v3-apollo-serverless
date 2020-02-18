@@ -15,7 +15,7 @@ const ContactAPI = require('./datasources/contact');
 const PartnershipAPI = require('./datasources/partnership');
 // const PartnershipTranslateAPI = require('./datasources/partnershipTranslate');
 const InstitutionalFrameworkAPI = require('./datasources/institutionalFramework');
-// const InstitutionalFrameworkTranslateAPI = require('./datasources/institutionalFrameworkTranslate');
+const InstitutionalFrameworkTranslateAPI = require('./datasources/institutionalFrameworkTranslate');
 const LawAPI = require('./datasources/law');
 const LawTranslateAPI = require('./datasources/lawTranslate');
 const SafeguardAPI = require('./datasources/safeguard');
@@ -52,6 +52,8 @@ const GdpCategoryTranslateAPI = require('./datasources/gdpCategoryTranslate');
 const MajorExportTranslateAPI = require('./datasources/majorExportTranslate');
 const LawTagAPI = require('./datasources/lawTag');
 const LawTagTranslateAPI = require('./datasources/lawTagTranslate');
+const DeforestationDriverAPI = require('./datasources/DeforestationDriver');
+const DeforestationDriverTranslateAPI = require('./datasources/DeforestationDriverTranslate');
 
 const store = createStore();
 console.log('store is: ', store);
@@ -71,7 +73,7 @@ const server = new ApolloServer({
     partnershipAPI: new PartnershipAPI({ store }),
     // partnershipTranslateAPI: new PartnershipTranslateAPI({ store }),
     institutionalFrameworkAPI: new InstitutionalFrameworkAPI({ store }),
-    // institutionalFrameworkTranslateAPI: new InstitutionalFrameworkTranslateAPI({ store }),
+    institutionalFrameworkTranslateAPI: new InstitutionalFrameworkTranslateAPI({ store }),
     lawAPI: new LawAPI({ store }),
     lawTranslateAPI: new LawTranslateAPI({ store }),
     safeguardAPI: new SafeguardAPI({ store }),
@@ -108,6 +110,8 @@ const server = new ApolloServer({
     majorExportTranslateAPI: new MajorExportTranslateAPI({ store }),
     lawTagAPI: new LawTagAPI({ store }),
     lawTagTranslateAPI: new LawTagTranslateAPI({ store }),
+    deforestationDriverAPI: new DeforestationDriverAPI({ store }),
+    deforestationDriverTranslateAPI: new DeforestationDriverTranslateAPI({ store }),
   })
 });
 
