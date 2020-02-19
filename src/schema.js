@@ -199,6 +199,7 @@ const typeDefs = gql`
     lastName: String
     companyTitle: String
     email: String
+    contactType: String!
     nation: Nation!
     jurisdiction: Jurisdiction!
   }

@@ -176,6 +176,11 @@ module.exports.createStore = () => {
       type: SQL.STRING(64),
       // allowNull: false,
     },
+    contactType: {
+      type: SQL.STRING(16),
+      field: 'contact_type',
+      // allowNull: false,
+    },
   });
 
   Nation.hasMany(Contact);
