@@ -79,7 +79,7 @@ module.exports = {
   },
   Law: {
     region: (parent, args, context, info) => parent.getRegion(),
-    citation: (parent, args, context, info) => parent.getCitation(),
+    citations: (parent, { code }, { dataSources }) => parent.getCitations(),
     lawTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawTranslateAPI.getLawTranslateByCode({ id: id, languageCode: code }),
     lawTags: (parent, { code }, { dataSources }) => parent.getLawTags(),
   },

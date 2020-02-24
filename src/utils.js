@@ -328,17 +328,13 @@ module.exports.createStore = () => {
       autoIncrement: true,
     },
     lawNumber: {
-      type: SQL.INTEGER,
+      type: SQL.STRING(128),
       field: 'law_number',
       // allowNull: false,
     },
     pubDate: {
       type: SQL.DATE,
       field: 'pub_date',
-      // allowNull: false,
-    },
-    citation_id: {
-      type: SQL.INTEGER,
       // allowNull: false,
     },
     region_id: {
@@ -350,9 +346,19 @@ module.exports.createStore = () => {
   Region.hasMany(Law);
   Law.belongsTo(Region);
 
-  Citation.hasOne(Law);
-  Law.belongsTo(Citation);
+  Law.belongsToMany(Citation, {
+    through: 'citation_law',
+    as: 'citations',
+    foreignKey: 'law_id',
+    otherKey: 'citation_id'
+  });
 
+  Citation.belongsToMany(Law, {
+    through: 'citation_law',
+    as: 'laws',
+    foreignKey: 'citation_id',
+    otherKey: 'law_id'
+  });
 
   const LawTranslate = db.define('law_translate', {
     id: {

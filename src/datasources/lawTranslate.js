@@ -29,12 +29,22 @@ class LawTranslateAPI extends DataSource {
     const id = idArg;
     if (!code || !id) return null;
 
-    const lawTranslate = await this.store.LawTranslate.findOne({
+    let lawTranslate = await this.store.LawTranslate.findOne({
       where: {
         law_id: id,
         languageCode: code,
       }
     });
+
+    // If there is no record for the language requested, default to English.
+    if (!lawTranslate) {
+      lawTranslate = await this.store.LawTranslate.findOne({
+        where: {
+          law_id: id,
+          languageCode: 'en',
+        }
+      });
+    }
     return lawTranslate ? lawTranslate : null;
   }
 }

@@ -37,7 +37,7 @@ class LawTagAPI extends DataSource {
         // languageCode: code,
       }
     });
-    
+
     return lawTags ? lawTags : null;
   }
 }

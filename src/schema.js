@@ -249,9 +249,9 @@ const typeDefs = gql`
 
   type Law {
     id: ID!
-    lawNumber: Int
+    lawNumber: String
     pubDate: String
-    citation: Citation!
+    citations: [Citation!]
     region: Region!
     lawTranslate(code: String!): LawTranslate!
     lawTags: [LawTag!]!
