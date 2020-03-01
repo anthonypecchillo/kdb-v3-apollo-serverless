@@ -430,6 +430,7 @@ const typeDefs = gql`
   #
   type MajorExport {
     id: ID!
+    faIconClass: String!
     majorExportTranslate(code: String!): MajorExportTranslate!
     region: Region!
   }

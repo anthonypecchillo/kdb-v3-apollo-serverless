@@ -259,7 +259,8 @@ CREATE TABLE value_global (
 
 DROP TABLE IF EXISTS major_export CASCADE;
 CREATE TABLE major_export (
- id SERIAL PRIMARY KEY
+ id SERIAL PRIMARY KEY,
+ fa_icon_class VARCHAR(64)
 );
 
 DROP TABLE IF EXISTS commodity CASCADE;
@@ -1931,64 +1932,64 @@ INSERT INTO value_global (id, name, amount, units, year, citation_id) VALUES ('1
 INSERT INTO value_global (id, name, amount, units, year, citation_id) VALUES ('2', 'Tropical Forest Carbon Stocks', 158973, 'MtC', null, 'Baccini, A. et al. 2012. Estimated carbon dioxide emissions from tropical deforestation improved by carbon-density maps. Nature Climate Change 2:182-185; doi:10.1038/nclimate1354');
 
 
-INSERT INTO major_export (id) VALUES ('1');
-INSERT INTO major_export (id) VALUES ('2');
-INSERT INTO major_export (id) VALUES ('3');
-INSERT INTO major_export (id) VALUES ('4');
-INSERT INTO major_export (id) VALUES ('5');
-INSERT INTO major_export (id) VALUES ('6');
-INSERT INTO major_export (id) VALUES ('7');
-INSERT INTO major_export (id) VALUES ('8');
-INSERT INTO major_export (id) VALUES ('9');
-INSERT INTO major_export (id) VALUES ('10');
-INSERT INTO major_export (id) VALUES ('11');
-INSERT INTO major_export (id) VALUES ('12');
-INSERT INTO major_export (id) VALUES ('13');
-INSERT INTO major_export (id) VALUES ('14');
-INSERT INTO major_export (id) VALUES ('15');
-INSERT INTO major_export (id) VALUES ('16');
-INSERT INTO major_export (id) VALUES ('17');
-INSERT INTO major_export (id) VALUES ('18');
-INSERT INTO major_export (id) VALUES ('19');
-INSERT INTO major_export (id) VALUES ('20');
-INSERT INTO major_export (id) VALUES ('21');
-INSERT INTO major_export (id) VALUES ('22');
-INSERT INTO major_export (id) VALUES ('23');
-INSERT INTO major_export (id) VALUES ('24');
-INSERT INTO major_export (id) VALUES ('25');
-INSERT INTO major_export (id) VALUES ('26');
-INSERT INTO major_export (id) VALUES ('27');
-INSERT INTO major_export (id) VALUES ('28');
-INSERT INTO major_export (id) VALUES ('29');
-INSERT INTO major_export (id) VALUES ('30');
-INSERT INTO major_export (id) VALUES ('31');
-INSERT INTO major_export (id) VALUES ('32');
-INSERT INTO major_export (id) VALUES ('33');
-INSERT INTO major_export (id) VALUES ('34');
-INSERT INTO major_export (id) VALUES ('35');
-INSERT INTO major_export (id) VALUES ('36');
-INSERT INTO major_export (id) VALUES ('37');
-INSERT INTO major_export (id) VALUES ('38');
-INSERT INTO major_export (id) VALUES ('39');
-INSERT INTO major_export (id) VALUES ('40');
-INSERT INTO major_export (id) VALUES ('41');
-INSERT INTO major_export (id) VALUES ('42');
-INSERT INTO major_export (id) VALUES ('43');
-INSERT INTO major_export (id) VALUES ('44');
-INSERT INTO major_export (id) VALUES ('45');
-INSERT INTO major_export (id) VALUES ('46');
-INSERT INTO major_export (id) VALUES ('47');
-INSERT INTO major_export (id) VALUES ('48');
-INSERT INTO major_export (id) VALUES ('49');
-INSERT INTO major_export (id) VALUES ('50');
-INSERT INTO major_export (id) VALUES ('51');
-INSERT INTO major_export (id) VALUES ('52');
-INSERT INTO major_export (id) VALUES ('53');
-INSERT INTO major_export (id) VALUES ('54');
-INSERT INTO major_export (id) VALUES ('55');
-INSERT INTO major_export (id) VALUES ('56');
-INSERT INTO major_export (id) VALUES ('57');
-INSERT INTO major_export (id) VALUES ('58');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('1', 'fal fa-seedling');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('2', 'fal fa-mug-hot');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('3', 'fal fa-tree-palm');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('4', 'fal fa-eraser');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('5', 'fal fa-apple-crate');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('6', 'fal fa-corn');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('7', 'fal fa-apple-crate');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('8', 'fal fa-wine-bottle');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('9', 'fal fa-apple-crate');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('10', 'fal fa-apple-crate');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('11', 'fal fa-salad');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('12', 'fal fa-lemon');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('13', 'fal fa-flower-daffodil');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('14', 'fal fa-acorn');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('15', 'fal fa-apple-crate');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('16', 'fal fa-apple-crate');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('17', 'fal fa-carrot');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('18', 'fal fa-seedling');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('19', 'fal fa-wheat');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('20', 'fal fa-apple-crate');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('21', 'fal fa-apple-crate');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('22', 'fal fa-carrot');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('23', 'fal fa-carrot');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('24', 'fal fa-pepper-hot');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('25', 'fal fa-gas-pump');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('26', 'fal fa-gas-pump');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('27', 'fal fa-gas-pump');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('28', 'fal fa-trees');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('29', 'fal fa-tractor');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('30', 'fal fa-car-bus');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('31', 'fal fa-blanket');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('32', 'fal fa-plug');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('33', 'fal fa-tire');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('34', 'fal fa-database');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('35', 'fal fa-conveyor-belt');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('36', 'fal fa-industry-alt');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('37', 'fal fa-steak');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('38', 'fal fa-fish');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('39', 'fal fa-cow');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('40', 'fal fa-cow');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('41', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('42', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('43', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('44', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('45', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('46', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('47', 'fal fa-flask-potion');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('48', 'fal fa-database');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('49', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('50', 'fal fa-construction');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('51', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('52', 'fal fa-dice-d12');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('53', 'fal fa-gem');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('54', 'fal fa-gem');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('55', 'fal fa-sheep');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('56', 'fal fa-axe');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('57', 'fas fa-ash');
+INSERT INTO major_export (id, fa_icon_class) VALUES ('58', 'fal fa-scroll');
 
 
 INSERT INTO content_national (id, nation_id) VALUES ('1', '1');
@@ -13226,7 +13227,7 @@ INSERT INTO gdp_category_translate (id, language_code, gdp_category_id, name) VA
 
 INSERT INTO major_export_translate (id, language_code, major_export_id, name) VALUES ('1', 'en', '1', 'Soy');
 INSERT INTO major_export_translate (id, language_code, major_export_id, name) VALUES ('2', 'en', '2', 'Coffee');
-INSERT INTO major_export_translate (id, language_code, major_export_id, name) VALUES ('3', 'en', '3', 'Palm oil');
+INSERT INTO major_export_translate (id, language_code, major_export_id, name) VALUES ('3', 'en', '3', 'Palm Oil');
 INSERT INTO major_export_translate (id, language_code, major_export_id, name) VALUES ('4', 'en', '4', 'Cacao');
 INSERT INTO major_export_translate (id, language_code, major_export_id, name) VALUES ('5', 'en', '5', 'Pineapple');
 INSERT INTO major_export_translate (id, language_code, major_export_id, name) VALUES ('6', 'en', '6', 'Corn');
