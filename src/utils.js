@@ -1209,6 +1209,11 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
+    faIconClass: {
+      type: SQL.STRING(64),
+      field: 'fa_icon_class'
+      // allowNull: false,
+    },
   });
 
   Jurisdiction.belongsToMany(DeforestationDriver, {

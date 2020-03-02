@@ -551,6 +551,7 @@ const typeDefs = gql`
 
   type DeforestationDriver {
     id: ID!
+    faIconClass: String!
     deforestationDriverTranslate(code: String!): DeforestationDriverTranslate!
     deforestationDriverTranslates: [DeforestationDriverTranslate!]!
     jurisdiction: Jurisdiction!
