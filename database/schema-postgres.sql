@@ -443,7 +443,8 @@ CREATE TABLE vegetation_category_translate (
 
 DROP TABLE IF EXISTS deforestation_driver CASCADE;
 CREATE TABLE deforestation_driver (
-  id SERIAL PRIMARY KEY
+  id SERIAL PRIMARY KEY,
+  fa_icon_class VARCHAR(64)
 );
 
 DROP TABLE IF EXISTS jurisdiction_deforestation_driver CASCADE;
@@ -13517,34 +13518,34 @@ INSERT INTO major_export_translate (id, language_code, major_export_id, name) VA
 INSERT INTO major_export_translate (id, language_code, major_export_id, name) VALUES ('290', 'pt', '58', 'Papel');
 
 
-INSERT INTO deforestation_driver (id) VALUES ('1');
-INSERT INTO deforestation_driver (id) VALUES ('2');
-INSERT INTO deforestation_driver (id) VALUES ('3');
-INSERT INTO deforestation_driver (id) VALUES ('4');
-INSERT INTO deforestation_driver (id) VALUES ('5');
-INSERT INTO deforestation_driver (id) VALUES ('6');
-INSERT INTO deforestation_driver (id) VALUES ('7');
-INSERT INTO deforestation_driver (id) VALUES ('8');
-INSERT INTO deforestation_driver (id) VALUES ('9');
-INSERT INTO deforestation_driver (id) VALUES ('10');
-INSERT INTO deforestation_driver (id) VALUES ('11');
-INSERT INTO deforestation_driver (id) VALUES ('12');
-INSERT INTO deforestation_driver (id) VALUES ('13');
-INSERT INTO deforestation_driver (id) VALUES ('14');
-INSERT INTO deforestation_driver (id) VALUES ('15');
-INSERT INTO deforestation_driver (id) VALUES ('16');
-INSERT INTO deforestation_driver (id) VALUES ('17');
-INSERT INTO deforestation_driver (id) VALUES ('18');
-INSERT INTO deforestation_driver (id) VALUES ('19');
-INSERT INTO deforestation_driver (id) VALUES ('20');
-INSERT INTO deforestation_driver (id) VALUES ('21');
-INSERT INTO deforestation_driver (id) VALUES ('22');
-INSERT INTO deforestation_driver (id) VALUES ('23');
-INSERT INTO deforestation_driver (id) VALUES ('24');
-INSERT INTO deforestation_driver (id) VALUES ('25');
-INSERT INTO deforestation_driver (id) VALUES ('26');
-INSERT INTO deforestation_driver (id) VALUES ('27');
-INSERT INTO deforestation_driver (id) VALUES ('28');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('1', 'fal fa-cow');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('2', 'fal fa-cow');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('3', 'fal fa-tractor');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('4', 'fal fa-tractor');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('5', 'fal fa-sign');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('6', 'fal fa-subway');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('7', 'fal fa-trees');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('8', 'fal fa-trees');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('9', 'fal fa-sign');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('10', 'fal fa-cannabis');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('11', 'fal fa-digging');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('12', 'fal fa-digging');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('13', 'fal fa-digging');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('14', 'fal fa-digging');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('15', 'fal fa-car-bus');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('16', 'fal fa-city');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('17', 'fal fa-fish');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('18', 'fal fa-trees');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('19', 'fal fa-trees');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('20', 'fal fa-home');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('21', 'fal fa-trees');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('22', 'fal fa-times-octagon');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('23', 'fal fa-digging');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('24', 'fal fa-fire');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('25', 'fal fa-trees');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('26', 'fal fa-trees');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('27', 'fal fa-digging');
+INSERT INTO deforestation_driver (id, fa_icon_class) VALUES ('28', 'fal fa-trees');
 
 
 INSERT INTO jurisdiction_deforestation_driver (id, deforestation_driver_id, jurisdiction_id) VALUES ('1', '1', '1');
