@@ -3,6 +3,7 @@ const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const { createStore } = require('./utils');
 const resolvers = require('./resolvers');
+const DataLoader = require('dataloader');
 
 // const LaunchAPI = require('./datasources/launch');
 // const UserAPI = require('./datasources/user');
@@ -112,6 +113,30 @@ const server = new ApolloServer({
     lawTagTranslateAPI: new LawTagTranslateAPI({ store }),
     deforestationDriverAPI: new DeforestationDriverAPI({ store }),
     deforestationDriverTranslateAPI: new DeforestationDriverTranslateAPI({ store }),
+  }),
+  context: () => ({
+    contactLoader: new DataLoader(async keys => {
+      const contacts = await store.Contact.findAll({
+        where: {
+          jurisdiction_id: keys,
+        }
+      });
+
+      const contactsKeys = Object.keys(contacts);
+
+      const contactMap = {};
+      contactsKeys.forEach(contactsKey => {
+        const contact = contacts[contactsKey];
+
+        if (!contactMap[contact.jurisdiction_id]) {
+          contactMap[contact.jurisdiction_id] = [contact];
+        } else {
+          contactMap[contact.jurisdiction_id].push(contact);
+        }
+      });
+
+      return keys.map(key => contactMap[key]);
+    }),
   })
 });
 

@@ -23,7 +23,10 @@ module.exports = {
   Jurisdiction: {
     region: (parent, args, context, info) => parent.getRegion(),
     nation: (parent, args, context, info) => parent.getNation(),
-    contacts: (parent, args, context, info) => parent.getContacts(),
+
+    // contacts: (parent, args, context, info) => parent.getContacts(),
+    contacts: (parent, args, context, info) => context.contactLoader.load(parent.id),
+    
     contentJurisdictional: (parent, args, context, info) => parent.getContent_jurisdictional(),
     valueJurisdictionals: (parent, args, context, info) => parent.getValue_jurisdictionals(),
     // valueJurisdictional: (parent, args, context, info) => parent.getValue_jurisdictional(),
