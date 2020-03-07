@@ -4231,7 +4231,7 @@ INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('125', '001', '01-
 INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('126', '062', '06-27-2012', '2');
 INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('127', '010', '01-28-2010', '2');
 INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('128', '035', '06-08-2002', '2');
-INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('129', null, '06-00-2012', '2');
+INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('129', null, '06-01-2012', '2');
 INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('130', null, '01-31-2018', '2');
 INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('131', null, null, '2');
 INSERT INTO law (id, law_number, pub_date, region_id) VALUES ('132', '010', '02-22-2017', '20');
