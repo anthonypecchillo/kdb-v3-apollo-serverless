@@ -12,7 +12,6 @@ class ContentJurisdictionalTranslateAPI extends DataSource {
 
   async getAllContentJurisdictionalTranslates() {
     const contentJurisdictionalTranslates = await this.store.ContentJurisdictionalTranslate.findAll();
-    console.log(contentJurisdictionalTranslates);
     return contentJurisdictionalTranslates ? contentJurisdictionalTranslates : null;
   }
 

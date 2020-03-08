@@ -1,14 +1,21 @@
 module.exports = {
   Region: {
-    deforestationRates: ({ id }, args, { dataSources }) => dataSources.deforestationRateAPI.getDeforestationRatesByRegionId({ regionId: id }),
+    // deforestationRates: ({ id }, args, { dataSources }) => dataSources.deforestationRateAPI.getDeforestationRatesByRegionId({ regionId: id }),
+    deforestationRates: (parent, args, context, info) => context.deforestationRateLoader.load(parent.id),
+
     urbanVsRural: (parent, args, { dataSources }) => parent.getUrban_vs_rural(),
     majorExports: (parent, args, { dataSources }) => parent.getMajorExports(),
     gdpComponents: (parent, args, { dataSources }) => parent.getGdp_components(),
     socialGroupComponents: (parent, args, { dataSources }) => parent.getSocial_group_components(),
+
     laws: (parent, args, context, info) => parent.getLaws(),
+    // laws: (parent, args, context, info) => context.lawLoader.load(parent.id),
+
   },
   Nation: {
-    region: (parent, args, context, info) => parent.getRegion(),
+    // region: (parent, args, context, info) => parent.getRegion(),
+    region: (parent, args, context, info) => context.regionLoader.load(parent.region_id),
+
     jurisdictions: (parent, args, context, info) => parent.getJurisdictions(),
     contacts: (parent, args, context, info) => parent.getContacts(),
     contentNational: (parent, args, context, info) => parent.getContent_national(),
@@ -21,12 +28,14 @@ module.exports = {
     population: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getPopulation({ nationId: id }),
   },
   Jurisdiction: {
-    region: (parent, args, context, info) => parent.getRegion(),
+    // region: (parent, args, context, info) => parent.getRegion(),
+    region: (parent, args, context, info) => context.regionLoader.load(parent.region_id),
+
     nation: (parent, args, context, info) => parent.getNation(),
 
     // contacts: (parent, args, context, info) => parent.getContacts(),
     contacts: (parent, args, context, info) => context.contactLoader.load(parent.id),
-    
+
     contentJurisdictional: (parent, args, context, info) => parent.getContent_jurisdictional(),
     valueJurisdictionals: (parent, args, context, info) => parent.getValue_jurisdictionals(),
     // valueJurisdictional: (parent, args, context, info) => parent.getValue_jurisdictional(),
@@ -81,41 +90,61 @@ module.exports = {
     nation: (parent, args, context, info) => parent.getNation(),
   },
   Law: {
-    region: (parent, args, context, info) => parent.getRegion(),
-    citations: (parent, { code }, { dataSources }) => parent.getCitations(),
-    lawTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawTranslateAPI.getLawTranslateByCode({ id: id, languageCode: code }),
-    lawTags: (parent, { code }, { dataSources }) => parent.getLawTags(),
+    // region: (parent, args, context, info) => parent.getRegion(),
+    region: (parent, args, context, info) => context.regionLoader.load(parent.region_id),
+
+    // citations: (parent, { code }, { dataSources }) => parent.getCitations(),
+    citations: (parent, args, context, info) => context.citationLoader.load(parent.id),
+
+    // lawTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawTranslateAPI.getLawTranslateByCode({ id: id, languageCode: code }),
+    lawTranslate: (parent, args, context, info) => context.lawTranslateLoader.load({ law_id: parent.id, languageCode: args.code }),
+
+    // lawTags: (parent, { code }, { dataSources }) => parent.getLawTags(),
+    lawTags: (parent, args, context, info) => context.lawTagLoader.load(parent.id),
   },
   LawTag: {
-    lawTagTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawTagTranslateAPI.getLawTagTranslateByCode({ id: id, languageCode: code }),
+    // lawTagTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawTagTranslateAPI.getLawTagTranslateByCode({ id: id, languageCode: code }),
+    lawTagTranslate: (parent, args, context, info) => context.lawTagTranslateLoader.load({ law_tag_id: parent.id, languageCode: args.code }),
   },
   MajorExport: {
     region: (parent, args, context, info) => parent.getRegion(),
-    majorExportTranslate: ({ id }, { code }, { dataSources }) => dataSources.majorExportTranslateAPI.getMajorExportTranslateByCode({ id: id, languageCode: code }),
+
+    // majorExportTranslate: ({ id }, { code }, { dataSources }) => dataSources.majorExportTranslateAPI.getMajorExportTranslateByCode({ id: id, languageCode: code }),
+    majorExportTranslate: (parent, args, context, info) => context.majorExportTranslateLoader.load({ major_export_id: parent.id, languageCode: args.code }),
   },
   VegetationComponent: {
     jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
-    vegetationCategory: (parent, args, context, info) => parent.getVegetation_category(),
+
+    // vegetationCategory: (parent, args, context, info) => parent.getVegetation_category(),
+    vegetationCategory: (parent, args, context, info) => context.vegetationCategoryLoader.load(parent.vegetation_category_id),
+
     // citation: (parent, args, context, info) => parent.getCitation(),
   },
   VegetationCategory: {
-    vegetationCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.vegetationCategoryTranslateAPI.getVegetationCategoryTranslateByCode({ id: id, languageCode: code }),
+    // vegetationCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.vegetationCategoryTranslateAPI.getVegetationCategoryTranslateByCode({ id: id, languageCode: code }),
+    vegetationCategoryTranslate: (parent, args, context, info) => context.vegetationCategoryTranslateLoader.load({ vegetation_category_id: parent.id, languageCode: args.code }),
   },
   SocialGroupComponent: {
     region: (parent, args, context, info) => parent.getRegion(),
-    socialGroupCategory: (parent, args, context, info) => parent.getSocial_group_category(),
+
+    // socialGroupCategory: (parent, args, context, info) => parent.getSocial_group_category(),
+    socialGroupCategory: (parent, args, context, info) => context.socialGroupCategoryLoader.load(parent.social_group_category_id),
+
     // citation: (parent, args, context, info) => parent.getCitation(),
   },
   SocialGroupCategory: {
-    socialGroupCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.socialGroupCategoryTranslateAPI.getSocialGroupCategoryTranslateByCode({ id: id, languageCode: code }),
+    // socialGroupCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.socialGroupCategoryTranslateAPI.getSocialGroupCategoryTranslateByCode({ id: id, languageCode: code }),
+    socialGroupCategoryTranslate: (parent, args, context, info) => context.socialGroupCategoryTranslateLoader.load({ social_group_category_id: parent.id, languageCode: args.code }),
   },
   GdpComponent: {
     region: (parent, args, context, info) => parent.getRegion(),
-    gdpCategory: (parent, args, context, info) => parent.getGdp_category(),
+    // gdpCategory: (parent, args, context, info) => parent.getGdp_category(),
+    gdpCategory: (parent, args, context, info) => context.gdpCategoryLoader.load(parent.gdp_category_id),
     // citation: (parent, args, context, info) => parent.getCitation(),
   },
   GdpCategory: {
-    gdpCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.gdpCategoryTranslateAPI.getGdpCategoryTranslateByCode({ id: id, languageCode: code }),
+    // gdpCategoryTranslate: ({ id }, { code }, { dataSources }) => dataSources.gdpCategoryTranslateAPI.getGdpCategoryTranslateByCode({ id: id, languageCode: code }),
+    gdpCategoryTranslate: (parent, args, context, info) => context.gdpCategoryTranslateLoader.load({ gdp_category_id: parent.id, languageCode: args.code }),
   },
   Safeguard: {
     jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
@@ -134,12 +163,18 @@ module.exports = {
   },
   InstitutionalFramework: {
     jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
-    institutionalFrameworkTranslate: ({ id }, { code }, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getInstitutionalFrameworkTranslateByCode({ id: id, languageCode: code }),
+
+    // institutionalFrameworkTranslate: ({ id }, { code }, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getInstitutionalFrameworkTranslateByCode({ id: id, languageCode: code }),
+    institutionalFrameworkTranslate: (parent, args, context, info) => context.institutionalFrameworkTranslateLoader.load({ institutional_framework_id: parent.id, languageCode: args.code }),
+
     institutionalFrameworkTranslates: (parent, args, context, info) => parent.getInstitutional_framework_translates(),
   },
   DeforestationDriver: {
     jurisdiction: (parent, args, context, info) => parent.getJurisdiction(),
-    deforestationDriverTranslate: ({ id }, { code }, { dataSources }) => dataSources.deforestationDriverTranslateAPI.getDeforestationDriverTranslateByCode({ id: id, languageCode: code }),
+
+    // deforestationDriverTranslate: ({ id }, { code }, { dataSources }) => dataSources.deforestationDriverTranslateAPI.getDeforestationDriverTranslateByCode({ id: id, languageCode: code }),
+    deforestationDriverTranslate: (parent, args, context, info) => context.deforestationDriverTranslateLoader.load({ deforestation_driver_id: parent.id, languageCode: args.code }),
+
     deforestationDriverTranslates: (parent, args, context, info) => parent.getDeforestation_driver_translates(),
   },
 

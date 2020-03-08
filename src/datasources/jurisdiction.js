@@ -27,8 +27,6 @@ class JurisdictionAPI extends DataSource {
   async getJurisdictionByName({ nationName: nationNameArg, jurisdictionName: jurisdictionNameArg } = {}) {
     const nationName = nationNameArg;
     const jurisdictionName = jurisdictionNameArg;
-    console.log(nationName)
-    console.log(jurisdictionName)
     if (!nationName || !jurisdictionName) return null;
 
     const nation = await this.store.Nation.findOne({ where: { name: nationName }});

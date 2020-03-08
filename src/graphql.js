@@ -57,7 +57,7 @@ const DeforestationDriverAPI = require('./datasources/DeforestationDriver');
 const DeforestationDriverTranslateAPI = require('./datasources/DeforestationDriverTranslate');
 
 const store = createStore();
-console.log('store is: ', store);
+// console.log('store is: ', store);
 
 const server = new ApolloServer({
   typeDefs,
@@ -137,7 +137,321 @@ const server = new ApolloServer({
 
       return keys.map(key => contactMap[key]);
     }),
-  })
+    vegetationCategoryLoader: new DataLoader(async keys => {
+      const vegetationCategorys = await store.VegetationCategory.findAll({
+        where: {
+          id: keys,
+        }
+      });
+
+      const vegetationCategoryMap = {};
+      vegetationCategorys.forEach(vegetationCategory => {
+        if (!vegetationCategoryMap[vegetationCategory.id]) {
+          vegetationCategoryMap[vegetationCategory.id] = vegetationCategory;
+        }
+      });
+
+      return keys.map(key => vegetationCategoryMap[key]);
+    }),
+    vegetationCategoryTranslateLoader: new DataLoader(async keys => {
+      const vegetationCategoryTranslates = await store.VegetationCategoryTranslate.findAll({
+        where: {
+          vegetation_category_id: keys.map(key => key.vegetation_category_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const vegetationCategoryTranslateMap = {};
+      vegetationCategoryTranslates.forEach(vegetationCategoryTranslate => {
+        if (!vegetationCategoryTranslateMap[vegetationCategoryTranslate.vegetation_category_id]) {
+          vegetationCategoryTranslateMap[vegetationCategoryTranslate.vegetation_category_id] = vegetationCategoryTranslate;
+        }
+      });
+
+      return keys.map(key => vegetationCategoryTranslateMap[key.vegetation_category_id]);
+    }),
+    deforestationDriverTranslateLoader: new DataLoader(async keys => {
+      const deforestationDriverTranslates = await store.DeforestationDriverTranslate.findAll({
+        where: {
+          deforestation_driver_id: keys.map(key => key.deforestation_driver_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const deforestationDriverTranslateMap = {};
+      deforestationDriverTranslates.forEach(deforestationDriverTranslate => {
+        if (!deforestationDriverTranslateMap[deforestationDriverTranslate.deforestation_driver_id]) {
+          deforestationDriverTranslateMap[deforestationDriverTranslate.deforestation_driver_id] = deforestationDriverTranslate;
+        }
+      });
+
+      return keys.map(key => deforestationDriverTranslateMap[key.deforestation_driver_id]);
+    }),
+    majorExportTranslateLoader: new DataLoader(async keys => {
+      const majorExportTranslates = await store.MajorExportTranslate.findAll({
+        where: {
+          major_export_id: keys.map(key => key.major_export_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const majorExportTranslateMap = {};
+      majorExportTranslates.forEach(majorExportTranslate => {
+        if (!majorExportTranslateMap[majorExportTranslate.major_export_id]) {
+          majorExportTranslateMap[majorExportTranslate.major_export_id] = majorExportTranslate;
+        }
+      });
+
+      return keys.map(key => majorExportTranslateMap[key.major_export_id]);
+    }),
+    socialGroupCategoryLoader: new DataLoader(async keys => {
+      const socialGroupCategorys = await store.SocialGroupCategory.findAll({
+        where: {
+          id: keys,
+        }
+      });
+
+      const socialGroupCategoryMap = {};
+      socialGroupCategorys.forEach(socialGroupCategory => {
+        if (!socialGroupCategoryMap[socialGroupCategory.id]) {
+          socialGroupCategoryMap[socialGroupCategory.id] = socialGroupCategory;
+        }
+      });
+
+      return keys.map(key => socialGroupCategoryMap[key]);
+    }),
+    socialGroupCategoryTranslateLoader: new DataLoader(async keys => {
+      const socialGroupCategoryTranslates = await store.SocialGroupCategoryTranslate.findAll({
+        where: {
+          social_group_category_id: keys.map(key => key.social_group_category_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const socialGroupCategoryTranslateMap = {};
+      socialGroupCategoryTranslates.forEach(socialGroupCategoryTranslate => {
+        if (!socialGroupCategoryTranslateMap[socialGroupCategoryTranslate.social_group_category_id]) {
+          socialGroupCategoryTranslateMap[socialGroupCategoryTranslate.social_group_category_id] = socialGroupCategoryTranslate;
+        }
+      });
+
+      return keys.map(key => socialGroupCategoryTranslateMap[key.social_group_category_id]);
+    }),
+    gdpCategoryLoader: new DataLoader(async keys => {
+      const gdpCategorys = await store.GdpCategory.findAll({
+        where: {
+          id: keys,
+        }
+      });
+
+      const gdpCategoryMap = {};
+      gdpCategorys.forEach(gdpCategory => {
+        if (!gdpCategoryMap[gdpCategory.id]) {
+          gdpCategoryMap[gdpCategory.id] = gdpCategory;
+        }
+      });
+
+      return keys.map(key => gdpCategoryMap[key]);
+    }),
+    gdpCategoryTranslateLoader: new DataLoader(async keys => {
+      const gdpCategoryTranslates = await store.GdpCategoryTranslate.findAll({
+        where: {
+          gdp_category_id: keys.map(key => key.gdp_category_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const gdpCategoryTranslateMap = {};
+      gdpCategoryTranslates.forEach(gdpCategoryTranslate => {
+        if (!gdpCategoryTranslateMap[gdpCategoryTranslate.gdp_category_id]) {
+          gdpCategoryTranslateMap[gdpCategoryTranslate.gdp_category_id] = gdpCategoryTranslate;
+        }
+      });
+
+      return keys.map(key => gdpCategoryTranslateMap[key.gdp_category_id]);
+    }),
+    institutionalFrameworkTranslateLoader: new DataLoader(async keys => {
+      const institutionalFrameworkTranslates = await store.InstitutionalFrameworkTranslate.findAll({
+        where: {
+          institutional_framework_id: keys.map(key => key.institutional_framework_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const institutionalFrameworkTranslateMap = {};
+      institutionalFrameworkTranslates.forEach(institutionalFrameworkTranslate => {
+        if (!institutionalFrameworkTranslateMap[institutionalFrameworkTranslate.institutional_framework_id]) {
+          institutionalFrameworkTranslateMap[institutionalFrameworkTranslate.institutional_framework_id] = institutionalFrameworkTranslate;
+        }
+      });
+
+      return keys.map(key => institutionalFrameworkTranslateMap[key.institutional_framework_id]);
+    }),
+    // lawLoader: new DataLoader(async keys => {
+    //   const laws = await store.Law.findAll({
+    //     where: {
+    //       region_id: keys,
+    //     }
+    //   });
+    //
+    //   const lawsKeys = Object.keys(laws);
+    //
+    //   const lawMap = {};
+    //   lawsKeys.forEach(lawsKey => {
+    //     const law = laws[lawsKey];
+    //
+    //     if (!lawMap[law.region_id]) {
+    //       lawMap[law.region_id] = [law];
+    //     } else {
+    //       lawMap[law.region_id].push(law);
+    //     }
+    //   });
+    //
+    //   return keys.map(key => lawMap[key]);
+    // }),
+    regionLoader: new DataLoader(async keys => {
+      const regions = await store.Region.findAll({
+        where: {
+          id: keys,
+        }
+      });
+
+      const regionMap = {};
+      regions.forEach(region => {
+        if (!regionMap[region.id]) {
+          regionMap[region.id] = region;
+        }
+      });
+
+      return keys.map(key => regionMap[key]);
+    }),
+    lawTagLoader: new DataLoader(async keys => {
+      const laws = await store.Law.findAll({
+        where: {
+          id: keys,
+        },
+        include: {
+          model: store.LawTag,
+          as: 'lawTags',
+          // through: 'law_tag_law' // this will remove the rows from the join table (i.e. 'UserPubCrawl table') in the result set
+        },
+      });
+
+      const lawTagMap = {};
+      laws.forEach(law => {
+        if (!lawTagMap[law.id]) {
+          lawTagMap[law.id] = law.lawTags;
+        }
+      });
+
+      return keys.map(key => lawTagMap[key]);
+    }),
+    // NOTE: SAME AS ABOVE, BUT IN REVERSE JOIN DIRECTION - MUCH LESS EFFICIENT!
+    // lawTagLoader: new DataLoader(async keys => {
+    //   const lawTags = await store.LawTag.findAll({
+    //     // where: {
+    //     //   id: keys,
+    //     // },
+    //     include: {
+    //       model: store.Law,
+    //       as: 'laws',
+    //       through: 'law_tag_law' // this will remove the rows from the join table (i.e. 'UserPubCrawl table') in the result set
+    //     },
+    //   });
+    //
+    //   const lawTagMap = {};
+    //   lawTags.forEach(lawTag => {
+    //     console.log(lawTag.laws.length)
+    //     const lawsForThisLawTag = lawTag.laws.filter(law => keys.includes(law.id));
+    //     lawsForThisLawTag.forEach(lawForThisLawTag => {
+    //       if (!lawTagMap[lawForThisLawTag.id]) {
+    //         lawTagMap[lawForThisLawTag.id] = [lawTag];
+    //       } else {
+    //         lawTagMap[lawForThisLawTag.id].push(lawTag);
+    //       }
+    //     });
+    //   });
+    //
+    //   return keys.map(key => lawTagMap[key]);
+    // }),
+    citationLoader: new DataLoader(async keys => {
+      const laws = await store.Law.findAll({
+        where: {
+          id: keys,
+        },
+        include: {
+          model: store.Citation,
+          as: 'citations',
+          // through: 'citation_law' // this will remove the rows from the join table (i.e. 'UserPubCrawl table') in the result set
+        },
+      });
+
+      const citationMap = {};
+      laws.forEach(law => {
+        if (!citationMap[law.id]) {
+          citationMap[law.id] = law.citations;
+        }
+      });
+
+      return keys.map(key => citationMap[key]);
+    }),
+    lawTranslateLoader: new DataLoader(async keys => {
+      const lawTranslates = await store.LawTranslate.findAll({
+        where: {
+          law_id: keys.map(key => key.law_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const lawTranslateMap = {};
+      lawTranslates.forEach(lawTranslate => {
+        if (!lawTranslateMap[lawTranslate.law_id]) {
+          lawTranslateMap[lawTranslate.law_id] = lawTranslate;
+        }
+      });
+
+      return keys.map(key => lawTranslateMap[key.law_id]);
+    }),
+    lawTagTranslateLoader: new DataLoader(async keys => {
+      const lawTagTranslates = await store.LawTagTranslate.findAll({
+        where: {
+          law_tag_id: keys.map(key => key.law_tag_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const lawTagTranslateMap = {};
+      lawTagTranslates.forEach(lawTagTranslate => {
+        if (!lawTagTranslateMap[lawTagTranslate.law_tag_id]) {
+          lawTagTranslateMap[lawTagTranslate.law_tag_id] = lawTagTranslate;
+        }
+      });
+
+      return keys.map(key => lawTagTranslateMap[key.law_tag_id]);
+    }),
+    deforestationRateLoader: new DataLoader(async keys => {
+      const deforestationRates = await store.DeforestationRate.findAll({
+        where: {
+          region_id: keys,
+        }
+      });
+
+      const deforestationRatesKeys = Object.keys(deforestationRates);
+
+      const deforestationRateMap = {};
+      deforestationRatesKeys.forEach(deforestationRatesKey => {
+        const deforestationRate = deforestationRates[deforestationRatesKey];
+
+        if (!deforestationRateMap[deforestationRate.region_id]) {
+          deforestationRateMap[deforestationRate.region_id] = [deforestationRate];
+        } else {
+          deforestationRateMap[deforestationRate.region_id].push(deforestationRate);
+        }
+      });
+
+      return keys.map(key => deforestationRateMap[key]);
+    }),
+  }),
 });
 
 // exports.graphqlHandler = server.createHandler();

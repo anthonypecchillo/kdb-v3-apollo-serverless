@@ -12,7 +12,6 @@ class LawTranslateAPI extends DataSource {
 
   async getAllLawTranslates() {
     const lawTranslates = await this.store.LawTranslate.findAll();
-    console.log(lawTranslates);
     return lawTranslates ? lawTranslates : null;
   }
 
