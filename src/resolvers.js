@@ -10,7 +10,6 @@ module.exports = {
 
     laws: (parent, args, context, info) => parent.getLaws(),
     // laws: (parent, args, context, info) => context.lawLoader.load(parent.id),
-
   },
   Nation: {
     // region: (parent, args, context, info) => parent.getRegion(),
@@ -26,6 +25,8 @@ module.exports = {
     perCapitaIncome: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getPerCapitaIncome({ nationId: id }),
     percentForested: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getPercentForested({ nationId: id }),
     population: ({ id }, args, { dataSources }) => dataSources.valueNationalAPI.getPopulation({ nationId: id }),
+    partnerships: (parent, args, context, info) => parent.getPartnerships(),
+    // partnerships: ({ id }, args, { dataSources }) => dataSources.partnershipAPI.getPartnerships({ nationId: id }),
   },
   Jurisdiction: {
     // region: (parent, args, context, info) => parent.getRegion(),
@@ -105,6 +106,24 @@ module.exports = {
   LawTag: {
     // lawTagTranslate: ({ id }, { code }, { dataSources }) => dataSources.lawTagTranslateAPI.getLawTagTranslateByCode({ id: id, languageCode: code }),
     lawTagTranslate: (parent, args, context, info) => context.lawTagTranslateLoader.load({ law_tag_id: parent.id, languageCode: args.code }),
+  },
+  Partnership: {
+    nation: (parent, args, context, info) => context.nationLoader.load(parent.nation_id),
+    initiativeStatus: (parent, args, context, info) => parent.initiative_status_id ? context.initiativeStatusLoader.load(parent.initiative_status_id) : null,
+    partnershipTranslate: (parent, args, context, info) => context.partnershipTranslateLoader.load({ partnership_id: parent.id, languageCode: args.code }),
+    organizations: (parent, args, context, info) => context.organizationLoader.load(parent.id),
+    partnershipJurisdictions: (parent, args, context, info) => context.partnershipJurisdictionLoader.load(parent.id),
+    initiativeTypes: (parent, args, context, info) => context.initiativeTypeLoader.load(parent.id),
+    // fundingSources: (parent, args, context, info) => context.fundingSourceLoader.load(parent.id),
+  },
+  InitiativeStatus: {
+    initiativeStatusTranslate: (parent, args, context, info) => context.initiativeStatusTranslateLoader.load({ initiative_status_id: parent.id, languageCode: args.code }),
+  },
+  Organization: {
+    organizationTranslate: (parent, args, context, info) => context.organizationTranslateLoader.load({ organization_id: parent.id, languageCode: args.code }),
+  },
+  InitiativeType: {
+    initiativeTypeTranslate: (parent, args, context, info) => context.initiativeTypeTranslateLoader.load({ initiative_type_id: parent.id, languageCode: args.code }),
   },
   MajorExport: {
     region: (parent, args, context, info) => parent.getRegion(),
@@ -196,10 +215,10 @@ module.exports = {
     citation: (_, { id }, { dataSources }) => dataSources.citationAPI.getCitationByCode({ citationId: id }),
     contacts: (_, __, { dataSources }) => dataSources.contactAPI.getAllContacts(),
     contact: (_, { id }, { dataSources }) => dataSources.contactAPI.getContactById({ contactId: id }),
-    // partnerships: (_, __, { dataSources }) => dataSources.partnershipAPI.getAllPartnerships(),
-    // partnership: (_, { id }, { dataSources }) => dataSources.partnershipAPI.getPartnershipById({ partnershipId: id }),
-    // partnershipTranslates: (_, __, { dataSources }) => dataSources.partnershipTranslateAPI.getAllPartnershipTranslates(),
-    // partnershipTranslate: (_, { id }, { dataSources }) => dataSources.partnershipTranslateAPI.getPartnershipTranslateById({ partnershipTranslateId: id }),
+    partnerships: (_, __, { dataSources }) => dataSources.partnershipAPI.getAllPartnerships(),
+    partnership: (_, { id }, { dataSources }) => dataSources.partnershipAPI.getPartnershipById({ partnershipId: id }),
+    partnershipTranslates: (_, __, { dataSources }) => dataSources.partnershipTranslateAPI.getAllPartnershipTranslates(),
+    partnershipTranslate: (_, { id }, { dataSources }) => dataSources.partnershipTranslateAPI.getPartnershipTranslateById({ partnershipTranslateId: id }),
     institutionalFrameworks: (_, __, { dataSources }) => dataSources.institutionalFrameworkAPI.getAllInstitutionalFrameworks(),
     institutionalFramework: (_, { id }, { dataSources }) => dataSources.institutionalFrameworkAPI.getInstitutionalFrameworkById({ institutionalFrameworkId: id }),
     institutionalFrameworkTranslates: (_, __, { dataSources }) => dataSources.institutionalFrameworkTranslateAPI.getAllInstitutionalFrameworkTranslates(),
@@ -240,10 +259,10 @@ module.exports = {
     // commodity: (_, { id }, { dataSources }) => dataSources.commodityAPI.getCommodityById({ commodityId: id }),
     // slrtScores: (_, __, { dataSources }) => dataSources.slrtScoreAPI.getAllSlrtScores(),
     // slrtScore: (_, { id }, { dataSources }) => dataSources.slrtScoreAPI.getSlrtScoreById({ slrtScoreId: id }),
-    // organizations: (_, __, { dataSources }) => dataSources.organizationAPI.getAllOrganizations(),
-    // organization: (_, { id }, { dataSources }) => dataSources.organizationAPI.getOrganizationById({ organizationId: id }),
-    // organizationTranslates: (_, __, { dataSources }) => dataSources.organizationTranslateAPI.getAllOrganizationTranslates(),
-    // organizationTranslate: (_, { id }, { dataSources }) => dataSources.organizationTranslateAPI.getOrganizationTranslateById({ organizationTranslateId: id }),
+    organizations: (_, __, { dataSources }) => dataSources.organizationAPI.getAllOrganizations(),
+    organization: (_, { id }, { dataSources }) => dataSources.organizationAPI.getOrganizationById({ organizationId: id }),
+    organizationTranslates: (_, __, { dataSources }) => dataSources.organizationTranslateAPI.getAllOrganizationTranslates(),
+    organizationTranslate: (_, { id }, { dataSources }) => dataSources.organizationTranslateAPI.getOrganizationTranslateById({ organizationTranslateId: id }),
     contentNationals: (_, __, { dataSources }) => dataSources.contentNationalAPI.getAllContentNationals(),
     contentNational: (_, { id }, { dataSources }) => dataSources.contentNationalAPI.getContentNationalById({ contentNationalId: id }),
     contentNationalTranslates: (_, __, { dataSources }) => dataSources.contentNationalTranslateAPI.getAllContentNationalTranslates(),

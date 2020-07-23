@@ -14,7 +14,7 @@ const LanguageAPI = require('./datasources/language');
 const CitationAPI = require('./datasources/citation');
 const ContactAPI = require('./datasources/contact');
 const PartnershipAPI = require('./datasources/partnership');
-// const PartnershipTranslateAPI = require('./datasources/partnershipTranslate');
+const PartnershipTranslateAPI = require('./datasources/partnershipTranslate');
 const InstitutionalFrameworkAPI = require('./datasources/institutionalFramework');
 const InstitutionalFrameworkTranslateAPI = require('./datasources/institutionalFrameworkTranslate');
 const LawAPI = require('./datasources/law');
@@ -41,7 +41,7 @@ const MajorExportAPI = require('./datasources/majorExport');
 const CommodityAPI = require('./datasources/commodity');
 const SlrtScoreAPI = require('./datasources/slrtScore');
 const OrganizationAPI = require('./datasources/organization');
-// const OrganizationTranslateAPI = require('./datasources/organizationTranslate');
+const OrganizationTranslateAPI = require('./datasources/organizationTranslate');
 const ContentNationalAPI = require('./datasources/contentNational');
 const ContentNationalTranslateAPI = require('./datasources/contentNationalTranslate');
 const ContentJurisdictionalAPI = require('./datasources/contentJurisdictional');
@@ -55,6 +55,9 @@ const LawTagAPI = require('./datasources/lawTag');
 const LawTagTranslateAPI = require('./datasources/lawTagTranslate');
 const DeforestationDriverAPI = require('./datasources/DeforestationDriver');
 const DeforestationDriverTranslateAPI = require('./datasources/DeforestationDriverTranslate');
+const InitiativeStatusAPI = require('./datasources/initiativeStatus');
+const InitiativeTypeAPI = require('./datasources/initiativeType');
+const InitiativeTypeTranslateAPI = require('./datasources/initiativeTypeTranslate');
 
 const store = createStore();
 // console.log('store is: ', store);
@@ -72,7 +75,7 @@ const server = new ApolloServer({
     citationAPI: new CitationAPI({ store }),
     contactAPI: new ContactAPI({ store }),
     partnershipAPI: new PartnershipAPI({ store }),
-    // partnershipTranslateAPI: new PartnershipTranslateAPI({ store }),
+    partnershipTranslateAPI: new PartnershipTranslateAPI({ store }),
     institutionalFrameworkAPI: new InstitutionalFrameworkAPI({ store }),
     institutionalFrameworkTranslateAPI: new InstitutionalFrameworkTranslateAPI({ store }),
     lawAPI: new LawAPI({ store }),
@@ -99,7 +102,7 @@ const server = new ApolloServer({
     commodityAPI: new CommodityAPI({ store }),
     slrtScoreAPI: new SlrtScoreAPI({ store }),
     organizationAPI: new OrganizationAPI({ store }),
-    // organizationTranslateAPI: new OrganizationTranslateAPI({ store }),
+    organizationTranslateAPI: new OrganizationTranslateAPI({ store }),
     contentNationalAPI: new ContentNationalAPI({ store }),
     contentNationalTranslateAPI: new ContentNationalTranslateAPI({ store }),
     contentJurisdictionalAPI: new ContentJurisdictionalAPI({ store }),
@@ -113,6 +116,9 @@ const server = new ApolloServer({
     lawTagTranslateAPI: new LawTagTranslateAPI({ store }),
     deforestationDriverAPI: new DeforestationDriverAPI({ store }),
     deforestationDriverTranslateAPI: new DeforestationDriverTranslateAPI({ store }),
+    initiativeStatusAPI: new InitiativeStatusAPI({ store }),
+    initiativeTypeAPI: new InitiativeTypeAPI({ store }),
+    initiativeTypeTranslateAPI: new InitiativeTypeTranslateAPI({ store }),
   }),
   context: () => ({
     contactLoader: new DataLoader(async keys => {
@@ -325,6 +331,29 @@ const server = new ApolloServer({
 
       return keys.map(key => regionMap[key]);
     }),
+    partnershipJurisdictionLoader: new DataLoader(async keys => {
+      const partnerships = await store.Partnership.findAll({
+        where: {
+          id: keys,
+        },
+        include: {
+          model: store.Jurisdiction,
+          as: 'partnershipJurisdictions',
+          // through: 'jurisdiction_partnership' // this will remove the rows from the join table (i.e. 'UserPubCrawl table') in the result set
+        },
+      });
+
+      // console.log(partnershipJurisdictions[0]);
+
+      const partnershipJurisdictionsMap = {};
+      partnerships.forEach(partnership => {
+        if (!partnershipJurisdictionsMap[partnership.id]) {
+          partnershipJurisdictionsMap[partnership.id] = partnership.partnershipJurisdictions;
+        }
+      });
+
+      return keys.map(key => partnershipJurisdictionsMap[key]);
+    }),
     lawTagLoader: new DataLoader(async keys => {
       const laws = await store.Law.findAll({
         where: {
@@ -450,6 +479,148 @@ const server = new ApolloServer({
       });
 
       return keys.map(key => deforestationRateMap[key]);
+    }),
+    nationLoader: new DataLoader(async keys => {
+      const nations = await store.Nation.findAll({
+        where: {
+          id: keys,
+        }
+      });
+
+      const nationMap = {};
+      nations.forEach(nation => {
+        if (!nationMap[nation.id]) {
+          nationMap[nation.id] = nation;
+        }
+      });
+
+      return keys.map(key => nationMap[key]);
+    }),
+    initiativeStatusLoader: new DataLoader(async keys => {
+      const initiativeStatuses = await store.InitiativeStatus.findAll({
+        where: {
+          id: keys,
+        }
+      });
+
+      const initiativeStatusMap = {};
+      initiativeStatuses.forEach(initiativeStatus => {
+        if (!initiativeStatusMap[initiativeStatus.id]) {
+          initiativeStatusMap[initiativeStatus.id] = initiativeStatus;
+        }
+      });
+
+      return keys.map(key => initiativeStatusMap[key]);
+    }),
+    initiativeStatusTranslateLoader: new DataLoader(async keys => {
+      const initiativeStatusTranslates = await store.InitiativeStatusTranslate.findAll({
+        where: {
+          initiative_status_id: keys.map(key => key.initiative_status_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const initiativeStatusTranslateMap = {};
+      initiativeStatusTranslates.forEach(initiativeStatusTranslate => {
+        if (!initiativeStatusTranslateMap[initiativeStatusTranslate.initiative_status_id]) {
+          initiativeStatusTranslateMap[initiativeStatusTranslate.initiative_status_id] = initiativeStatusTranslate;
+        }
+      });
+
+      return keys.map(key => initiativeStatusTranslateMap[key.initiative_status_id]);
+    }),
+    partnershipTranslateLoader: new DataLoader(async keys => {
+      const partnershipTranslates = await store.PartnershipTranslate.findAll({
+        where: {
+          partnership_id: keys.map(key => key.partnership_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const partnershipTranslateMap = {};
+      partnershipTranslates.forEach(partnershipTranslate => {
+        if (!partnershipTranslateMap[partnershipTranslate.partnership_id]) {
+          partnershipTranslateMap[partnershipTranslate.partnership_id] = partnershipTranslate;
+        }
+      });
+
+      return keys.map(key => partnershipTranslateMap[key.partnership_id]);
+    }),
+    initiativeTypeLoader: new DataLoader(async keys => {
+      const initiativeTypes = await store.Partnership.findAll({
+        where: {
+          id: keys,
+        },
+        include: {
+          model: store.InitiativeType,
+          as: 'initiativeTypes',
+          // through: 'initiativeType_tag_initiativeType' // this will remove the rows from the join table (i.e. 'UserPubCrawl table') in the result set
+        },
+      });
+
+      const initiativeTypeMap = {};
+      initiativeTypes.forEach(initiativeType => {
+        if (!initiativeTypeMap[initiativeType.id]) {
+          initiativeTypeMap[initiativeType.id] = initiativeType.initiativeTypes;
+        }
+      });
+
+      return keys.map(key => initiativeTypeMap[key]);
+    }),
+    initiativeTypeTranslateLoader: new DataLoader(async keys => {
+      const initiativeTypeTranslates = await store.InitiativeTypeTranslate.findAll({
+        where: {
+          initiative_type_id: keys.map(key => key.initiative_type_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const initiativeTypeTranslateMap = {};
+      initiativeTypeTranslates.forEach(initiativeTypeTranslate => {
+        if (!initiativeTypeTranslateMap[initiativeTypeTranslate.initiative_type_id]) {
+          initiativeTypeTranslateMap[initiativeTypeTranslate.initiative_type_id] = initiativeTypeTranslate;
+        }
+      });
+
+      return keys.map(key => initiativeTypeTranslateMap[key.initiative_type_id]);
+    }),
+    organizationLoader: new DataLoader(async keys => {
+      const organizations = await store.Partnership.findAll({
+        where: {
+          id: keys,
+        },
+        include: {
+          model: store.Organization,
+          as: 'organizations',
+          // through: 'organization_tag_organization' // this will remove the rows from the join table (i.e. 'UserPubCrawl table') in the result set
+        },
+      });
+
+      const organizationMap = {};
+      organizations.forEach(organization => {
+        if (!organizationMap[organization.id]) {
+          organizationMap[organization.id] = organization.organizations;
+        }
+      });
+
+      return keys.map(key => organizationMap[key]);
+    }),
+    organizationTranslateLoader: new DataLoader(async keys => {
+      const organizationTranslates = await store.OrganizationTranslate.findAll({
+        where: {
+          organization_id: keys.map(key => key.organization_id),
+          languageCode: keys[0].languageCode,
+        }
+      });
+
+      const organizationTranslateMap = {};
+      organizationTranslates.forEach(organizationTranslate => {
+        if (!organizationTranslateMap[organizationTranslate.organization_id]) {
+          organizationTranslateMap[organizationTranslate.organization_id] = organizationTranslate;
+        }
+      });
+
+      return keys.map(key => organizationTranslateMap[key.organization_id]);
     }),
   }),
 });

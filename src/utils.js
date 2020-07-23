@@ -196,6 +196,10 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
+    nation_id: {
+      type: SQL.INTEGER,
+      // allowNull: false,
+    },
     fundingAmount: {
       type: SQL.DECIMAL,
       field: 'funding_amount',
@@ -203,18 +207,13 @@ module.exports.createStore = () => {
     },
     fundingCurrency: {
       type: SQL.STRING(16),
-      field: 'funding_amount',
+      field: 'funding_currency',
       // allowNull: false,
     },
-    fundingSourceShort: {
-      type: SQL.STRING(16),
-      field: 'funding_source_short',
+    initiative_status_id: {
+      type: SQL.INTEGER,
       // allowNull: false,
-    },
-    initiativeStatus: {
-      type: SQL.STRING(64),
-      field: 'initiative_status',
-      // allowNull: false,
+      field: 'initiative_status_id',
     },
     url: {
       type: SQL.STRING(2083),
@@ -222,6 +221,36 @@ module.exports.createStore = () => {
     },
   });
 
+  Nation.hasMany(Partnership);
+  Partnership.belongsTo(Nation);
+
+  Jurisdiction.belongsToMany(Partnership, {
+    through: 'jurisdiction_partnership',
+    as: 'partnershipJurisdictions',
+    foreignKey: 'jurisdiction_id',
+    otherKey: 'partnership_id'
+  });
+
+  Partnership.belongsToMany(Jurisdiction, {
+    through: 'jurisdiction_partnership',
+    as: 'partnershipJurisdictions',
+    foreignKey: 'partnership_id',
+    otherKey: 'jurisdiction_id'
+  });
+
+  // InitiativeType.belongsToMany(Partnership, {
+  //   through: 'initiative_type_partnership',
+  //   as: 'partnerships',
+  //   foreignKey: 'initiative_type_id',
+  //   otherKey: 'partnership_id'
+  // });
+  //
+  // Partnership.belongsToMany(InitiativeType, {
+  //   through: 'initiative_type_partnership',
+  //   as: 'initiativeTypes',
+  //   foreignKey: 'partnership_id',
+  //   otherKey: 'initiative_type_id'
+  // });
 
   const PartnershipTranslate = db.define('partnership_translate', {
     id: {
@@ -229,9 +258,10 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
       // allowNull: false,
+      field: 'language_code',
     },
     partnership_id: {
       type: SQL.INTEGER,
@@ -241,27 +271,101 @@ module.exports.createStore = () => {
       type: SQL.TEXT,
       // allowNull: false,
     },
-    funding_source_long: {
-      type: SQL.STRING(255),
-      // allowNull: false,
-    },
     initiative_status_details: {
       type: SQL.INTEGER,
       // allowNull: false,
     },
-    initiative_type: {
-      type: SQL.STRING(128),
+    name: {
+      type: SQL.STRING(511),
+      // allowNull: false,
+    },
+  });
+
+  Partnership.hasMany(PartnershipTranslate);
+  PartnershipTranslate.belongsTo(Partnership);
+
+  const InitiativeStatus = db.define('initiative_status', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+  });
+
+  const InitiativeStatusTranslate = db.define('initiative_status_translate', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    languageCode: {
+      type: SQL.CHAR(2),
+      field: 'language_code',
+      // allowNull: false,
+    },
+    initiativeStatusId: {
+      type: SQL.INTEGER,
+      field: 'initiative_status_id',
       // allowNull: false,
     },
     name: {
       type: SQL.STRING(255),
-      // allowNull: false,
-    },
-    partners_type: {
-      type: SQL.DATE,
+      field: 'name',
       // allowNull: false,
     },
   });
+
+  InitiativeStatus.hasMany(InitiativeStatusTranslate);
+  InitiativeStatusTranslate.belongsTo(InitiativeStatus);
+
+  const InitiativeType = db.define('initiative_type', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+  });
+
+  InitiativeType.belongsToMany(Partnership, {
+    through: 'partnership_initiative_type',
+    as: 'partnerships',
+    foreignKey: 'initiative_type_id',
+    otherKey: 'partnership_id'
+  });
+
+  Partnership.belongsToMany(InitiativeType, {
+    through: 'partnership_initiative_type',
+    as: 'initiativeTypes',
+    foreignKey: 'partnership_id',
+    otherKey: 'initiative_type_id'
+  });
+
+  const InitiativeTypeTranslate = db.define('initiative_type_translate', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    languageCode: {
+      type: SQL.CHAR(2),
+      field: 'language_code',
+      // allowNull: false,
+    },
+    initiativeTypeId: {
+      type: SQL.INTEGER,
+      field: 'initiative_type_id',
+      // allowNull: false,
+    },
+    name: {
+      type: SQL.STRING(255),
+      field: 'name',
+      // allowNull: false,
+    },
+  });
+
+  InitiativeType.hasMany(InitiativeTypeTranslate);
+  InitiativeTypeTranslate.belongsTo(InitiativeType);
+
 
   const InstitutionalFramework = db.define('institutional_framework', {
     id: {
@@ -898,15 +1002,44 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    name_short: {
-      type: SQL.STRING(16),
+    nameShort: {
+      type: SQL.STRING(32),
       // allowNull: false,
+      field: 'name_short'
     },
     url: {
       type: SQL.STRING(2083),
       // allowNull: false,
     },
   });
+
+  Organization.belongsToMany(Partnership, {
+    through: 'organization_partnership',
+    as: 'partnerships',
+    foreignKey: 'organization_id',
+    otherKey: 'partnership_id'
+  });
+
+  Partnership.belongsToMany(Organization, {
+    through: 'organization_partnership',
+    as: 'organizations',
+    foreignKey: 'partnership_id',
+    otherKey: 'organization_id'
+  });
+
+  // Organization.belongsToMany(Partnership, {
+  //   through: 'funding_source_partnership',
+  //   as: 'partnerships',
+  //   foreignKey: 'funding_source_id',
+  //   otherKey: 'partnership_id'
+  // });
+  //
+  // Partnership.belongsToMany(Organization, {
+  //   through: 'funding_source_partnership',
+  //   as: 'fundingSources',
+  //   foreignKey: 'partnership_id',
+  //   otherKey: 'funding_source_id'
+  // });
 
 
   const OrganizationTranslate = db.define('organization_translate', {
@@ -915,19 +1048,24 @@ module.exports.createStore = () => {
       primaryKey: true,
       autoIncrement: true,
     },
-    language_code: {
+    languageCode: {
       type: SQL.CHAR(2),
       // allowNull: false,
+      field: 'language_code',
     },
     organization_id: {
       type: SQL.INTEGER,
       // allowNull: false,
     },
-    name_long: {
+    nameLong: {
       type: SQL.STRING(255),
       // allowNull: false,
+      field: 'name_long',
     },
   });
+
+  Organization.hasMany(OrganizationTranslate);
+  OrganizationTranslate.belongsTo(Organization);
 
 
   const ContentNational = db.define('content_national', {
@@ -1299,6 +1437,10 @@ module.exports.createStore = () => {
     LawTagTranslate,
     DeforestationDriver,
     DeforestationDriverTranslate,
+    InitiativeStatus,
+    InitiativeStatusTranslate,
+    InitiativeType,
+    InitiativeTypeTranslate,
   };
 };
 

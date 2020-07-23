@@ -16,7 +16,7 @@ const typeDefs = gql`
     # nations: [Nation!]!
     nation(id: ID!): Nation
     nationByName(name: String!): Nation
-    # jurisdictions: [Jurisdiction!]!
+    partnershipJurisdictions: [Jurisdiction!]!
     jurisdiction(id: ID!): Jurisdiction
     jurisdictionByName(nationName: String!, jurisdictionName: String!): Jurisdiction
     languages: [Language!]!
@@ -25,10 +25,18 @@ const typeDefs = gql`
     citation(id: ID!): Citation
     contacts: [Contact!]!
     contact(id: ID!): Contact
-    # partnerships: [Partnership!]!
-    # partnership(id: ID!): Partnership
-    # partnershipTranslates: [PartnershipTranslate!]!
-    # partnershipTranslate(id: ID!): PartnershipTranslate
+    partnerships: [Partnership!]!
+    partnership(id: ID!): Partnership
+    partnershipTranslates: [PartnershipTranslate!]!
+    partnershipTranslate(code: String!): PartnershipTranslate
+    initiativeStatuses: [InitiativeStatus!]!
+    initiativeStatus(id: ID!): InitiativeStatus
+    initiativeStatusTranslates: [InitiativeStatusTranslate!]!
+    initiativeStatusTranslate(code: String!): InitiativeStatusTranslate
+    initiativeTypes: [InitiativeType!]!
+    initiativeType(id: ID!): InitiativeType
+    initiativeTypeTranslates: [InitiativeTypeTranslate!]!
+    initiativeTypeTranslate(code: String!): InitiativeTypeTranslate
     institutionalFrameworks: [InstitutionalFramework!]!
     institutionalFramework(id: ID!): InstitutionalFramework
     institutionalFrameworkTranslates: [InstitutionalFrameworkTranslate!]!
@@ -79,10 +87,14 @@ const typeDefs = gql`
     # commodity(id: ID!): Commodity
     # slrtScores: [SlrtScore!]!
     # slrtScore(id: ID!): SlrtScore
-    # organizations: [Organization!]!
-    # organization(id: ID!): Organization
-    # organizationTranslates: [OrganizationTranslate!]!
-    # organizationTranslate(id: ID!): OrganizationTranslate
+    organizations: [Organization!]!
+    organization(id: ID!): Organization
+    organizationTranslates: [OrganizationTranslate!]!
+    organizationTranslate(code: String!): OrganizationTranslate
+    # fundingSources: [Organization!]!
+    # fundingSource(id: ID!): Organization
+    # fundingSourceTranslates: [OrganizationTranslate!]!
+    # fundingSourceTranslate(code: String!): OrganizationTranslate
     contentNationals: [ContentNational!]!
     contentNational(id: ID!): ContentNational
     contentNationalTranslates: [ContentNationalTranslate!]!
@@ -140,11 +152,12 @@ const typeDefs = gql`
     perCapitaIncome: ValueNational
     percentForested: ValueNational
     population: ValueNational
+    partnerships: [Partnership!]!
   }
 
   type Jurisdiction {
     id: ID!
-    name: String!
+    name: String
     coatOfArmsUrl: String!
     flagUrl: String!
     region: Region!
@@ -204,30 +217,75 @@ const typeDefs = gql`
     jurisdiction: Jurisdiction!
   }
 
-  # type Partnership {
-  #   id: ID!
-  #   nation: Nation!
-  #   fundingAmount: Float!
-  #   fundingCurrency: String!
-  #   fundingSourceShort: String!
-  #   initiativeStatus: String!
-  #   url: String!
-  # }
-  #
-  #
-  # type PartnershipTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   partnership: Partnership!
-  #   description: String!
-  #   fundingSourceLong: String!
-  #   initiativeStatusDetails: Int!
-  #   initiativeType: String!
-  #   name: String!
-  #   partnersType: SQL.DATE
-  # }
-  #
-  #
+  type Partnership {
+    id: ID!
+    nation: Nation!
+    fundingAmount: Float
+    fundingCurrency: String
+    partnershipJurisdictions: [Jurisdiction]
+    organizations: [Organization!]!
+    # fundingSources: [Organization!]!
+    initiativeStatus: InitiativeStatus
+    initiativeTypes: [InitiativeType!]
+    partnershipTranslate(code: String!): PartnershipTranslate!
+    url: String
+  }
+
+
+  type PartnershipTranslate {
+    id: ID!
+    languageCode: String!
+    partnership: Partnership!
+    description: String
+    initiativeStatusDetails: String
+    name: String
+  }
+
+
+  type Organization {
+    id: ID!
+    organizationTranslate(code: String!): OrganizationTranslate!
+    nameShort: String
+    url: String
+  }
+
+
+  type OrganizationTranslate {
+    id: ID!
+    languageCode: String!
+    organization: Organization!
+    nameLong: String!
+  }
+
+
+  type InitiativeStatus {
+    id: ID!
+    initiativeStatusTranslate(code: String!): InitiativeStatusTranslate!
+  }
+
+
+  type InitiativeStatusTranslate {
+    id: ID!
+    languageCode: String!
+    InitiativeStatus: InitiativeStatus!
+    name: String
+  }
+
+
+  type InitiativeType {
+    id: ID!
+    initiativeTypeTranslate(code: String!): InitiativeTypeTranslate!
+  }
+
+
+  type InitiativeTypeTranslate {
+    id: ID!
+    languageCode: String!
+    InitiativeType: InitiativeType!
+    name: String!
+  }
+
+
   type InstitutionalFramework {
     id: ID!
     nameShort: String
@@ -449,23 +507,8 @@ const typeDefs = gql`
   #   citation: Citation!
   #   jurisdiction: Jurisdiction!
   # }
-  #
-  #
-  # type Organization {
-  #   id: ID!
-  #   nameShort: String!
-  #   url: String!
-  # }
-  #
-  #
-  # type OrganizationTranslate {
-  #   id: ID!
-  #   languageCode: String!
-  #   organization: Organization!
-  #   nameLong: String!
-  # }
-  #
-  #
+
+
   type ContentNationalTranslate {
     id: ID!
     languageCode: String!
